@@ -1,11 +1,10 @@
 import React from 'react';
-import { SearchContainer } from './SearchUserElements';
 
 const SearchUser = () => {
     return (
-        <SearchContainer>
+        <div>
             <h1>Search User</h1>
-        </SearchContainer>
+        </div>
     );
 }
 
