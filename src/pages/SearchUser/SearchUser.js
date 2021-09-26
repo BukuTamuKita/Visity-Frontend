@@ -1,12 +1,20 @@
-import React from 'react';
-import { SearchContainer } from './SearchUserElements';
+import React from "react";
+import { SearchContainer } from "./SearchUserElements";
+import { Button } from "../../components";
+import { useHistory } from "react-router";
 
-const SearchUser = () => {
-    return (
-        <SearchContainer>
-            <h1>Search User</h1>
-        </SearchContainer>
-    );
-}
+const SearchUser = ({ navigation }) => {
+  const history = useHistory();
+
+  const routeChange = () => {
+    let path = `/appointment`;
+    history.push(path);
+  };
+  return (
+    <SearchContainer>
+      <Button title={"Continue"} onClick={routeChange} />
+    </SearchContainer>
+  );
+};
 
 export default SearchUser;
