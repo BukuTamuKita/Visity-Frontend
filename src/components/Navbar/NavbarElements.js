@@ -71,7 +71,7 @@ export const NavMenu = styled.ul`
 
 export const NavItem = styled.li`
     height: 3rem;
-    width: 280px;
+    width: 16rem;
     margin: 0 10px;
 `
 
