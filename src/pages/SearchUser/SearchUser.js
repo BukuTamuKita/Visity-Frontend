@@ -12,7 +12,11 @@ const SearchUser = ({ navigation }) => {
   };
   return (
     <SearchContainer>
-      <Button title={"Continue"} onClick={routeChange} />
+      <div className="flex min-h-screen justify-center items-center">
+        <div>
+          <Button title={"Continue"} onClick={routeChange} />
+        </div>
+      </div>
     </SearchContainer>
   );
 };
