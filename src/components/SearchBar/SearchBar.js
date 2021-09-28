@@ -26,7 +26,7 @@ const SearchBar = ({ data }) => {
                     Cari Nama
                 </label>
                 <div className="mt-1 flex rounded-md shadow-sm">
-                    <span className="inline-flex h-14 pl-4 items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                    <span className="inline-flex pl-4 items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                         <SearchIcon/>
                     </span>
                     <input
