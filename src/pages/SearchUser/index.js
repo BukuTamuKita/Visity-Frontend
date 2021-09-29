@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBar from '../components/SearchBar/SearchBar';
-import MockData from '../Data2.json';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import MockData from '../../Data2.json';
 import { Link } from 'react-router-dom';
 
 const SearchUser = () => {
