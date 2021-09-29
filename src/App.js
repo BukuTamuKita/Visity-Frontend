@@ -1,24 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import SearchUser from './pages/SearchUser/SearchUser';
+import UserAdmin from './pages/UserAdmin';
+import AppointmentHistory from './pages/AppointmentHistory';
+import Testing from './pages/Testing';
+import AppointmentPage from './pages/AppointmentPage'
+
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => {
+      setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Navbar toggle={toggle}/>
+        <Sidebar isOpen={isOpen} toggle={toggle}/>
+      <Switch>
+        <Route path="/search" component={SearchUser} exact/>
+        <Route path="/appointment" component={AppointmentPage} />
+        <Route path="/user" component={UserAdmin} />
+        <Route path="/history" component={AppointmentHistory} />
+        <Route path="/testing" component={Testing} />
+      </Switch>
+    </Router>
   );
 }
 
