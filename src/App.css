@@ -1,8 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
 
-* {
+*, ::before, ::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Nunito', sans-serif;
+  --tw-ring-inset: 0;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgba(59, 131, 246, 0);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-border-opacity: 0;
+  border-color: rgba(229, 231, 235, 0);
 }
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    box-shadow: none;
+    outline: none;
+}
+
