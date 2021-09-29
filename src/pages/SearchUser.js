@@ -1,6 +1,7 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar/SearchBar';
 import MockData from '../Data2.json';
+import { Link } from 'react-router-dom';
 
 const SearchUser = () => {
 
@@ -18,6 +19,13 @@ const SearchUser = () => {
                         <p className="text-3xl">Meeting List</p>
                     </div>
                 </div>
+                <div className="mt-8 rounded text-center">
+                        <Link 
+                            className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300" 
+                            to="/appointment">
+                            CONTINUE
+                        </Link>
+                    </div>
             </div>
         </div>
     );
