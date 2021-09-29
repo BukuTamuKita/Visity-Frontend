@@ -1,16 +1,13 @@
 const plugin = require('tailwindcss/plugin');
 
 module.exports = {
-  purge: [
-    './src/**/*.{js,jsx,ts,tsx}', 
-    './public/index.html'
-  ],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {}
+    extend: {},
   },
-  variants: {},
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
-}
+  variants: {
+    extend: {},
+  },
+  plugins: [require("@tailwindcss/forms")],
+};

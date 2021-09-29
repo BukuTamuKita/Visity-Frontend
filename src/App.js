@@ -1,7 +1,8 @@
 import './App.css';
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import SearchUser from './pages/SearchUser';
+
+import SearchUser from './pages/SearchUser/SearchUser';
 import UserAdmin from './pages/UserAdmin';
 import AppointmentHistory from './pages/AppointmentHistory';
 import Testing from './pages/Testing';
@@ -9,7 +10,6 @@ import AppointmentPage from './pages/AppointmentPage'
 
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import "tailwindcss/tailwind.css";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
