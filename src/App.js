@@ -5,8 +5,8 @@ import SearchUser from './pages/SearchUser';
 import UserAdmin from './pages/UserAdmin';
 import AppointmentHistory from './pages/AppointmentHistory';
 import Testing from './pages/Testing';
+import CreateUser from "./pages/CreateUser";
 import AppointmentPage from './pages/AppointmentPage'
-
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import "tailwindcss/tailwind.css";
@@ -28,6 +28,7 @@ function App() {
         <Route path="/user" component={UserAdmin} />
         <Route path="/history" component={AppointmentHistory} />
         <Route path="/testing" component={Testing} />
+        <Route path="/createUser" component={CreateUser} />
       </Switch>
     </Router>
   );
