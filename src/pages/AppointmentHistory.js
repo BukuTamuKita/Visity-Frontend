@@ -2,8 +2,8 @@ import React from 'react';
 
 const AppointmentHistory = () => {
     return (
-        <div>
-            <h1>Appointment History</h1>
+        <div className="flex h-screen">
+            <h1 className="m-auto">Appointment History</h1>
         </div>
     );
 }
