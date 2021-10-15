@@ -2,8 +2,8 @@ import React from 'react';
 
 const UserAdmin = () => {
     return (
-        <div>
-            <h1>User Administration</h1>
+        <div className="flex h-screen">
+            <h1 className="m-auto">User Administration page</h1>
         </div>
     );
 }

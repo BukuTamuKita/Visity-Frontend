@@ -1,13 +1,12 @@
 import React from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import MockData from '../../Data2.json';
 import { Link } from 'react-router-dom';
 
 const SearchUser = () => {
 
     return (
         <div>
-            <SearchBar placeholder="Cari nama..." data={MockData}/>
+            <SearchBar placeholder="Cari nama..."/>
             
             <div className="flex flex-col items-center justify-center">
                 <div className="card grid md:grid-cols-3 md:w-9/12 w-4/5">

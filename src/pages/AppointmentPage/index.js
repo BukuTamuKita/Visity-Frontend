@@ -113,7 +113,7 @@ export default function index() {
             <div class="p-3 col-span-2 row-span-2 ">
               <label
                 htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700 "
+                className="block text-sm font-medium text-gray-700"
               >
                 Keperluan
               </label>
