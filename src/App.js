@@ -10,6 +10,7 @@ import AppointmentPage from './pages/AppointmentPage'
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import "tailwindcss/tailwind.css";
+import Login from './pages/Login';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,6 +24,7 @@ function App() {
         <Navbar toggle={toggle}/>
         <Sidebar isOpen={isOpen} toggle={toggle}/>
       <Switch>
+        <Route path="/login" component={Login}/>
         <Route path="/search" component={SearchUser} exact/>
         <Route path="/appointment" component={AppointmentPage} />
         <Route path="/user" component={UserAdmin} />
