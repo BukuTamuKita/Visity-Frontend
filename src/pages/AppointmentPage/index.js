@@ -1,9 +1,13 @@
+import React, { useState, useEffect } from 'react'
+
+
+
 export default function index() {
   return (
-    <div class=" min-h-screen flex justify-center ">
-      <div class="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
-        <div class="grid gap-2 mt-5  grid-cols-2 justify-center">
-          <div class="rounded-lg border-4 border-dashed col-span-4 flex flex-col justify-center items-center">
+    <div class=" justify-center pt-64">
+      <div class="flex-1 mx-auto grid grid-cols-2 ml-80 mr-64 mb-">
+        <div class="grid grid-cols-1 grid-flow-row gap-2 mt-5 justify-center">
+          <div class="rounded-lg border-4 border-dashed col-span-6 flex flex-col justify-center items-center">
             <div>
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -39,7 +43,7 @@ export default function index() {
               </p>
             </div>
           </div>
-          <div class="col-span-4 text-center">
+          <div class="text-center">
             <button
               class="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
               type="submit"
@@ -59,9 +63,9 @@ export default function index() {
               </label>
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                name="NIK"
+                id="NIK"
+                autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -89,9 +93,9 @@ export default function index() {
               </label>
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                name="street-address"
+                id="street-address"
+                autoComplete="street-address"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -103,10 +107,10 @@ export default function index() {
                 Email
               </label>
               <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                type="email"
+                name="email"
+                id="email"
+                autoComplete="email"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
@@ -121,7 +125,7 @@ export default function index() {
                 type="text"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
+                autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>

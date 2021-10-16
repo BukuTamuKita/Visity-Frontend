@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
-
+import showUser from '../showUser'
+import SearchField from "react-search-field"
 const SearchBar = ({ data }) => {
     const [filteredData, setFilterredData] = useState([]);
 
@@ -20,7 +21,7 @@ const SearchBar = ({ data }) => {
     }
 
     return (
-        <div className="search flex flex-col items-center justify-center mb-16">
+        <div className="search flex flex-col items-center justify-center mb-16 ">
             <div className="flex flex-col md:w-2/5 w-4/5">
                 <label htmlFor="company-website" className="block text-sm font-medium text-gray-700">
                     Cari Nama
@@ -29,7 +30,7 @@ const SearchBar = ({ data }) => {
                     <span className="inline-flex pl-4 items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                         <SearchIcon/>
                     </span>
-                    <input
+                    <SearchField
                         type="search"
                         name="search-name"
                         id="search-name"
@@ -43,7 +44,7 @@ const SearchBar = ({ data }) => {
                 <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
                     {filteredData.slice(0, 10).map((value) => {
                         return (
-                            <Link className="dataItem" key={value.id} target="_blank">
+                            <Link className="dataItem" key={value.id} to = "/search">
                                 <p>{value.name}</p>
                             </Link>
                         )
