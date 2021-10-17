@@ -34,8 +34,10 @@ php artisan serve
 ```
 
 ## Installing Project Frontend
-1. Clone project visity-frontend di branch "sprintReview"
-      >https://github.com/BukuTamuKita/visity-frontend.git
+1. Clone project visity-frontend
+```bash
+https://github.com/BukuTamuKita/visity-frontend.git
+```
 2. Install npm
 ```bash
 npm install
