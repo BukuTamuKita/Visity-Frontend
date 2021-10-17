@@ -32,7 +32,6 @@ const SearchUser = () => {
 
     useEffect(() => {
         // fetchDataHosts();
-        // fetchDataHost();
         axios
         .get('http://127.0.0.1:8000/api/hosts', {
             headers: {
@@ -52,21 +51,21 @@ const SearchUser = () => {
         getHostInformation(host);
     };
 
-    const searchAPI = () => {
-        axios
-        .get('http://127.0.0.1:8000/api/hosts', {
-            headers: {
-                Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-        })
-        .then(res => {
-            console.log("searchAPI: ", res.data.data);
-            setHosts(res.data.data);
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    }
+    // const searchAPI = () => {
+    //     axios
+    //     .get('http://127.0.0.1:8000/api/hosts', {
+    //         headers: {
+    //             Authorization: "Bearer " + localStorage.getItem("token"),
+    //         },
+    //     })
+    //     .then(res => {
+    //         console.log("searchAPI: ", res.data.data);
+    //         setHosts(res.data.data);
+    //     })
+    //     .catch(err => {
+    //         console.log(err);
+    //     });
+    // }
 
     const getHostInformation = (host) => {
         axios
