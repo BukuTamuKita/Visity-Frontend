@@ -4,28 +4,46 @@
 1. Clone dulu project visity-backend [disini](https://github.com/BukuTamuKita/visity-backend)
 2. Buat file .env sendiri atau rename file .env.example menjadi .env
 3. Lalu pada file .env tersebut, ganti nama databasenya:
-  >DB_DATABASE=visiti
+```env
+DB_DATABASE=visiti
+```
 4. Install composer
-  >composer install
+```bash
+composer install
+```
 5. Update composer 
-  >composer update
+```bash
+composer update
+```
 6. Membuat key laravel project
-  >php artisan key:generate
+```bash
+php artisan key:generate
+```
 7. Generate JWT secret
-  >php artisan jwt:secret
+```bash
+php artisan jwt:secret
+```
 8. Migrate database
-  >php artisan migrate --seed
+```bash
+php artisan migrate --seed
+```
 9. Nyalakan Xampp
 10. Jalankan project
-  >php artisan serve
+```bash
+php artisan serve
+```
 
 ## Installing Project Frontend
 1. Clone project visity-frontend di branch "sprintReview"
-  >https://github.com/BukuTamuKita/visity-frontend.git
+      >https://github.com/BukuTamuKita/visity-frontend.git
 2. Install npm
-  >npm install
+```bash
+npm install
+```
 3. Jalankan project
-  >npm start
+```bash
+npm start
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
