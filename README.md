@@ -32,7 +32,10 @@ php artisan migrate --seed
 ```bash
 php artisan serve
 ```
->password untuk semua user di tabel users: "password" (tanpa tanda petik) 
+
+**Note:**
+>password untuk semua user di tabel users: "password" (tanpa tanda petik)
+
 ## Installing Project Frontend
 1. Clone project visity-frontend
 ```bash
