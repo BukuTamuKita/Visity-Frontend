@@ -1,15 +1,12 @@
 import React, { useState,useEffect,useRef } from 'react';
-import './SearchBar.css';
 import SearchIcon from '@mui/icons-material/Search';
-// import { Link } from 'react-router-dom';
-
+import './SearchBar.css';
 
 const SearchBar = ({ data, setFilteredHost }) => {
     const wrapperRef = useRef(null);
     const [filteredData, setFilteredData] = useState([]);
     const [display, setDisplay] = useState(false);
     const [search, setSearch] = useState("");
-    // const [searchWord, setSearchWord] = useState("");
 
     useEffect(() => {
         window.addEventListener("mousedown", handleClickOutside);
@@ -72,41 +69,42 @@ const SearchBar = ({ data, setFilteredHost }) => {
                 </div>
             </div>
             {/* { filteredData.length !== 0 && (
-                    <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
-                        {filteredData.slice(0, 10).map((value,i) => {
-                            return (
-                                <button 
-                                    className="dataItem" 
-                                    key={value.id}
-                                    onClick={updateHosts(value.name,i)}
-                                >
-                                    <p>{value.name}</p>
-                                </button>
-                            )
-                        })}
-                    </div>
-                )} */}
-            {display && (
-            <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
-                {filteredData.length !== 0 && (
-                <div>
-                    {filteredData.slice(0, 10).map((value, i) => {
-                    return (
-                        <button
-                            className="dataItem"
-                            key={value.id}
-                            onClick={() => {
-                                updateHosts(value.name);
-                                setFilteredHost(value);
-                            }}
-                        >
-                        <p>{value.name}</p>
-                        </button>
-                    );
+                <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
+                    {filteredData.slice(0, 10).map((value,i) => {
+                        return (
+                            <button 
+                                className="dataItem" 
+                                key={value.id}
+                                onClick={updateHosts(value.name,i)}
+                            >
+                                <p>{value.name}</p>
+                            </button>
+                        )
                     })}
                 </div>
-                )}
-            </div>
+            )} */}
+            {display && (
+                <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
+                    {filteredData.length !== 0 && (
+                        <div>
+                            {filteredData.slice(0, 10).map((value, i) => {
+                                return (
+                                    <button
+                                        className="dataItem"
+                                        key={value.id}
+                                        onClick={() => {
+                                            updateHosts(value.name);
+                                            setFilteredHost(value);
+                                            console.log("dari searchbar: ", value);
+                                        }}
+                                    >
+                                        <p>{value.name}</p>
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
             )}
         </div>
     );

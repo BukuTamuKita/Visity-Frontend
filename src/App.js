@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SearchUser from "./pages/SearchUser";
 import UserAdmin from "./pages/UserAdmin";
 import AppointmentHistory from "./pages/AppointmentHistory";

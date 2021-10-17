@@ -32,7 +32,7 @@ const Login = () => {
         })
         .then((res) => {
             localStorage.setItem('token', res.data.token);
-            window.location = "/login";
+            window.location = "/search";
         })
         .catch((err) => {
             console.log(err);
