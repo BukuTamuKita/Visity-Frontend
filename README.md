@@ -1,9 +1,9 @@
 # Getting Started with Visity Frontend
 
 ## Installing Project Backend
-1. Clone dulu project visity-backend [disini](https://github.com/BukuTamuKita/visity-backend)
+1. Clone project visity-backend [disini](https://github.com/BukuTamuKita/visity-backend)
 2. Buat file .env sendiri atau rename file .env.example menjadi .env
-3. Lalu pada file .env tersebut, ganti nama databasenya:
+3. Lalu pada file .env tersebut, ganti nama databasenya menjadi:
 ```env
 DB_DATABASE=visiti
 ```
@@ -32,7 +32,7 @@ php artisan migrate --seed
 ```bash
 php artisan serve
 ```
-
+>password untuk semua user di tabel users: "password" (tanpa tanda petik) 
 ## Installing Project Frontend
 1. Clone project visity-frontend
 ```bash
