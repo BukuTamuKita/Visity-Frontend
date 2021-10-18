@@ -1,4 +1,9 @@
-export default function index() {
+import React,{useContext} from 'react'
+
+import { UserContext } from "../../context/UserContext";
+const AppointmentPage = () => {
+  
+  const { value } = useContext(UserContext);
   return (
     <div class=" min-h-screen flex justify-center ">
       <div class="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
@@ -78,6 +83,8 @@ export default function index() {
                 id="first-name"
                 autoComplete="given-name"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                
+
               />
             </div>
             <div class="bg-white p-3 rounded col-span-2">
@@ -138,6 +145,7 @@ export default function index() {
               <button
                 class="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
                 type="submit"
+                onClick={() => console.log("ini dari appointment page" + value.id)}
               >
                 Submit
               </button>
@@ -148,3 +156,5 @@ export default function index() {
     </div>
   );
 }
+
+export default AppointmentPage;

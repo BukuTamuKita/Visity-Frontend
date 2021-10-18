@@ -11,22 +11,25 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import "tailwindcss/tailwind.css";
 import Login from './pages/Login';
+import { UserContext } from './context/UserContext';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [value,setValue] = useState("");
   const toggle = () => {
       setIsOpen(!isOpen);
   };
 
   return (
     <Router>
-        <Navbar toggle={toggle}/>
-        <Sidebar isOpen={isOpen} toggle={toggle}/>
+      <Navbar toggle={toggle} />
+      <Sidebar isOpen={isOpen} toggle={toggle} />
       <Switch>
-        <Route path="/login" component={Login}/>
-        <Route path="/search" component={SearchUser} exact/>
-        <Route path="/appointment" component={AppointmentPage} />
+        <Route path="/login" component={Login} />
+        <UserContext.Provider value={{value,setValue}}>
+          <Route path="/search" component={SearchUser} exact />
+          <Route path="/appointment" component={AppointmentPage} />
+        </UserContext.Provider>
         <Route path="/user" component={UserAdmin} />
         <Route path="/history" component={AppointmentHistory} />
         <Route path="/testing" component={Testing} />
