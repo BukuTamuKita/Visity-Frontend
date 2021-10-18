@@ -77,9 +77,8 @@ const Login = () => {
                     <h2 className="text-4xl font-bold">Welcome</h2>
                     <p>Welcome back! Please enter your details.</p>
                     <div className="p-4 mt-4 w-full border rounded-lg bg-blue-50 text-gray-600">
-                        <p className="text-blue-500">*for testing</p>
-                        <p>username: <b>stehr.anahi@example.net</b></p>
-                        <p>password: <b>password</b></p>
+                        <p>Cari email user di tabel <b>users</b> dengan role <b>admin</b>.</p>
+                        <p>Semua password user sama, yaitu <b>password</b>.</p>
                     </div>
                 </div>
                 <form>
