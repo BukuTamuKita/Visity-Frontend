@@ -125,9 +125,9 @@ const AppointmentPage = () => {
               </label>
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                name="NIK"
+                id="NIK"
+                autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 onChange={e => {
                   setNik(e.target.value);
@@ -161,9 +161,9 @@ const AppointmentPage = () => {
               </label>
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                name="street-address"
+                id="street-address"
+                autoComplete="street-address"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 onChange={e => {
                   setAddress(e.target.value);
@@ -178,10 +178,10 @@ const AppointmentPage = () => {
                 Email
               </label>
               <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
+                type="email"
+                name="email"
+                id="email"
+                autoComplete="email"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 onChange={e => {
                   setEmail(e.target.value);
@@ -199,7 +199,7 @@ const AppointmentPage = () => {
                 type="text"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
+                autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                 onChange={e => {
                   setPurpose(e.target.value);
