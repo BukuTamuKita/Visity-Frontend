@@ -38,15 +38,17 @@ php artisan serve
 >password untuk semua user di tabel users: "password" (tanpa tanda petik)
 
 ## Installing Project Frontend
-1. Clone project visity-frontend
+1. Clone project visity-frontend 
 ```bash
 https://github.com/BukuTamuKita/visity-frontend.git
 ```
-2. Install npm
+2. Pull branch sprintReview
+
+3. Install npm
 ```bash
 npm install
 ```
-3. Jalankan project
+4. Jalankan project
 ```bash
 npm start
 ```
