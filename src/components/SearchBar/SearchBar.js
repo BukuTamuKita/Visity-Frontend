@@ -1,38 +1,16 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
-// import { Link } from 'react-router-dom';
 import { UserContext } from "../../context/UserContext";
 
 const SearchBar = ({ data }) => {
-  const wrapperRef = useRef(null);
   const [filteredData, setFilterredData] = useState([]);
   const [display, setDisplay] = useState(false);
-  // const [options, setOptions] = useState([]);
   const [search, setSearch] = useState("");
-  const [selectedHost, setSelectedHost] = useState([]);
-  const [searchWord, setSearchWord] = useState("");
   const {setValue} = useContext(UserContext);
-  // useEffect(() => {
-  //   window.addEventListener("mousedown", handleClickOutside);
-  //   return () => {
-  //     window.removeEventListener("mousedown", handleClickOutside);
-  //   };
-  // });
-
-  // const handleClickOutside = (event) => {
-  //   const { current: wrap } = wrapperRef;
-  //   if (wrap && !wrap.contains(event.target)) {
-  //     setDisplay(false);
-  //   }
-  // };
 
   const updateHosts = (name) => {
-    //     console.log(name);
-    //   setSelectedHost(name);
-    //   console.log(selectedHost);
     setSearch(name);
-    
   };
 
   const handleFilter = (text) => {
@@ -83,10 +61,9 @@ const SearchBar = ({ data }) => {
                   <button
                     className="dataItem"
                     key={value.id}
-                    // onClick={() => updateHosts(value.name)}
                     onClick={() =>{
-                    updateHosts(value.name);
-                    setValue(value);
+                      updateHosts(value.name);
+                      setValue(value);
                     }}
                   >
                     <p>{value.name}</p>

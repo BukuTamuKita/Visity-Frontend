@@ -66,10 +66,14 @@ const AppointmentPage = () => {
   });
 
   return (
-    <div className=" min-h-screen flex justify-center ">
-      <div className="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
-        <div className="grid gap-2 mt-5  grid-cols-2 justify-center">
-          <div className="rounded-lg border-4 border-dashed col-span-4 flex flex-col justify-center items-center">
+    // Container 1
+    <div className="flex justify-center items-center mt-16">
+      {/* Container 2 */}
+      <div className="grid grid-cols-12 gap-8">
+
+        {/* Left Section */}
+        <div className="col-span-6">
+          <div className="h-80 rounded-lg border-4 border-dashed border-gray-300 col-span-4 flex flex-col justify-center items-center mb-8">
             <div>
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -88,7 +92,7 @@ const AppointmentPage = () => {
               <div className="flex text-sm text-gray-600 justify-center">
                 <label
                   htmlFor="file-upload"
-                  className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
+                  className="relative cursor-pointer bg-white rounded-lg font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
                 >
                   <span>Upload a file</span>
                   <input
@@ -105,126 +109,138 @@ const AppointmentPage = () => {
               </p>
             </div>
           </div>
-          <div className="col-span-4 text-center">
+          {/* Button Scan */}
+          <div className="grid grid-cols-6 text-center">
+            <div className="col-span-2"></div>
             <button
-              className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+              className="col-span-2 mx-auto w-full px-4 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
               type="submit"
             >
-              Capture
+              Scan
             </button>
+            <div className="col-span-2"></div>
           </div>
         </div>
-        <div className="col-start-2 px-7">
-          <div className="grid grid-column-2">
-            <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
+
+        {/* Right Section */}
+        <div className="col-span-6">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="">
               <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
+                htmlFor="nik"
+                className="block text-sm font-medium text-gray-600"
               >
                 NIK
               </label>
               <input
                 type="text"
-                name="NIK"
-                id="NIK"
-                autoComplete="off"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                name="nik"
+                id="nik"
+                placeholder="Enter your NIK"
+                autoComplete="nik"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
                 onChange={e => {
                   setNik(e.target.value);
                 }}
               />
             </div>
-            <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
+            <div>
               <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-600"
               >
-                Nama
+                Name
               </label>
               <input
                 type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="given-name"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                name="name"
+                id="name"
+                placeholder="Enter your name"
+                autoComplete="name"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
                 onChange={e => {
                   setName(e.target.value);
                 }}
               />
             </div>
-            <div className="bg-white p-3 rounded col-span-2">
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Alamat
-              </label>
-              <input
-                type="text"
-                name="street-address"
-                id="street-address"
-                autoComplete="street-address"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setAddress(e.target.value);
-                }}
-              />
-            </div>
-            <div className="p-3 rounded col-span-2">
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                autoComplete="email"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setEmail(e.target.value);
-                }}
-              />
-            </div>
-            <div className="p-3 col-span-2 row-span-2 ">
-              <label
-                htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Keperluan
-              </label>
-              <textarea
-                type="text"
-                name="first-name"
-                id="first-name"
-                autoComplete="off"
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setPurpose(e.target.value);
-                }}
-              />
-            </div>
+          </div>
+          
+          <div className="mb-4">
+            <label
+              htmlFor="address"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Address
+            </label>
+            <input
+              type="text"
+              name="address"
+              id="address"
+              placeholder="Enter your NIK"
+              autoComplete="address"
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+              onChange={e => {
+                setAddress(e.target.value);
+              }}
+            />
+          </div>
 
-            <div className="bg-white p-3 rounded text-right">
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter your Email"
+              autoComplete="email"
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+              onChange={e => {
+                setEmail(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className="mb-8 row-span-2">
+            <label
+              htmlFor="agenda"
+              className="block text-sm font-medium text-gray-600"
+            >
+              Agenda
+            </label>
+            <textarea
+              type="text"
+              name="agenda"
+              id="agenda"
+              placeholder="Enter your agenda"
+              autoComplete="agenda"
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+              onChange={e => {
+                setPurpose(e.target.value);
+              }}
+            />
+          </div>
+          
+          <div className="col-span-6">
+            <div className="grid grid-cols-6 gap-4">
               <button
-                className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-gray-600 bg-gray-50 border-gray-200 hover:bg-gray-100 active:bg-gray-200 focus:ring-gray-300"
-                type="submit"
-              >
-                Back
-              </button>
-            </div>
-            <div className="bg-white p-3 rounded text-left">
-              <button
-                className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                className="col-span-2 w-full px-4 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
                 type="submit"
                 onClick={() => {
                   createGuest();
-                  // addAppointment();
                 }}
               >
                 Submit
+              </button>
+              <button
+                className="col-span-2 w-full px-4 py-2 rounded-lg text-sm text-purple-500 font-medium border border-purple-500 focus:outline-none focus:ring transition border-gray-200 hover:bg-purple-200 hover:border-purple-600 hover:text-purple-600 active:bg-gray-200 focus:ring-gray-300"
+                type="submit"
+              >
+                Back
               </button>
             </div>
           </div>
