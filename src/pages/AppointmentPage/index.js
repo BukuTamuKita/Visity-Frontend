@@ -1,11 +1,75 @@
-import React from 'react';
+import React, { useContext, useState, useCallback } from 'react'
+import { UserContext } from "../../context/UserContext";
+import axios from 'axios';
 
 const AppointmentPage = () => {
+  const { value } = useContext(UserContext);
+  const hostId = value.id;
+  const [guestId, setGuestId] = useState();
+
+  // Guest
+  const [name, setName] = useState("");
+  const [nik, setNik] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  
+  // Appointment
+  const [purpose, setPurpose] = useState("");
+
+  // const guest = {
+  //   name: "",
+  //   nik: "",
+  //   email: "",
+  //   address: "",
+  // };
+  // const appointment = {
+  //   hostId,
+  //   guestId,
+  //   purpose: "",
+  // }
+
+  const authAxios = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+
+  const createGuest = useCallback(async () => {
+    try {
+      const result = await authAxios.post("guests", {
+        name: name,
+        nik: nik,
+        email: email,
+        address: address,
+      });
+      console.log("ini response guest: ", result.data.id);
+      setGuestId(result.data.id);
+      addAppointment();
+    } catch (err) {
+      console.log("error");
+    }
+  });
+
+  const addAppointment = useCallback(async () => {
+    try {
+      console.log(typeof hostId, typeof guestId, purpose);
+      const result = await authAxios.post("appointments", {
+        host: hostId,
+        guest: guestId,
+        purpose: purpose,
+      });
+      console.log(result);
+    } catch (err) {
+      console.log("error");
+    }
+  });
+
   return (
-    <div className=" justify-center pt-64">
-      <div className="flex-1 mx-auto grid grid-cols-2 ml-80 mr-64 mb-">
-        <div className="grid grid-cols-1 grid-flow-row gap-2 mt-5 justify-center">
-          <div className="rounded-lg border-4 border-dashed col-span-6 flex flex-col justify-center items-center">
+    <div className=" min-h-screen flex justify-center ">
+      <div className="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
+        <div className="grid gap-2 mt-5  grid-cols-2 justify-center">
+          <div className="rounded-lg border-4 border-dashed col-span-4 flex flex-col justify-center items-center">
             <div>
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -41,7 +105,7 @@ const AppointmentPage = () => {
               </p>
             </div>
           </div>
-          <div className="text-center">
+          <div className="col-span-4 text-center">
             <button
               className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
               type="submit"
@@ -65,6 +129,9 @@ const AppointmentPage = () => {
                 id="NIK"
                 autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={e => {
+                  setNik(e.target.value);
+                }}
               />
             </div>
             <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
@@ -80,6 +147,9 @@ const AppointmentPage = () => {
                 id="first-name"
                 autoComplete="given-name"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={e => {
+                  setName(e.target.value);
+                }}
               />
             </div>
             <div className="bg-white p-3 rounded col-span-2">
@@ -95,6 +165,9 @@ const AppointmentPage = () => {
                 id="street-address"
                 autoComplete="street-address"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={e => {
+                  setAddress(e.target.value);
+                }}
               />
             </div>
             <div className="p-3 rounded col-span-2">
@@ -110,6 +183,9 @@ const AppointmentPage = () => {
                 id="email"
                 autoComplete="email"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={e => {
+                  setEmail(e.target.value);
+                }}
               />
             </div>
             <div className="p-3 col-span-2 row-span-2 ">
@@ -125,6 +201,9 @@ const AppointmentPage = () => {
                 id="first-name"
                 autoComplete="off"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                onChange={e => {
+                  setPurpose(e.target.value);
+                }}
               />
             </div>
 
@@ -140,6 +219,10 @@ const AppointmentPage = () => {
               <button
                 className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
                 type="submit"
+                onClick={() => {
+                  createGuest();
+                  // addAppointment();
+                }}
               >
                 Submit
               </button>
