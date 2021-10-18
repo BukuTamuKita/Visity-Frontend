@@ -28,6 +28,7 @@ php artisan jwt:secret
 php artisan migrate --seed
 ```
 9. Nyalakan Xampp
+
 10. Jalankan project
 ```bash
 php artisan serve
