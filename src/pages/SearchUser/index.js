@@ -23,7 +23,7 @@ const SearchUser = () => {
   };
 
   const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api",
+    baseURL: "http://127.0.0.1:8000/api/",
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
     },
@@ -31,7 +31,7 @@ const SearchUser = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const result = await authAxios.get("http://127.0.0.1:8000/api/hosts");
+      const result = await authAxios.get("hosts");
       setHosts(result.data.data);
       console.log(hosts);
     } catch (err) {
@@ -49,7 +49,7 @@ const SearchUser = () => {
   
   const getHostInformation = useCallback(async() => {
     try {
-        const res = await authAxios.get(`http://127.0.0.1:8000/api/hosts/${value.id}/appointments`);
+        const res = await authAxios.get(`hosts/${value.id}/appointments`);
         setAppointment(res.data.data);
         console.log(appointment);
     }
