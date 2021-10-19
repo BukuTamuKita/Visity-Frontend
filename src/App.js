@@ -11,7 +11,7 @@ import Drawer from "./components/Drawer";
 import "tailwindcss/tailwind.css";
 import Login from './pages/Login';
 import { UserContext } from './context/UserContext';
-import Layout from "./pages/Layout";
+
 function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [value,setValue] = useState("");
@@ -21,18 +21,19 @@ function App() {
 
   return (
     <Router>
-        {/* <Layout> */}
-        <Switch>
-          <Route path="/login" component={Login} />
-          <UserContext.Provider value={{ value, setValue }}>
-            <Route path="/search" component={SearchUser} exact />
-            <Route path="/appointment" component={AppointmentPage} />
-          </UserContext.Provider>
-          <Route path="/user" component={UserAdmin} />
-          <Route path="/history" component={AppointmentHistory} />
-          <Route path="/testing" component={Testing} />
-          <Route path="/createUser" component={CreateUser} />
-        </Switch>
+    <Drawer />
+      <Switch>
+        <Route path="/login" component={Login} />
+        <UserContext.Provider value={{ value, setValue }}>
+          <Route path="/search" component={SearchUser} exact />
+          <Route path="/appointment" component={AppointmentPage} />
+        </UserContext.Provider>
+        <Route path="/user" component={UserAdmin} />
+        <Route path="/history" component={AppointmentHistory} />
+        <Route path="/testing" component={Testing} />
+        <Route path="/createUser" component={CreateUser} />
+      </Switch>
+
       {/* </Layout> */}
     </Router>
   );

@@ -1,32 +1,31 @@
 import React from 'react';
+import SearchUser from '../../pages/SearchUser';
+import UserAdmin from "../../pages/UserAdmin";
+import AppointmentHistory from "../../pages/AppointmentHistory";
 
-export const SidebarData = [
+const SidebarData = [
   {
     title: "Add Appointment",
     path: "/search",
-    icon: "",
+    exact : true,
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
-  },
-  {
-    title: "Guest List",
-    path: "",
-    icon: "",
-    cName:
-      "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
+    main : () => <SearchUser />
   },
   {
     title: "User Administration",
     path: "/user",
-    icon: "",
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
+      main : () => <UserAdmin />
   },
   {
     title: "History Appointment",
     path: "/history",
-    icon: "",
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
+      main: () => <AppointmentHistory />
   },
 ];
+
+export default SidebarData;

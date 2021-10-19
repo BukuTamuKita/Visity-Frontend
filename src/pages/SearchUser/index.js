@@ -33,7 +33,6 @@ const SearchUser = () => {
     try {
       const result = await authAxios.get("hosts");
       setHosts(result.data.data);
-      console.log(hosts);
     } catch (err) {
       console.log("error");
     }
@@ -43,9 +42,7 @@ const SearchUser = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    getHostInformation();
-  }, [value.id]);
+  
   
   const getHostInformation = useCallback(async() => {
     try {
@@ -57,6 +54,9 @@ const SearchUser = () => {
         console.log(err);
     }
   });
+  useEffect(() => {
+    getHostInformation();
+  }, [value.id]);
 
    
 
