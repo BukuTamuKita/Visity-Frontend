@@ -1,4 +1,55 @@
-# Getting Started with Create React App
+# Getting Started with Visity Frontend
+
+## Installing Project Backend
+1. Clone project visity-backend [disini](https://github.com/BukuTamuKita/visity-backend)
+2. Buat file .env sendiri atau rename file .env.example menjadi .env
+3. Lalu pada file .env tersebut, ganti nama databasenya menjadi:
+```env
+DB_DATABASE=visiti
+```
+4. Install composer
+```bash
+composer install
+```
+5. Update composer 
+```bash
+composer update
+```
+6. Membuat key laravel project
+```bash
+php artisan key:generate
+```
+7. Generate JWT secret
+```bash
+php artisan jwt:secret
+```
+8. Migrate database
+```bash
+php artisan migrate --seed
+```
+9. Nyalakan Xampp
+
+10. Jalankan project
+```bash
+php artisan serve
+```
+
+**Note:**
+>password untuk semua user di tabel users: "password" (tanpa tanda petik)
+
+## Installing Project Frontend
+1. Clone project visity-frontend
+```bash
+https://github.com/BukuTamuKita/visity-frontend.git
+```
+2. Install npm
+```bash
+npm install
+```
+3. Jalankan project
+```bash
+npm start
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

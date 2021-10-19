@@ -2,8 +2,7 @@ import styled from 'styled-components';
 import { NavLink as Link } from 'react-router-dom';
 
 export const Nav = styled.nav`
-    background: transparent;
-    height: 3rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,8 +10,8 @@ export const Nav = styled.nav`
     position: sticky;
     top: 0;
     z-index: 10;
-    margin-top: 3rem;
-    margin-bottom: 4rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 
     @media screen and (max-width: 960px) {
         transition: 0.8s all ease;

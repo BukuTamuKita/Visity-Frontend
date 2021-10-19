@@ -3,7 +3,7 @@ import SearchUser from '../../pages/SearchUser';
 import UserAdmin from "../../pages/UserAdmin";
 import AppointmentHistory from "../../pages/AppointmentHistory";
 
-const SidebarData = [
+const routes = [
   {
     title: "Add Appointment",
     path: "/search",
@@ -28,4 +28,4 @@ const SidebarData = [
   },
 ];
 
-export default SidebarData;
+export default routes;
