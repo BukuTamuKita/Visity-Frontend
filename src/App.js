@@ -20,7 +20,7 @@ function App() {
         <Drawer />
         <div className={"flex-auto"}>
           <Switch>
-            <Route path="/" component={Login} exact/>
+            <Route path="/" component={Login} exact />
             <UserContext.Provider value={{ value, setValue }}>
               <Route path="/search" component={SearchUser} exact />
               <Route path="/appointment" component={AppointmentPage} />

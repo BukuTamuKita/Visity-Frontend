@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Link} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route,Link } from "react-router-dom";
 import SidebarData from "./SidebarData";
 
 const btn = document.querySelector(".mobile-menu-button");
@@ -62,7 +62,7 @@ const Drawer = () => {
 
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>
-            {SidebarData.map((item) => {
+            {SidebarData.map((item,index) => {
               return (
                 <>
                   <li key={item.path} className={item.cName}>
