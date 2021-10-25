@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from '../components/Button';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -11,6 +12,12 @@ const Login = () => {
     const loginBtn = {
         title: "Login",
         width: "w-full"
+    }
+    const history = useHistory();
+
+    const toSearchUserPage = () => {
+        let path = "/search";
+        history.push(path);
     }
 
     useEffect(() => {
@@ -32,7 +39,7 @@ const Login = () => {
         })
         .then((res) => {
             localStorage.setItem('token', res.data.token);
-            window.location = "/login";
+            toSearchUserPage();
         })
         .catch((err) => {
             console.log(err);
@@ -66,9 +73,13 @@ const Login = () => {
     return (
         <div className="flex h-screen">
             <div className="mx-auto flex flex-col flex-start w-4/6 md:w-1/3 m-auto">
-                <div className="flex flex-col flex-start mb-8">
+                <div className="flex flex-col flex-start mb-8 text-gray-600">
                     <h2 className="text-4xl font-bold">Welcome</h2>
                     <p>Welcome back! Please enter your details.</p>
+                    <div className="p-4 mt-4 w-full border rounded-lg bg-blue-50 text-gray-600">
+                        <p>Cari email user di tabel <b>users</b> dengan role <b>admin</b>.</p>
+                        <p>Semua password user sama, yaitu <b>password</b>.</p>
+                    </div>
                 </div>
                 <form>
                     <div className="flex flex-col mb-4">
@@ -126,7 +137,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="ml-3 text-sm">
-                            <label htmlFor="comments" className="font-medium text-gray-700">
+                            <label htmlFor="comments" className="font-medium text-gray-600">
                                 View Password
                             </label>
                         </div>
