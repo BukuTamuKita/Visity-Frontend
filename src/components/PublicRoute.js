@@ -14,7 +14,7 @@ const PublicRoute = ({
             render={(props) => 
                 isLogin() && restricted ? (
                     !isNotFound ? (
-                        <Redirect to="/testing" />
+                        <Redirect to="/appointment/create" />
                     ) : (
                         <>
                             <Redirect to="/error" />

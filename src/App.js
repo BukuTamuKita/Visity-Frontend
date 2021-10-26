@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { UserContext } from "./context/UserContext";
 import "tailwindcss/tailwind.css";
-import SearchUser from "./pages/SearchUser";
-import UserAdmin from "./pages/UserAdmin";
-import AppointmentHistory from "./pages/AppointmentHistory";
-import Testing from "./pages/Testing";
-import CreateUser from "./pages/CreateUser";
-import AppointmentPage from "./pages/AppointmentPage";
-import Login from "./pages/Login";
 import "./App.css";
-import Drawer from "./components/Drawer";
 import { APP_ROUTE } from "./routes/routes";
 import PublicRoute from "./components/PublicRoute";
+// import { UserContext } from "./context/UserContext";
+// import SearchUser from "./pages/SearchUser";
+// import UserList from "./pages/UserAdmin/UserList";
+// import AppointmentHistory from "./pages/AppointmentPage/AppointmentHistory";
+// import Testing from "./pages/Testing";
+// import CreateUser from "./pages/UserAdmin/CreateUser";
+// import AppointmentPage from "./pages/AppointmentPage/CreateAppointment";
+// import Login from "./pages/Login";
+import Drawer from "./components/Drawer";
 
 function App() {
-  const [value, setValue] = useState("");
+  // const [value, setValue] = useState("");
 
   return (
     // <Router>
@@ -38,25 +38,30 @@ function App() {
     // </Router>
 
     <Router>
-      <Switch>
-        {APP_ROUTE.map((value, index) => {
-          return (
-            // <UserContext.Provider value={{ value, setValue }}>
-              <PublicRoute
-                key={value.name}
-                restricted={value.restricted}
-                path={value.path}
-                component={value.component}
-                exact={value.exact}
-                isNotFound={value.isNotFound}
-              />
-            // </UserContext.Provider>
-          )
-        })}
-        <Route path="/">
-          <Redirect to="/login" />
-        </Route>
-      </Switch>
+      <div className="relative min-h-screen md:flex">
+        <Drawer />
+        <div className="flex-auto">
+          <Switch>
+            {APP_ROUTE.map((value, index) => {
+              return (
+                // <UserContext.Provider value={{ value, setValue }}>
+                  <PublicRoute
+                    key={value.name}
+                    restricted={value.restricted}
+                    path={value.path}
+                    component={value.component}
+                    exact={value.exact}
+                    isNotFound={value.isNotFound}
+                  />
+                // </UserContext.Provider>
+              )
+            })}
+            <Route path="/">
+              <Redirect to="/login" />
+            </Route>
+          </Switch>
+        </div>
+      </div>
     </Router>
   );
 }

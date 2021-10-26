@@ -1,4 +1,10 @@
+.parent {
+    position: absolute;
+    width: 200px;
+}
 .dataResult {
+    position: absolute;
+    width: 100%;
     margin-top: 5px;
     height: 200px;
     background-color: white;
@@ -17,7 +23,7 @@
     color: black;
 }
 .dataItem p {
-    margin-left: 10px;
+    margin: 10px;
 }
 a {
     text-decoration: none;
