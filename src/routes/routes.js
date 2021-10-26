@@ -1,9 +1,9 @@
 import Login from "../pages/Login";
-import AppointmentPage from "../pages/AppointmentPage";
-import AppointmentHistory from "../pages/AppointmentHistory";
-import UserAdmin from "../pages/UserAdmin";
-import CreateUser from "../pages/CreateUser";
-import UpdateUser from "../pages/UpdateUser";
+import CreateAppointment from "../pages/AppointmentPage/CreateAppointment";
+import AppointmentHistory from "../pages/AppointmentPage/AppointmentHistory";
+import UserList from "../pages/UserAdmin/UserList";
+import CreateUser from "../pages/UserAdmin/CreateUser";
+import UpdateUser from "../pages/UserAdmin/UpdateUser";
 import Testing from "../pages/Testing";
 import ErrorPage from "../pages/ErrorPage";
 
@@ -23,17 +23,10 @@ export const APP_ROUTE = [
         restricted: true,
     },
     {
-        name: "Register",
-        path: "/register",
-        exact: true,
-        component: Login,
-        restricted: true,
-    },
-    {
-        name: "Appointment Page",
+        name: "Create Appointment",
         path: "/appointment/create",
         exact: true,
-        component: AppointmentPage,
+        component: CreateAppointment,
         private: true,
         isAdmin: true,
     },
@@ -49,7 +42,7 @@ export const APP_ROUTE = [
         name: "User List",
         path: "/user/list",
         exact: true,
-        component: UserAdmin,
+        component: UserList,
         private: true,
         isAdmin: true,
     },

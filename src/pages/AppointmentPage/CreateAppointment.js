@@ -6,14 +6,10 @@ const AppointmentPage = () => {
   const { value } = useContext(UserContext);
   const hostId = value.id;
   const [guestId, setGuestId] = useState();
-
-  // Guest
   const [name, setName] = useState("");
   const [nik, setNik] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  
-  // Appointment
   const [purpose, setPurpose] = useState("");
 
   const authAxios = axios.create({
@@ -54,6 +50,7 @@ const AppointmentPage = () => {
   });
 
   return (
+
     // Container 1
     <div className="flex justify-center items-center mt-16">
       {/* Container 2 */}
