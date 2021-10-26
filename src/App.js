@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { UserContext } from "./context/UserContext";
 import "tailwindcss/tailwind.css";
 import SearchUser from "./pages/SearchUser";
@@ -11,27 +11,52 @@ import AppointmentPage from "./pages/AppointmentPage";
 import Login from "./pages/Login";
 import "./App.css";
 import Drawer from "./components/Drawer";
+import { APP_ROUTE } from "./routes/routes";
+import PublicRoute from "./components/PublicRoute";
 
 function App() {
   const [value, setValue] = useState("");
+
   return (
+    // <Router>
+    //   <div className="relative min-h-screen md:flex">
+    //     <Drawer />
+    //     <div className={"flex-auto"}>
+    //       <Switch>
+    //         <Route path="/" component={Login} exact />
+    //         <UserContext.Provider value={{ value, setValue }}>
+    //           <Route path="/search" component={SearchUser} exact />
+    //           <Route path="/appointment" component={AppointmentPage} />
+    //           <Route path="/user" component={UserAdmin} exact/>
+    //           <Route path="/history" component={AppointmentHistory} exact/>
+    //           <Route path="/testing" component={Testing} exact/>
+    //           <Route path="/createUser" component={CreateUser} exact/>
+    //         </UserContext.Provider>
+    //       </Switch>
+    //     </div>
+    //   </div>
+    // </Router>
+
     <Router>
-      <div className="relative min-h-screen md:flex">
-        <Drawer />
-        <div className={"flex-auto"}>
-          <Switch>
-            <Route path="/" component={Login} exact />
-            <UserContext.Provider value={{ value, setValue }}>
-              <Route path="/search" component={SearchUser} exact />
-              <Route path="/appointment" component={AppointmentPage} />
-            </UserContext.Provider>
-            <Route path="/user" component={UserAdmin} />
-            <Route path="/history" component={AppointmentHistory} />
-            <Route path="/testing" component={Testing} />
-            <Route path="/createUser" component={CreateUser} />
-          </Switch>
-        </div>
-      </div>
+      <Switch>
+        {APP_ROUTE.map((value, index) => {
+          return (
+            // <UserContext.Provider value={{ value, setValue }}>
+              <PublicRoute
+                key={value.name}
+                restricted={value.restricted}
+                path={value.path}
+                component={value.component}
+                exact={value.exact}
+                isNotFound={value.isNotFound}
+              />
+            // </UserContext.Provider>
+          )
+        })}
+        <Route path="/">
+          <Redirect to="/login" />
+        </Route>
+      </Switch>
     </Router>
   );
 }

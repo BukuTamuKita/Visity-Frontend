@@ -16,7 +16,7 @@ const Login = () => {
     const history = useHistory();
 
     const toSearchUserPage = () => {
-        let path = "/search";
+        let path = "/";
         history.push(path);
     }
 
