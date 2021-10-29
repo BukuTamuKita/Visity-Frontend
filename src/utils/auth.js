@@ -1,11 +1,20 @@
-export const isLogin = () => {
-    if (localStorage.getItem("token")) {
-        return true;
-    } else {
-        return false;
-    }
+import Cookies from "js-cookie";
+
+export const setUserLogin = (jwt) => {
+    Cookies.set("JWT", jwt);
+}
+
+export const login = (jwt) => {
+    Cookies.set("JWT", jwt);
 }
 
 export const logout = () => {
-    localStorage.removeItem("token");
+    Cookies.remove("JWT");
+}
+
+export const isLogin = () => {
+    if (Cookies.get("JWT")) {
+        return true;
+    } 
+    return false;
 }

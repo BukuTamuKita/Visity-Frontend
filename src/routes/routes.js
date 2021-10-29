@@ -4,7 +4,9 @@ import AppointmentHistory from "../pages/AppointmentPage/AppointmentHistory";
 import UserList from "../pages/UserAdmin/UserList";
 import CreateUser from "../pages/UserAdmin/CreateUser";
 import UpdateUser from "../pages/UserAdmin/UpdateUser";
+import GuestList from "../pages/GuestAdmin/GuestList";
 import Testing from "../pages/Testing";
+// import AdminContainer from "../components/Admin/AdminContainer";
 import ErrorPage from "../pages/ErrorPage";
 
 export const APP_ROUTE = [
@@ -22,13 +24,14 @@ export const APP_ROUTE = [
         component: Login,
         restricted: true,
     },
+
     {
         name: "Create Appointment",
         path: "/appointment/create",
         exact: true,
         component: CreateAppointment,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
     {
         name: "Appointment History",
@@ -36,7 +39,7 @@ export const APP_ROUTE = [
         exact: true,
         component: AppointmentHistory,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
     {
         name: "User List",
@@ -44,7 +47,7 @@ export const APP_ROUTE = [
         exact: true,
         component: UserList,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
     {
         name: "Create User",
@@ -52,7 +55,7 @@ export const APP_ROUTE = [
         exact: true,
         component: CreateUser,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
     {
         name: "Update User",
@@ -60,31 +63,40 @@ export const APP_ROUTE = [
         exact: true,
         component: UpdateUser,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
-    // {
-    //     name: "Guest List",
-    //     path: "/guest/list",
-    //     exact: true,
-    //     component: Login,
-    //     private: true,
-    //     isAdmin: true,
-    // },
+    {
+        name: "Guest List",
+        path: "/guest/list",
+        exact: true,
+        component: GuestList,
+        private: true,
+        // isAdmin: true,
+    },
     {
         name: "Testing",
         path: "/testing",
         exact: true,
         component: Testing,
         private: true,
-        isAdmin: true,
+        // isAdmin: true,
     },
+    
+    // {
+    //     name: "Admin",
+    //     path: "/admin",
+    //     exact: true,
+    //     component: AdminContainer,
+    //     private: true,
+    //     isAdmin: true,
+    // },
     {
         name: "Error | Page Not Found",
         path: "/*",
         exact: true,
         component: ErrorPage,
         private: true,
-        isNotFound: true
+        isNotFound: true,
     },
     {
         name: "Error | Page Not Found",
@@ -92,6 +104,6 @@ export const APP_ROUTE = [
         exact: true,
         component: ErrorPage,
         private: true,
-        isNotFound: true
+        isNotFound: true,
     },
-]
+];

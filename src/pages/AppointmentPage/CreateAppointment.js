@@ -1,10 +1,14 @@
-import React, { useContext, useState, useCallback } from 'react'
-import { UserContext } from "../../context/UserContext";
+import React, { 
+  // useContext, 
+  useState, 
+  // useCallback 
+} from 'react'
+// import { UserContext } from "../../context/UserContext";
 import axios from 'axios';
 
 const AppointmentPage = () => {
-  const { value } = useContext(UserContext);
-  const hostId = value.id;
+  // const { value } = useContext(UserContext);
+  // const hostId = value.id;
   const [guestId, setGuestId] = useState();
   const [name, setName] = useState("");
   const [nik, setNik] = useState("");
@@ -19,7 +23,7 @@ const AppointmentPage = () => {
     },
   });
 
-  const createGuest = useCallback(async () => {
+  const createGuest = async () => {
     try {
       const result = await authAxios.post("guests", {
         name: name,
@@ -33,13 +37,13 @@ const AppointmentPage = () => {
     } catch (err) {
       console.log("error");
     }
-  });
+  };
 
-  const addAppointment = useCallback(async () => {
+  const addAppointment = async () => {
     try {
       console.log(typeof hostId, typeof guestId, purpose);
       const result = await authAxios.post("appointments", {
-        host: hostId,
+        // host: hostId,
         guest: guestId,
         purpose: purpose,
       });
@@ -47,7 +51,7 @@ const AppointmentPage = () => {
     } catch (err) {
       console.log("error");
     }
-  });
+  };
 
   return (
 
