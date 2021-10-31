@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 import { setUserLogin, isLogin } from '../utils/auth';
-// import Button from '../components/Button';
 import Loader from "react-loader-spinner";
+// import { useHistory } from 'react-router-dom';
+// import Button from '../components/Button';
 
-const Login = () => {
+const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
@@ -13,12 +13,6 @@ const Login = () => {
     const [visiblePass, setVisiblePass] = useState("password");
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(false);
-    const history = useHistory();
-
-    const toCreateAppointment = () => {
-        let path = "/appointment/create";
-        history.push(path);
-    }
 
     useEffect(() => {
         if (email) {
@@ -29,6 +23,11 @@ const Login = () => {
         }
         return () => {};
     }, [email, password]);
+
+    const toCreateAppointment = () => {
+        let path = "/appointment-create";
+        props.history.push(path);
+    }
 
     const onLogin = (e) => {
         // e.preventDefault();
@@ -157,7 +156,7 @@ const Login = () => {
                     /> */}
                     <button 
                         className="px-4 py-2 w-full text-white border-2 border-white rounded-lg transition bg-indigo-700 hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                        onClick={onLogin}
+                        onClick={() => onLogin()}
                         disabled={loading}
                     >
                         {loading ? (

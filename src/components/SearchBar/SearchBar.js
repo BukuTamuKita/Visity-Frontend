@@ -1,69 +1,77 @@
-import React, { useState,useContext } from "react";
+import React, { 
+  useState, 
+  // useContext 
+} from "react";
 import "./SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
-import { UserContext } from "../../context/UserContext";
+// import { UserContext } from "../../context/UserContext";
 
-const SearchBar = ({ data }) => {
-  const [filteredData, setFilterredData] = useState([]);
-  const [display, setDisplay] = useState(false);
+const SearchBar = ({ data, getFilteredHost, attribute }) => {
+  const [filteredHost, setFilterredHost] = useState([]);
   const [search, setSearch] = useState("");
-  const {setValue} = useContext(UserContext);
+  const [display, setDisplay] = useState(false);
+  // const {setValue} = useContext(UserContext);
 
-  const updateHosts = (name) => {
-    setSearch(name);
+  const updateHosts = (host) => {
+    console.log("updateHost: ", host.name);
+    getFilteredHost(host);
+    setSearch(host.name);
+    setDisplay(!display);
   };
 
-  const handleFilter = (text) => {
-    setSearch(text);
+  const handleFilter = (event) => {
+    const searchWord = event.target.value;
+    // setSearch(searchWord);
     const newFilter = data.filter((value) => {
-      return value.name.toLowerCase().includes(text.toLowerCase());
+      return value.name.toLowerCase().includes(searchWord.toLowerCase());
     });
 
-    if (text === "") {
-      setFilterredData([]);
+    if (searchWord === "") {
+      setFilterredHost([]);
     } else {
-      setFilterredData(newFilter);
+      console.log("new filter: ", newFilter);
+      setFilterredHost(newFilter);
     }
-    setSearch(text);
+    setSearch(searchWord);
   };
 
   return (
-    <div className="search flex flex-col items-center justify-center mb-16">
-      <div className="flex flex-col md:w-2/5 w-4/5">
-        <label
-          htmlFor="company-website"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Search host
+    <div className={`${attribute.style}`}>
+      <div className="col-span-3 sm:col-span-2">
+        <label htmlFor="search-host" className="block text-sm font-medium text-gray-700">
+          { attribute.label }
         </label>
         <div className="mt-1 flex rounded-md shadow-sm">
-          <span className="inline-flex pl-4 items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+          <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
             <SearchIcon />
           </span>
           <input
             type="search"
-            name="search-name"
-            id="search-name"
+            name="search-host"
+            id="search-host"
             className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-            placeholder="Enter host name"
-            onChange={(e) => handleFilter(e.target.value)}
+            placeholder={ attribute.placeholder }
+            onChange={handleFilter}
             value={search}
-            onClick={() => setDisplay(!display)}
+            onClick={() => setDisplay(true)}
           />
         </div>
       </div>
+
       {display && (
-        <div className="dataResult md:w-2/5 sm:w-4/5 w-4/5 rounded-b-lg">
-          {filteredData.length !== 0 && (
-            <div>
-              {filteredData.slice(0, 10).map((value, i) => {
+        <div className="parent bg-blue-100">
+          {filteredHost.length !== 0 && (
+            <div className="dataResult bg-red-100 rounded-b-lg">
+              {filteredHost.slice(0, 10).map((value, index) => {
                 return (
                   <button
                     className="dataItem"
                     key={value.id}
                     onClick={() =>{
-                      updateHosts(value.name);
-                      setValue(value);
+                      updateHosts(value);
+                      // console.log("Host hasil filter:", filteredHost);
+                      // getFilteredHost(filteredHost);
+                      // setDisplay(!display);
                     }}
                   >
                     <p>{value.name}</p>

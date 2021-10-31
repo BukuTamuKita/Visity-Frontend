@@ -10,13 +10,13 @@ import Testing from "../pages/Testing";
 import ErrorPage from "../pages/ErrorPage";
 
 export const APP_ROUTE = [
-    {
-        name: "Login",
-        path: "/login",
-        exact: true,
-        component: Login,
-        restricted: true,
-    },
+    // {
+    //     name: "Login",
+    //     path: "/login",
+    //     exact: true,
+    //     component: Login,
+    //     restricted: true,
+    // },
     {
         name: "Login",
         path: "/",
@@ -24,10 +24,9 @@ export const APP_ROUTE = [
         component: Login,
         restricted: true,
     },
-
     {
         name: "Create Appointment",
-        path: "/appointment/create",
+        path: "/appointment-create",
         exact: true,
         component: CreateAppointment,
         private: true,
@@ -35,7 +34,7 @@ export const APP_ROUTE = [
     },
     {
         name: "Appointment History",
-        path: "/appointment/history",
+        path: "/appointment-history",
         exact: true,
         component: AppointmentHistory,
         private: true,
@@ -43,7 +42,7 @@ export const APP_ROUTE = [
     },
     {
         name: "User List",
-        path: "/user/list",
+        path: "/user-list",
         exact: true,
         component: UserList,
         private: true,
@@ -51,7 +50,7 @@ export const APP_ROUTE = [
     },
     {
         name: "Create User",
-        path: "/user/create",
+        path: "/user-create",
         exact: true,
         component: CreateUser,
         private: true,
@@ -59,7 +58,7 @@ export const APP_ROUTE = [
     },
     {
         name: "Update User",
-        path: "/user/update",
+        path: "/user-update",
         exact: true,
         component: UpdateUser,
         private: true,
@@ -67,7 +66,7 @@ export const APP_ROUTE = [
     },
     {
         name: "Guest List",
-        path: "/guest/list",
+        path: "/guest-list",
         exact: true,
         component: GuestList,
         private: true,
@@ -81,15 +80,6 @@ export const APP_ROUTE = [
         private: true,
         // isAdmin: true,
     },
-    
-    // {
-    //     name: "Admin",
-    //     path: "/admin",
-    //     exact: true,
-    //     component: AdminContainer,
-    //     private: true,
-    //     isAdmin: true,
-    // },
     {
         name: "Error | Page Not Found",
         path: "/*",

@@ -6,8 +6,8 @@ import {
   Link,
   // useHistory 
 } from "react-router-dom";
-// import { logout } from "../../utils/auth";
 import SidebarData from "./SidebarData";
+// import { logout } from "../../utils/auth";
 
 const btn = document.querySelector(".mobile-menu-button");
 const sidebar = document.querySelector(".sidebar");

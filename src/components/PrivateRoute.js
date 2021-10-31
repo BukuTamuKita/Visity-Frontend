@@ -11,16 +11,15 @@ import { isLogin } from "../utils/auth";
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return (
         <Route
-            {...rest}
-            render={(props) => {
+            {...rest} render={props => (
                 isLogin() ? (
                     <Component {...props} />
                 ) : (
                     <Redirect to="/" />
                 )
-            }} 
+            )} 
         />
     )
-}
+};
 
 export default PrivateRoute;

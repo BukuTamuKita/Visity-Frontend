@@ -8,24 +8,17 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { isLogin } from "../utils/auth";
 
-const PublicRoute = ({ 
-    component: Component, 
-    isNotFound, 
-    restricted, // -> Login / Register
-    ...rest
-}) => {
+const PublicRoute = ({ component: Component, restricted, ...rest }) => {
     return (
-        <Route
-            {...rest}
-            render={(props) =>
+        <Route {...rest} render={props => (
                 isLogin() && restricted ? (
-                    <Redirect to="/testing" />
+                    <Redirect to="/appointment-create" />
                 ) : (
                     <Component {...props} />
                 )
-            }
+            )}
         />
-    );
+    )
 };
 
 export default PublicRoute;

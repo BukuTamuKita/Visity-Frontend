@@ -45,7 +45,7 @@ const routes = [
 
   {
     title: "Create Appointment",
-    path: "/appointment/create",
+    path: "/appointment-create",
     exact : true,
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
@@ -53,21 +53,21 @@ const routes = [
   },
   {
     title: "History Appointment",
-    path: "/appointment/history",
+    path: "/appointment-history",
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
       main: () => <AppointmentHistory />
   },
   {
     title: "User Administration",
-    path: "/user/list",
+    path: "/user-list",
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
       main : () => <UserList />
   },
   {
     title: "Guest Administration",
-    path: "/guest/list",
+    path: "/guest-list",
     cName:
       "block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white",
       main : () => <GuestList />
