@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Button from '../components/Button';
+import { setUserLogin, isLogin } from '../utils/auth';
+import Loader from "react-loader-spinner";
+// import { useHistory } from 'react-router-dom';
+// import Button from '../components/Button';
 
-const Login = () => {
+const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [errorEmail, setErrorEmail] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
     const [visiblePass, setVisiblePass] = useState("password");
-    const loginBtn = {
-        title: "Login",
-        width: "w-full"
-    }
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (email) {
@@ -23,16 +24,27 @@ const Login = () => {
         return () => {};
     }, [email, password]);
 
-    const submit = (e) => {
-        e.preventDefault();
+    const toCreateAppointment = () => {
+        let path = "/appointment-create";
+        props.history.push(path);
+    }
+
+    const onLogin = (e) => {
+        // e.preventDefault();
+        setLoading(true);
         axios
         .post('http://127.0.0.1:8000/api/auth/loginAdmin', {
             email: email,
             password: password,
         })
         .then((res) => {
-            localStorage.setItem('token', res.data.token);
-            window.location = "/login";
+            setUserLogin(res.data.token);
+        })
+        .then(() => {
+            if (isLogin()) {
+                toCreateAppointment();
+                setLoading(false);
+            }
         })
         .catch((err) => {
             console.log(err);
@@ -46,12 +58,13 @@ const Login = () => {
             } else {
                 setErrorEmail(JSON.stringify(err));
             }
+            setLoading(false);
         });
     }
 
     const enterPressed = (event) => {
         if (event.key === "Enter") {
-            submit();
+            onLogin();
         }
     };
 
@@ -65,10 +78,14 @@ const Login = () => {
 
     return (
         <div className="flex h-screen">
-            <div className="mx-auto flex flex-col flex-start w-4/6 md:w-1/3 m-auto">
-                <div className="flex flex-col flex-start mb-8">
+            <div className="mx-auto flex flex-col flex-start m-auto px-4 w-full xl:w-4/12 lg:w-2/5 md:w-2/4 sm:w-3/4">
+                <div className="flex flex-col flex-start mb-8 text-gray-600">
                     <h2 className="text-4xl font-bold">Welcome</h2>
                     <p>Welcome back! Please enter your details.</p>
+                    <div className="p-4 mt-4 w-full border rounded-lg bg-blue-50 text-gray-600">
+                        <p>Cari email user di tabel <b>users</b> dengan role <b>admin</b>.</p>
+                        <p>Semua password user sama, yaitu <b>password</b>.</p>
+                    </div>
                 </div>
                 <form>
                     <div className="flex flex-col mb-4">
@@ -83,9 +100,9 @@ const Login = () => {
                                 setEmail(e.target.value);
                                 setErrorEmail("");
                             }}
-                            onKeyPress={(e) => {
-                                enterPressed(e);
-                            }}
+                            // onKeyPress={(e) => {
+                            //     enterPressed(e);
+                            // }}
                         />
                         {errorEmail !== "" ? (
                             <span>{ errorEmail }</span>
@@ -126,12 +143,30 @@ const Login = () => {
                             />
                         </div>
                         <div className="ml-3 text-sm">
-                            <label htmlFor="comments" className="font-medium text-gray-700">
+                            <label htmlFor="comments" className="font-medium text-gray-600">
                                 View Password
                             </label>
                         </div>
                     </div>
-                    <Button title={loginBtn.title} width={loginBtn.width} action={submit}/>
+                    {/* <Button 
+                        disabled={loading} 
+                        // content={loginBtn.content} 
+                        width={loginBtn.width} 
+                        action={onLogin}
+                    /> */}
+                    <button 
+                        className="px-4 py-2 w-full text-white border-2 border-white rounded-lg transition bg-indigo-700 hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        onClick={() => onLogin()}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <span className="flex justifty-center items-center">
+                                <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                            </span>
+                        ) : (
+                            <span>Login</span>
+                        )}
+                    </button>
                 </form>   
             </div>
         </div>

@@ -1,70 +1,7 @@
-import React, { useContext, useState, useCallback } from 'react'
-import { UserContext } from "../../context/UserContext";
-import axios from 'axios';
+import React from "react";
+// import { useHistory } from "react-router";
 
-const AppointmentPage = () => {
-  const { value } = useContext(UserContext);
-  const hostId = value.id;
-  const [guestId, setGuestId] = useState();
-
-  // Guest
-  const [name, setName] = useState("");
-  const [nik, setNik] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  
-  // Appointment
-  const [purpose, setPurpose] = useState("");
-
-  // const guest = {
-  //   name: "",
-  //   nik: "",
-  //   email: "",
-  //   address: "",
-  // };
-  // const appointment = {
-  //   hostId,
-  //   guestId,
-  //   purpose: "",
-  // }
-
-  const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
-
-  const createGuest = useCallback(async () => {
-    try {
-      const result = await authAxios.post("guests", {
-        name: name,
-        nik: nik,
-        email: email,
-        address: address,
-      });
-      console.log("ini response guest: ", result.data.id);
-      setGuestId(result.data.id);
-      addAppointment();
-    } catch (err) {
-      console.log("error");
-    }
-  });
-
-  const addAppointment = useCallback(async () => {
-    try {
-      console.log(typeof hostId, typeof guestId, purpose);
-      const result = await authAxios.post("appointments", {
-        host: hostId,
-        guest: guestId,
-        purpose: purpose,
-      });
-      console.log(result);
-    } catch (err) {
-      console.log("error");
-    }
-  });
-
+export default function index() {
   return (
     <div className=" min-h-screen flex justify-center ">
       <div className="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
@@ -116,7 +53,7 @@ const AppointmentPage = () => {
         </div>
         <div className="col-start-2 px-7">
           <div className="grid grid-column-2">
-            <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
+            <div class="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium text-gray-700"
@@ -127,11 +64,7 @@ const AppointmentPage = () => {
                 type="text"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setNik(e.target.value);
-                }}
               />
             </div>
             <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
@@ -147,9 +80,6 @@ const AppointmentPage = () => {
                 id="first-name"
                 autoComplete="given-name"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setName(e.target.value);
-                }}
               />
             </div>
             <div className="bg-white p-3 rounded col-span-2">
@@ -163,14 +93,11 @@ const AppointmentPage = () => {
                 type="text"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
+                autoComplete="street-address"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setAddress(e.target.value);
-                }}
               />
             </div>
-            <div className="p-3 rounded col-span-2">
+            <div class="p-3 rounded col-span-2">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium text-gray-700"
@@ -178,20 +105,17 @@ const AppointmentPage = () => {
                 Email
               </label>
               <input
-                type="text"
+                type="email"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
+                autoComplete="email"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setEmail(e.target.value);
-                }}
               />
             </div>
-            <div className="p-3 col-span-2 row-span-2 ">
+            <div class="p-3 col-span-2 row-span-2 ">
               <label
                 htmlFor="first-name"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 "
               >
                 Keperluan
               </label>
@@ -199,11 +123,7 @@ const AppointmentPage = () => {
                 type="text"
                 name="first-name"
                 id="first-name"
-                autoComplete="given-name"
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                onChange={e => {
-                  setPurpose(e.target.value);
-                }}
               />
             </div>
 
@@ -219,10 +139,6 @@ const AppointmentPage = () => {
               <button
                 className="px-4 py-2 rounded-md text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
                 type="submit"
-                onClick={() => {
-                  createGuest();
-                  // addAppointment();
-                }}
               >
                 Submit
               </button>
@@ -233,5 +149,3 @@ const AppointmentPage = () => {
     </div>
   );
 }
-
-export default AppointmentPage;
