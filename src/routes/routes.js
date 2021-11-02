@@ -6,6 +6,7 @@ import CreateUser from "../pages/UserAdmin/CreateUser";
 import UpdateUser from "../pages/UserAdmin/UpdateUser";
 import Testing from "../pages/Testing";
 import ErrorPage from "../pages/ErrorPage";
+import SearchUser from "../pages/SearchUser";
 
 export const APP_ROUTE = [
     {
@@ -23,10 +24,17 @@ export const APP_ROUTE = [
         restricted: true,
     },
     {
-        name: "Create Appointment",
-        path: "/appointment/create",
+        name: "Register",
+        path: "/register",
         exact: true,
-        component: CreateAppointment,
+        component: Login,
+        restricted: true,
+    },
+    {
+        name: "Search User",
+        path: "/search",
+        exact: true,
+        component: SearchUser,
         private: true,
         isAdmin: true,
     },

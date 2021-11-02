@@ -35,6 +35,8 @@ const SearchUser = () => {
     fetchData();
   }, []);
 
+  
+  
   // const getHostInformation = useCallback(async() => {
   //   try {
   //       const res = await authAxios.get(`hosts/${value.id}/appointments`);
@@ -45,10 +47,9 @@ const SearchUser = () => {
   //       console.log(err);
   //   }
   // });
-
   // useEffect(() => {
   //   getHostInformation();
-  // }, [value.id]);
+  // }, []);
 
   return (
     <div className="mt-16">

@@ -39,28 +39,28 @@ function App() {
 
     <Router>
       <div className="relative min-h-screen md:flex">
-        <Drawer />
-        <div className="flex-auto">
-          <Switch>
-            {APP_ROUTE.map((value, index) => {
-              return (
-                // <UserContext.Provider value={{ value, setValue }}>
-                  <PublicRoute
-                    key={value.name}
-                    restricted={value.restricted}
-                    path={value.path}
-                    component={value.component}
-                    exact={value.exact}
-                    isNotFound={value.isNotFound}
-                  />
-                // </UserContext.Provider>
-              )
-            })}
-            <Route path="/">
-              <Redirect to="/login" />
-            </Route>
-          </Switch>
-        </div>
+     <Drawer />
+      <div className={"flex-auto"}>
+      <Switch>
+        {APP_ROUTE.map((value, index) => {
+          return (
+            // <UserContext.Provider value={{ value, setValue }}>
+              <PublicRoute
+                key={value.name}
+                restricted={value.restricted}
+                path={value.path}
+                component={value.component}
+                exact={value.exact}
+                isNotFound={value.isNotFound}
+              />
+            // </UserContext.Provider>
+          )
+        })}
+        <Route path="/">
+          <Redirect to="/login" />
+        </Route>
+      </Switch>
+      </div>
       </div>
     </Router>
   );
