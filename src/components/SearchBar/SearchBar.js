@@ -1,6 +1,6 @@
 import React, { 
   useState, 
-  // useRef 
+  // useContext 
 } from "react";
 import "./SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -9,26 +9,15 @@ import SearchIcon from "@mui/icons-material/Search";
 const SearchBar = ({ data, getFilteredHost, attribute }) => {
   const [filteredHost, setFilterredHost] = useState([]);
   const [search, setSearch] = useState("");
-  // const {setValue} = useContext(UserContext);
-  
-  // Pokemon
   const [display, setDisplay] = useState(false);
-  // const [search, setSearch] = useState("");
-  // const wrapperRef = useRef(null);
+  // const {setValue} = useContext(UserContext);
 
   const updateHosts = (host) => {
-    console.log("updatehost: ", host.name);
+    console.log("updateHost: ", host.name);
     getFilteredHost(host);
     setSearch(host.name);
     setDisplay(!display);
   };
-
-  // const handleClickOutside = event => {
-  //   const { current: wrap } = wrapperRef;
-  //   if (wrap && !wrap.contains(event.target)) {
-  //     setDisplay(false);
-  //   }
-  // }; 
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
@@ -47,10 +36,7 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
   };
 
   return (
-    <div 
-      // ref={wrapperRef} 
-      className={`${attribute.style}`}
-    >
+    <div className={`${attribute.style}`}>
       <div className="col-span-3 sm:col-span-2">
         <label htmlFor="search-host" className="block text-sm font-medium text-gray-700">
           { attribute.label }
