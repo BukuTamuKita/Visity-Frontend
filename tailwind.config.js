@@ -9,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'sm': '375px',
+        // 'sm': '375px',
+        // 'md' : ''
       }
     }
   },

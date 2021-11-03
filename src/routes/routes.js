@@ -29,8 +29,9 @@ export const APP_ROUTE = [
         name: "Create Appointment",
         path: "/appointment-create",
         exact: true,
-        component: Login,
-        restricted: true,
+        component: CreateAppointment,
+        private: true,
+        // isAdmin: true,
     },
     {
         name: "Search User",
