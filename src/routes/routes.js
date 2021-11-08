@@ -10,21 +10,7 @@ import Testing from "../pages/Testing";
 import ErrorPage from "../pages/ErrorPage";
 import SearchUser from "../pages/SearchUser";
 
-export const APP_ROUTE = [
-    // {
-    //     name: "Login",
-    //     path: "/login",
-    //     exact: true,
-    //     component: Login,
-    //     restricted: true,
-    // },
-    {
-        name: "Login",
-        path: "/",
-        exact: true,
-        component: Login,
-        restricted: true,
-    },
+export const PRIVATE_ROUTE = [
     {
         name: "Create Appointment",
         path: "/appointment-create",
@@ -91,18 +77,27 @@ export const APP_ROUTE = [
     },
     {
         name: "Error | Page Not Found",
-        path: "/*",
-        exact: true,
-        component: ErrorPage,
-        private: true,
-        isNotFound: true,
-    },
-    {
-        name: "Error | Page Not Found",
         path: "/error",
         exact: true,
         component: ErrorPage,
         private: true,
         isNotFound: true,
     },
+];
+export const APP_ROUTE = [
+    // {
+    //     name: "Login",
+    //     path: "/login",
+    //     exact: true,
+    //     component: Login,
+    //     restricted: true,
+    // },
+    {
+        name: "Login",
+        path: "/",
+        exact: true,
+        component: Login,
+        restricted: true,
+    },
+   
 ];
