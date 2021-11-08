@@ -49,19 +49,19 @@ const AppointmentPage = () => {
     loadHost();
   });
   
-  const getHostInformation = async () => {
-    try {
-      const res = await authAxios.get(`hosts/${filteredHost.id}/appointments`);
-      setAppointment(res.data.data);
-      console.log(appointment);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  // const getHostInformation = async () => {
+  //   try {
+  //     const res = await authAxios.get(`hosts/${filteredHost.id}/appointments`);
+  //     setAppointment(res.data.data);
+  //     console.log(appointment);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
 
-  useEffect(() => {
-    getHostInformation();
-  });
+  // useEffect(() => {
+  //   getHostInformation();
+  // });
 
   const createGuest = async () => {
     try {
