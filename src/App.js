@@ -23,21 +23,7 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
     // const [value, setValue] = useState("");
     const path = window.location.pathname;
-    useEffect(() => {
-        console.log(PRIVATE_ROUTE.map((value, index) => {
-                return (
-                    <PrivateRoute
-                        key={value.name}
-                        component={value.component}
-                        path={value.path}
-                        exact={value.exact}
-                    />
-                );
-            })
-        )
-            
-        
-    }, [])
+    
     return (
         <Router>
             <Switch>
@@ -74,65 +60,6 @@ function App() {
             </Switch>
         </Router>
 
-        // YANG DIPAKE:
-        // <Router>
-        //     <Switch>
-        //         {APP_ROUTE.map((value, index) => {
-        //             if (value.private) {
-        //                 return (
-        //                     <div className="flex">
-        //                         <div className="h-screen sticky top-0">
-        //                             <Drawer />
-        //                         </div>
-
-        //                         {/* Main Content */}
-        //                         <div className="flex-auto">
-        //                             <PrivateRoute
-        //                                 key={value.name}
-        //                                 component={value.component}
-        //                                 path={value.path}
-        //                                 exact={value.exact}
-        //                             />
-
-        //                         </div>
-        //                     </div>
-        //                 );
-        //             } else {
-        //                 return (
-        //                     <PublicRoute
-        //                         key={value.name}
-        //                         restricted={value.restricted}
-        //                         component={value.component}
-        //                         path={value.path}
-        //                         exact={value.exact}
-        //                     />
-        //                 );
-        //             }
-        //         })}
-        //     </Switch>
-        // </Router>
-
-        // TESTING:
-
-        // <Router>
-        //   <div className="relative min-h-screen md:flex">
-        //     {!(window.location.pathname === "/") && <Drawer />}
-        //     <div className={"flex-auto"}>
-        //       <Switch>
-        //         <Route path="/" component={Login} exact />
-        //           {/* <UserContext.Provider value={{ value, setValue }}> */}
-        //           <Route path="/appointment/create" component={AppointmentPage} exact />
-        //           <Route path="/appointment/history" component={AppointmentHistory} />
-        //           <Route path="/user/list" component={UserAdmin} exact/>
-        //           <Route path="/user/create" component={CreateUser} exact/>
-        //           <Route path="/user/update" component={UpdateUser} exact/>
-        //           <Route path="/guest/list" component={GuestAdmin} exact/>
-        //           <Route path="/testing" component={Testing} exact/>
-        //           {/* </UserContext.Provider> */}
-        //       </Switch>
-        //     </div>
-        //   </div>
-        // </Router>
     );
 }
 
