@@ -82,6 +82,23 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
           )}
         </div>
       )}
+
+      {/* {display && (
+        <div className="autoContainer">
+          {data
+            .filter(({ name }) => name.indexOf(search.toLowerCase()) > -1)
+            .map((value, i) => {
+              return (
+                <div
+                  onClick={() => updateHosts(value.name)}
+                  key={i}
+                >
+                  <span>{value.name}</span>
+                </div>
+              );
+            })}
+        </div>
+      )} */}
     </div>
   );
 };

@@ -8,27 +8,22 @@ import GuestList from "../pages/GuestAdmin/GuestList";
 import Testing from "../pages/Testing";
 // import AdminContainer from "../components/Admin/AdminContainer";
 import ErrorPage from "../pages/ErrorPage";
+import SearchUser from "../pages/SearchUser";
 
-export const APP_ROUTE = [
-    // {
-    //     name: "Login",
-    //     path: "/login",
-    //     exact: true,
-    //     component: Login,
-    //     restricted: true,
-    // },
-    {
-        name: "Login",
-        path: "/",
-        exact: true,
-        component: Login,
-        restricted: true,
-    },
+export const PRIVATE_ROUTE = [
     {
         name: "Create Appointment",
         path: "/appointment-create",
         exact: true,
         component: CreateAppointment,
+        private: true,
+        // isAdmin: true,
+    },
+    {
+        name: "Search User",
+        path: "/search",
+        exact: true,
+        component: SearchUser,
         private: true,
         // isAdmin: true,
     },
@@ -82,18 +77,27 @@ export const APP_ROUTE = [
     },
     {
         name: "Error | Page Not Found",
-        path: "/*",
-        exact: true,
-        component: ErrorPage,
-        private: true,
-        isNotFound: true,
-    },
-    {
-        name: "Error | Page Not Found",
         path: "/error",
         exact: true,
         component: ErrorPage,
         private: true,
         isNotFound: true,
     },
+];
+export const APP_ROUTE = [
+    // {
+    //     name: "Login",
+    //     path: "/login",
+    //     exact: true,
+    //     component: Login,
+    //     restricted: true,
+    // },
+    {
+        name: "Login",
+        path: "/",
+        exact: true,
+        component: Login,
+        restricted: true,
+    },
+   
 ];
