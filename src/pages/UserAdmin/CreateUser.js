@@ -1,13 +1,10 @@
-// import { Input } from "@mui/material";
 import React from "react";
-//import { useHistory } from "react-router";
 
 export default function index() {
   return (
     <div className="pt-48">
       <div className="wrapper grid grid-rows-2 max-w-5xl container mx-auto">
         <div className="first-row grid grid-cols-12">
-          {/* Kiri */}
           <div className="left-content mx-4 flex flex-col justify-center items-center col-span-6 border border-4 border-solid rounded-lg">
             <svg
               className="icon mx-auto h-12 w-12 text-gray-400"
@@ -43,7 +40,6 @@ export default function index() {
             </p>
           </div>
 
-          {/* Kanan */}
           <div className="right-content col-span-6 mx-4">
             <div className="nik-nama grid grid-cols-6">
               <div class="col-span-3 pr-3">

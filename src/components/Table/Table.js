@@ -8,7 +8,6 @@ import {
 } from "react-table";
 import { GlobalFilter } from "./GlobalFilter";
 import { ColumnFilter } from "./ColumnFilter";
-import "./table.css";
 import { Checkbox } from "./Checkbox";
 
 const Table = ({ columns, data, deleteAppointment, cancelAppointment }) => {

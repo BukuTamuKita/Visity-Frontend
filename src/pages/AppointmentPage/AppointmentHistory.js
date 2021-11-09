@@ -88,24 +88,23 @@ const AppointmentHistory = () => {
     fetchAppointments();
   }, []);
 
+  const authAxios = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/",
+    headers: {
+        Authorization: `Bearer ${JWT_HEADER}`,
+    },
+  });
+
   const cancelAppointment = (id, note) => {
-    axios.put(
-      UPDATE_APPOINTMENT(id),
-      {
-        headers: {Authorization: `Bearer ${JWT_HEADER}`},
-        data: {
-          notes: note,
-        }
+    authAxios.put(UPDATE_APPOINTMENT(id), {
+        status: "declined",
+        notes: note,
       }
     )
   };
 
   const deleteAppointment = (id) => {
-    axios.delete(DELETE_APPOINTMENT(id), {
-      headers: {
-        Authorization: `Bearer ${JWT_HEADER}`
-      }
-    })
+    authAxios.delete(DELETE_APPOINTMENT(id))
   };
 
   const appointmentsData = useMemo(() => [...appointments], [appointments]);

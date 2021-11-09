@@ -1,9 +1,5 @@
 import Cookies from "js-cookie";
 
-export const setUserLogin = (jwt) => {
-    Cookies.set("JWT", jwt);
-}
-
 export const login = (jwt) => {
     Cookies.set("JWT", jwt);
 }
