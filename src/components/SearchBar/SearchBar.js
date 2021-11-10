@@ -1,16 +1,13 @@
 import React, { 
-  useState, 
-  // useContext 
+  useState,
 } from "react";
 import "./SearchBar.css";
 import SearchIcon from "@mui/icons-material/Search";
-// import { UserContext } from "../../context/UserContext";
 
 const SearchBar = ({ data, getFilteredHost, attribute }) => {
   const [filteredHost, setFilterredHost] = useState([]);
   const [search, setSearch] = useState("");
   const [display, setDisplay] = useState(false);
-  // const {setValue} = useContext(UserContext);
 
   const updateHosts = (host) => {
     console.log("updateHost: ", host.name);
@@ -21,7 +18,6 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
 
   const handleFilter = (event) => {
     const searchWord = event.target.value;
-    // setSearch(searchWord);
     const newFilter = data.filter((value) => {
       return value.name.toLowerCase().includes(searchWord.toLowerCase());
     });

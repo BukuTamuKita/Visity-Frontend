@@ -27,7 +27,7 @@ export const NavbarContainer = styled.div`
     padding: 0 24px;
     max-width: 1100px;
 `
-// Kalau punya logo
+// insert these lines if we have logo 
 // export const NavLogo = styled(LinkR)`
 //     color: red;
 //     justify-content: flex-start;

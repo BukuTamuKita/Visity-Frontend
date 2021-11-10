@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import {
-    // BrowserRouter as Router,
-    // Switch,
-    // Route,
     Link,
-    // useHistory
 } from "react-router-dom";
 import SidebarData from "./SidebarData";
 import { logout } from "../../utils/auth";
@@ -22,12 +18,6 @@ if (btn) {
 const Drawer = () => {
     const [sidebar, setSidebar] = useState(false);
     const showSidebar = () => setSidebar(!sidebar);
-    // const history = useHistory();
-
-    // const onLogout = () => {
-    //   logout();
-    //   history.push("/");
-    // }
 
     return (
         <div className="relative min-h-screen md:flex">
@@ -95,10 +85,6 @@ const Drawer = () => {
                                     </div>
                                 );
                             })}
-
-                            {/* <div>
-              <button onClick={onLogout}>Logout</button>
-            </div> */}
                         </ul>
                     </nav>
                     <div>

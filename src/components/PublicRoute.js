@@ -1,7 +1,7 @@
 /*
     Public Route
-    untuk mencegah kita untuk ke halaman yang restricted (e.g Login & Register)
-    misal kita ke halaman login padahal sudah login
+    Prevent us from to restricted page (e.g Login & Register)
+    for example, we go to the login page even though we are already logged in 
 */
 
 import React from "react";

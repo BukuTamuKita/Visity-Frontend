@@ -6,7 +6,6 @@ import CreateUser from "../pages/UserAdmin/CreateUser";
 import UpdateUser from "../pages/UserAdmin/UpdateUser";
 import GuestList from "../pages/GuestAdmin/GuestList";
 import Testing from "../pages/Testing";
-// import AdminContainer from "../components/Admin/AdminContainer";
 import ErrorPage from "../pages/ErrorPage";
 import SearchUser from "../pages/SearchUser";
 
@@ -17,7 +16,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: CreateAppointment,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Search User",
@@ -25,7 +23,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: SearchUser,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Appointment History",
@@ -33,7 +30,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: AppointmentHistory,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "User List",
@@ -41,7 +37,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: UserList,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Create User",
@@ -49,7 +44,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: CreateUser,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Update User",
@@ -57,7 +51,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: UpdateUser,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Guest List",
@@ -65,7 +58,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: GuestList,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Testing",
@@ -73,7 +65,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: Testing,
         private: true,
-        // isAdmin: true,
     },
     {
         name: "Error | Page Not Found",
@@ -84,14 +75,8 @@ export const PRIVATE_ROUTE = [
         isNotFound: true,
     },
 ];
+
 export const APP_ROUTE = [
-    // {
-    //     name: "Login",
-    //     path: "/login",
-    //     exact: true,
-    //     component: Login,
-    //     restricted: true,
-    // },
     {
         name: "Login",
         path: "/",
@@ -99,5 +84,4 @@ export const APP_ROUTE = [
         component: Login,
         restricted: true,
     },
-   
 ];

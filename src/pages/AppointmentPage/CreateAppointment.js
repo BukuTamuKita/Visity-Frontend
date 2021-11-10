@@ -1,17 +1,13 @@
 import React, {
     useState,
     useEffect,
-    // useContext,
-    // useCallback
 } from "react";
-// import { UserContext } from "../../context/UserContext";
 import axios from "axios";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import Cookies from "js-cookie";
+import { CREATE_APPOINTMENT, JWT_HEADER, SHOW_HOSTS, SHOW_HOST_APPOINTMENT } from "../../constants/urls";
+import { isLogin } from "../../utils/auth";
 
 const AppointmentPage = () => {
-    // const { value } = useContext(UserContext);
-    // const hostId = value.id;
     const [guestId, setGuestId] = useState();
     const [name, setName] = useState("");
     const [nik, setNik] = useState("");
@@ -20,11 +16,10 @@ const AppointmentPage = () => {
     const [purpose, setPurpose] = useState("");
     const [hosts, setHosts] = useState([]);
     const [appointment, setAppointment] = useState([]);
-    const [filteredHost, setFilteredHost] = useState("");
+    const [filteredHost, setFilteredHost] = useState({});
     const [display, setDisplay] = useState(false);
 
     const searchBarAttr = {
-        label: "",
         style: "w-full mb-4",
         placeholder: "Search host name",
     };
@@ -32,38 +27,72 @@ const AppointmentPage = () => {
     const authAxios = axios.create({
         baseURL: "http://127.0.0.1:8000/api/",
         headers: {
-            Authorization: "Bearer " + Cookies.get("JWT"),
+            Authorization: `Bearer ${JWT_HEADER}`,
         },
     });
 
-    const loadHost = async () => {
-        try {
-            const result = await authAxios.get("hosts");
-            setHosts(result.data.data);
-        } catch (err) {
-            console.log("error: ", err);
+    const fetchHosts = async () => {
+        const response = await axios.get(SHOW_HOSTS, {
+          headers: { Authorization: `Bearer ${JWT_HEADER}` },
+        })
+        .catch((err) => console.log(err))
+        
+        if (response && isLogin()) {
+          const hosts = response.data;
+    
+          console.log("hosts: ", hosts);
+          setHosts(response.data.data);
         }
     };
 
     useEffect(() => {
-        loadHost();
-    });
+        fetchHosts();
+    }, []);
+  
+    const fetchAppointment = async () => {
+        const response = await axios.get(SHOW_HOST_APPOINTMENT(filteredHost.id), {
+            headers: { Authorization: `Bearer ${JWT_HEADER}` },
+        })
+        .catch((err) => console.log(err))
 
-    const getHostInformation = async () => {
-        try {
-            const res = await authAxios.get(
-                `hosts/${filteredHost.id}/appointments`
-            );
-            setAppointment(res.data.data);
-            console.log(appointment);
-        } catch (err) {
-            console.log(err);
+        if (response && isLogin()) {
+            const appointment = response.data;
+
+            console.log("appointment: ", appointment);
+            setAppointment(response.data.data);
         }
     };
 
-    useEffect(() => {
-        getHostInformation();
-    });
+  useEffect(() => {
+    fetchAppointment();
+  }, [filteredHost]);
+
+    // const createAppointment = async () => {
+    //     try {
+    //         console.log(typeof filteredHost, typeof guestId, purpose);
+    //         const result = await authAxios.post("appointments", {
+    //             host: filteredHost.id,
+    //             guest: guestId,
+    //             purpose: purpose,
+    //         });
+    //         console.log(result);
+    //     } catch (err) {
+    //         console.log("error: ", err);
+    //     }
+    // };
+
+    const createAppointment = async () => {
+        const response = await authAxios.post(CREATE_APPOINTMENT, {
+            host: filteredHost.id,
+            guest: guestId,
+            purpose: purpose,
+        })
+        .catch((err) => console.log(err))
+
+        if (response && isLogin()) {
+            console.log(response);
+        }
+    };
 
     const createGuest = async () => {
         try {
@@ -75,21 +104,7 @@ const AppointmentPage = () => {
             });
             console.log("ini response guest: ", result.data.id);
             setGuestId(result.data.id);
-            addAppointment();
-        } catch (err) {
-            console.log("error: ", err);
-        }
-    };
-
-    const addAppointment = async () => {
-        try {
-            console.log(typeof filteredHost, typeof guestId, purpose);
-            const result = await authAxios.post("appointments", {
-                host: filteredHost.id,
-                guest: guestId,
-                purpose: purpose,
-            });
-            console.log(result);
+            createAppointment();
         } catch (err) {
             console.log("error: ", err);
         }
@@ -97,11 +112,34 @@ const AppointmentPage = () => {
 
     const getFilteredHost = (host) => {
         console.log("host terpilih:", host);
+        setFilteredHost(host);
 
         if (host !== null) {
-            setFilteredHost(host);
+            // setFilteredHost(host);
             setDisplay(true);
             console.log("filtered host: ", filteredHost);
+        }
+    };
+
+    const getStatusStyle = (value) => {
+        if (value === "accepted") {
+            return (
+                <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
+                    { value }
+                </div>
+            )
+        } else if (value === "waiting") {
+            return (
+                <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
+                    { value }
+                </div>
+            )
+        } else if (value === "declined") {
+            return (
+                <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
+                    { value }
+                </div>
+            )
         }
     };
 
@@ -109,7 +147,7 @@ const AppointmentPage = () => {
         <div className="py-24 px-16 grid grid-cols-12">
             {/* Section 1 */}
             <div className="col-span-6 divide-y divide-solid divide-gray-300">
-                <div className="">
+                <div className="pb-6">
                     <p className="text-4xl mb-10">Create Appointment</p>
                     <p className="text-2xl mb-4">
                         Who would you like to meet today?
@@ -123,40 +161,40 @@ const AppointmentPage = () => {
                     />
                     {/* Meeting List Card */}
                     {display && (
-                        <div className="flex flex-col items-center justify-center mb-6">
-                            <div className="card grid md:grid-cols-3 md:w-9/12 w-4/5">
-                                <div className="left-card md:col-span-1 md:mx-2.5 mb-4 p-6 shadow-sm border border-solid border-current rounded-lg border-gray-300 text-center">
-                                    <p className="text-xl">
-                                        {filteredHost.name}
-                                    </p>
-                                    <p className="text-2lg">
-                                        {filteredHost.position}
-                                    </p>
+                        <div className="flex flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
+                            <div className="flex gap-4 p-4">
+                                <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
+                                    <p className="text-xs">Image</p>
                                 </div>
-                                <div className="right-card md:col-span-2 md:mx-2.5 p-4 shadow-sm border border-solid border-current rounded-lg border-gray-300">
-                                    <p className="text-3xl mb-6">
-                                        Meeting List
-                                    </p>
-                                    {appointment.length !== 0 &&
-                                        appointment.map((data) => {
-                                            return (
-                                                <div
-                                                    key={data.id}
-                                                    className="flex justify-between"
-                                                >
-                                                    <p>{data.guest.name}</p>
-                                                    <p>{data.status}</p>
-                                                </div>
-                                            );
-                                        })}
+                                <div className="flex flex-col">
+                                    <p className="text-base font-semibold">{ filteredHost.name }</p>
+                                    <p className="text-sm text-gray-500">{ filteredHost.position }</p>
                                 </div>
+                            </div>
+                            <div className="flex flex-col p-4">
+                                <p className="text-2xl font-semibold mb-8">Meeting List</p>
+                                {
+                                    appointment.length !== 0 && 
+                                    appointment.map((data) => {
+                                    return (
+                                        <div className="mb-1">
+                                            <div 
+                                                key={data.id}
+                                                className="flex justify-between text-base"
+                                            >
+                                                <p>{ data.guest.name }</p>
+                                                <p>{ getStatusStyle(data.status) }</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                     )}
                 </div>
 
                 {/* Section 2 */}
-                <div className="">
+                <div>
                     {/* Scan KTP Section */}
                     <div className="mt-10 mb-6">
                         <p className="text-2xl mb-4">Please input your data</p>

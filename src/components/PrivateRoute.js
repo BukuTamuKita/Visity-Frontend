@@ -1,7 +1,7 @@
 /*
     Private Route
-    untuk ngecek apakah sudah login atau belum
-    kalau belum, akan redirect ke login
+    To check wheter we are logged in or not
+    if not, we'll be redirected to login page
 */
 
 import React from "react";

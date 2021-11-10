@@ -1,55 +1,32 @@
 import React, {
   useState,
   useEffect,
-  useCallback,
-  // useContext,
 } from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { Link } from "react-router-dom";
 import axios from "axios";
-// import { UserContext } from "../../context/UserContext";
-// import Button from "../../components/Button";
+import { JWT_HEADER, SHOW_HOSTS } from "../../constants/urls";
+import { isLogin } from "../../utils/auth";
 
 const SearchUser = () => {
   const [hosts, setHosts] = useState([]);
-  const [appointment, setAppointment] = useState([]);
-  // const { value } = useContext(UserContext);
 
-  const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
+  const fetchHosts = async () => {
+    const response = await axios.get(SHOW_HOSTS, {
+      headers: { Authorization: `Bearer ${JWT_HEADER}` },
+    })
+    .catch((err) => console.log(err))
+    
+    if (response && isLogin()) {
+      const hosts = response.data;
 
-  const fetchData = useCallback(async () => {
-    try {
-      const result = await authAxios.get("hosts");
-      setHosts(result.data.data);
-    } catch (err) {
-      console.log("error");
+      console.log("hosts: ", hosts);
+      setHosts(response.data.data);
     }
-  });
+  };
 
   useEffect(() => {
-    fetchData();
+    fetchHosts();
   }, []);
-
-  
-  
-  // const getHostInformation = useCallback(async() => {
-  //   try {
-  //       const res = await authAxios.get(`hosts/${value.id}/appointments`);
-  //       setAppointment(res.data.data);
-  //       console.log(appointment);
-  //   }
-  //   catch (err){
-  //       console.log(err);
-  //   }
-  // });
-  // useEffect(() => {
-  //   getHostInformation();
-  // }, []);
 
   return (
     <div className="mt-16">
