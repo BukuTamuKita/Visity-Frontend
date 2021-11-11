@@ -1,6 +1,9 @@
 import React from "react";
 
-export default function index() {
+const UpdateUser = (props) => {
+  const { state } = props.location;
+  console.log("ini dari  updateuser: ", state);
+
   return (
     <div className=" min-h-screen flex justify-center ">
       <div className="flex-1 mx-auto grid grid-cols-2 ml-64 mr-64">
@@ -52,7 +55,7 @@ export default function index() {
         </div>
         <div className="col-start-2 px-7">
           <div className="grid grid-column-2">
-            <div class="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
+            <div className="bg-white p-3 rounded lg:col-span-1 sm:col-span-2">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium text-gray-700"
@@ -96,7 +99,7 @@ export default function index() {
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
-            <div class="p-3 rounded col-span-2">
+            <div className="p-3 rounded col-span-2">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium text-gray-700"
@@ -111,7 +114,7 @@ export default function index() {
                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               />
             </div>
-            <div class="p-3 col-span-2 row-span-2 ">
+            <div className="p-3 col-span-2 row-span-2 ">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium text-gray-700 "
@@ -148,3 +151,5 @@ export default function index() {
     </div>
   );
 }
+
+export default UpdateUser;

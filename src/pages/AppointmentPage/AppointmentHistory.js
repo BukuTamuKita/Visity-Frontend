@@ -4,9 +4,63 @@ import React, {
   useMemo, 
 } from "react";
 import axios from "axios";
-import { DELETE_APPOINTMENT, JWT_HEADER, SHOW_APPOINTMENT, UPDATE_APPOINTMENT } from '../../constants/urls';
+import { 
+  DELETE_APPOINTMENT, 
+  UPDATE_APPOINTMENT, 
+  JWT_HEADER, 
+  SHOW_APPOINTMENT, 
+} from '../../constants/urls';
 import Table from "../../components/Table/Table";
 import { isLogin } from "../../utils/auth";
+
+export const AppointmentAction = ({ id }) => {
+  const authAxios = axios.create({
+    baseURL: "http://127.0.0.1:8000/api/",
+    headers: {
+        Authorization: `Bearer ${JWT_HEADER}`,
+    },
+  });
+
+  const cancelAppointment = (note) => {
+    authAxios.put(UPDATE_APPOINTMENT(id), {
+        status: "declined",
+        notes: note,
+      }
+    )
+  };
+
+  const deleteAppointment = () => {
+    authAxios.delete(DELETE_APPOINTMENT(id))
+  };
+
+  return (
+    <>
+      <button onClick={() => {
+        let value;
+        let notes = window.prompt("Enter your notes: ", value);
+
+        if (notes !== null) {
+          cancelAppointment(notes);
+          window.location.reload();
+        }
+      }}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+        </svg>
+      </button>
+      <button onClick={() => {
+        if (window.confirm("Are you sure want to delete id: " + id + " ?")) {
+          deleteAppointment();
+          window.location.reload();
+        }
+      }}>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+        </svg>
+      </button>
+    </>
+  )
+};
 
 const AppointmentHistory = () => {
   const [appointments, setAppointments] = useState([]);
@@ -48,7 +102,7 @@ const AppointmentHistory = () => {
               </div>
             )
           }
-        }
+        },
       },
       {
         Header: "Purpose",
@@ -88,29 +142,8 @@ const AppointmentHistory = () => {
     fetchAppointments();
   }, []);
 
-  const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
-    headers: {
-        Authorization: `Bearer ${JWT_HEADER}`,
-    },
-  });
-
-  const cancelAppointment = (id, note) => {
-    authAxios.put(UPDATE_APPOINTMENT(id), {
-        status: "declined",
-        notes: note,
-      }
-    )
-  };
-
-  const deleteAppointment = (id) => {
-    authAxios.delete(DELETE_APPOINTMENT(id))
-  };
-
   const appointmentsData = useMemo(() => [...appointments], [appointments]);
   const appointmentsColumn = useMemo(() => [...columns], [columns]);
-
-  console.log(appointments);
 
   return (
       <div className="py-24 px-16">
@@ -118,8 +151,8 @@ const AppointmentHistory = () => {
         <Table 
           columns={appointmentsColumn} 
           data={appointmentsData} 
-          deleteAppointment={deleteAppointment} 
-          cancelAppointment={cancelAppointment}
+          // deleteAppointment={deleteAppointment} 
+          // cancelAppointment={cancelAppointment}
         />
       </div>
   )
