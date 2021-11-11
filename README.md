@@ -43,7 +43,7 @@ php artisan serve
 ```bash
 https://github.com/BukuTamuKita/visity-frontend.git
 ```
-2. Pull branch sprintReview
+2. Pull branch main or sprintReview 
 
 3. Install project dependencies
 ```bash
@@ -63,3 +63,10 @@ npm start
 - /user-update
 - /guest-list
 - /testing
+
+## Sprint 2 Features
+- Create Appointment
+- Scan KTP
+- Appointment Administration (CRUD)
+- User Administration (CRUD)
+- Export data
