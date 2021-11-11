@@ -6,15 +6,17 @@ import {
     usePagination,
     useRowSelect,
 } from "react-table";
+import { Link } from "react-router-dom";
 import { GlobalFilter } from "./GlobalFilter";
 import { ColumnFilter } from "./ColumnFilter";
 import { Checkbox } from "./Checkbox";
+import { AppointmentAction } from "../../pages/AppointmentPage/AppointmentHistory";
+import { UserAction } from "../../pages/UserAdmin/UserList";
 
-const Table = ({ columns, data, deleteAppointment, cancelAppointment }) => {
-    const refreshPage = () => {
-        window.location.reload();
-    };
-
+const Table = ({ 
+    columns, 
+    data,
+ }) => {
     const defaultColumn = useMemo(() => {
         return { 
             Filter: ColumnFilter
@@ -52,37 +54,13 @@ const Table = ({ columns, data, deleteAppointment, cancelAppointment }) => {
             {
                 id: "action",
                 Header: "Action",
-                Cell: ({ row }) => (
-                    <>
-                        <button onClick={() => {
-                            let value;
-                            let notes = window.prompt("Enter your notes: ", value);
-                            
-                            if (notes !== null) {
-                                cancelAppointment(row.values.id, notes);
-                                alert("Appointment id: " + row.values.id + " is canceled!");
-                                // refreshPage();
-                            } 
-                        }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                        <button onClick={() => {
-                            if (window.confirm("Are you sure want to delete id " + row.values.id)) {
-                                deleteAppointment(row.values.id);
-                                alert("Appointment id: " + row.values.id + " is deleted!");
-                                refreshPage();
-                            } else {
-                                alert("Canceled!");
-                            }
-                        }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                            </svg>
-                        </button>
-                    </>
-                ),
+                Cell: ({ row }) => {
+                    return window.location.pathname === "/appointment-history" ? (
+                        <AppointmentAction id={row.values.id} />
+                    ) : (
+                        <UserAction id={row.values.id} />
+                    )
+                }
             },
         ]);
     },
@@ -152,9 +130,19 @@ const Table = ({ columns, data, deleteAppointment, cancelAppointment }) => {
 
                             <div className="flex flex-row justify-between items-center p-4 sticky top-0 bg-white border-b border-gray-100">
                                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-                                <button className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
-                                    Export
-                                </button>
+                                <div className="flex flex-row justify-center items-center gap-5">
+                                    {window.location.pathname === "/user-list" &&
+                                        <Link to="/user-create">
+                                            <button className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
+                                                Create
+                                            </button>
+                                        </Link> 
+                                    }
+                                    <button className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
+                                        Export
+                                    </button>
+                                </div>
+
                             </div>
                             <table className="w-full" {...getTableProps()}>
                                 <thead className="border-b border-gray-100">
@@ -177,7 +165,7 @@ const Table = ({ columns, data, deleteAppointment, cancelAppointment }) => {
                                         return (
                                             <tr className="border-b border-gray-100" {...row.getRowProps()}>
                                                 {row.cells.map((cell) => {
-                                                    return <td className="p-4" {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                                    return <td className="p-4 " {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                                 })}
                                             </tr>
                                         )
