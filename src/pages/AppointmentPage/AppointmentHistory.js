@@ -11,7 +11,7 @@ import {
   SHOW_APPOINTMENT, 
 } from '../../constants/urls';
 import Table from "../../components/Table/Table";
-import { isLogin } from "../../utils/auth";
+import { getToken, isLogin } from "../../utils/auth";
 
 export const AppointmentAction = ({ id }) => {
   const authAxios = axios.create({
@@ -126,7 +126,7 @@ const AppointmentHistory = () => {
 
   const fetchAppointments = async () => {
     const response = await axios.get(SHOW_APPOINTMENT, {
-      headers: { Authorization: `Bearer ${JWT_HEADER}` },
+      headers: { Authorization: `Bearer ${getToken()}` },
     })
     .catch((err) => console.log(err))
 
@@ -151,8 +151,6 @@ const AppointmentHistory = () => {
         <Table 
           columns={appointmentsColumn} 
           data={appointmentsData} 
-          // deleteAppointment={deleteAppointment} 
-          // cancelAppointment={cancelAppointment}
         />
       </div>
   )

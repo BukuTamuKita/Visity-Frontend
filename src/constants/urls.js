@@ -32,7 +32,7 @@ export const DELETE_APPOINTMENT = (meetingId) => `${BASE_URL}/appointments/${mee
 
 // User Administration
 export const CREATE_USER = `${BASE_URL}/users`;
-export const FIND_USER = (userId) => `${BASE_URL}/users/${userId}`;
+export const SHOW_USER = (userId) => `${BASE_URL}/users/${userId}`;
 export const SHOW_USERS = `${BASE_URL}/users`;
 export const DELETE_USER = (userId) => `${BASE_URL}/users/${userId}`;
 

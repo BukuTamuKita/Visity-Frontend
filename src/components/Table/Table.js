@@ -49,20 +49,22 @@ const Table = ({
         })
     },
     (hooks) => {
-        hooks.visibleColumns.push((columns) => [
-            ...columns,
-            {
-                id: "action",
-                Header: "Action",
-                Cell: ({ row }) => {
-                    return window.location.pathname === "/appointment-history" ? (
-                        <AppointmentAction id={row.values.id} />
-                    ) : (
-                        <UserAction id={row.values.id} />
-                    )
-                }
-            },
-        ]);
+        if (window.location.pathname !== "/guest-list") {
+            hooks.visibleColumns.push((columns) => [
+                ...columns,
+                {
+                    id: "action",
+                    Header: "Action",
+                    Cell: ({ row }) => {
+                        return window.location.pathname === "/appointment-history" ? (
+                            <AppointmentAction id={row.values.id} />
+                        ) : (
+                            <UserAction id={row.values.id} /> 
+                        )
+                    }
+                },
+            ]);
+        }
     },
     );
 

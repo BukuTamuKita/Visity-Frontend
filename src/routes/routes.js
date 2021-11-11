@@ -47,7 +47,7 @@ export const PRIVATE_ROUTE = [
     },
     {
         name: "Update User",
-        path: "/user-update",
+        path: "/user-update/:id",
         exact: true,
         component: UpdateUser,
         private: true,

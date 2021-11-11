@@ -14,3 +14,7 @@ export const isLogin = () => {
     } 
     return false;
 }
+
+export const getToken = () => {
+    return Cookies.get("JWT");
+}
