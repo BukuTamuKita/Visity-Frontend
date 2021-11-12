@@ -14,36 +14,39 @@ function App() {
     return (
         <Router>
             <Switch>
-                {APP_ROUTE.map((value, index) => {
-                    return (
-                        <PublicRoute
-                            key={value.name}
-                            restricted={value.restricted}
-                            component={value.component}
-                            path={value.path}
-                            exact={value.exact}
-                        />
-                    )
-                })}
-                <div className="flex">
-                    <div className="h-screen sticky top-0">
-                        <Drawer />
-                    </div>
+                <>
+                
+                    {APP_ROUTE.map((value, index) => {
+                        return (
+                            <PublicRoute
+                                key={value.name}
+                                restricted={value.restricted}
+                                component={value.component}
+                                path={value.path}
+                                exact={value.exact}
+                            />
+                        )
+                    })}
+                    <div className="flex">
+                        <div className="h-screen sticky top-0">
+                            <Drawer />
+                        </div>
 
-                    {/* Main Content */}
-                    <div className="flex-auto">
-                        {PRIVATE_ROUTE.map((value, index) => {
-                            return (
-                                <PrivateRoute
-                                    key={value.name}
-                                    component={value.component}
-                                    path={value.path}
-                                    exact={value.exact}
-                                />
-                            )
-                        })}
+                        {/* Main Content */}
+                        <div className="flex-auto">
+                            {PRIVATE_ROUTE.map((value, index) => {
+                                return (
+                                    <PrivateRoute
+                                        key={value.name}
+                                        component={value.component}
+                                        path={value.path}
+                                        exact={value.exact}
+                                    />
+                                )
+                            })}
+                        </div>
                     </div>
-                </div>
+                </>
             </Switch>
         </Router>
     );

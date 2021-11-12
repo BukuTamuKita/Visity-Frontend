@@ -27,7 +27,7 @@ export const SHOW_APPOINTMENT = `${BASE_URL}/appointments`;
 export const CREATE_APPOINTMENT = `${BASE_URL}/appointments`;
 export const UPDATE_APPOINTMENT = (meetingId) => `${BASE_URL}/appointments/${meetingId}`;
 export const APPOINTMENT_DETAIL = (meetingId) => `${BASE_URL}/appointments/${meetingId}`;
-export const EXPORT_DATA = `${BASE_URL}/utils/export_excel`;
+export const EXPORT_DATA = `${BASE_URL}/export_excel`;
 export const DELETE_APPOINTMENT = (meetingId) => `${BASE_URL}/appointments/${meetingId}`;
 
 // User Administration
@@ -35,6 +35,7 @@ export const CREATE_USER = `${BASE_URL}/users`;
 export const SHOW_USER = (userId) => `${BASE_URL}/users/${userId}`;
 export const SHOW_USERS = `${BASE_URL}/users`;
 export const DELETE_USER = (userId) => `${BASE_URL}/users/${userId}`;
+export const SHOW_PHOTO = (photo) => `${SERVER_NAME}/${photo}`;
 
 // Guest Administration
 export const CREATE_GUEST = `${BASE_URL}/guests`;

@@ -8,8 +8,9 @@ import {
   DELETE_APPOINTMENT, 
   UPDATE_APPOINTMENT, 
   JWT_HEADER, 
-  SHOW_APPOINTMENT, 
+  SHOW_APPOINTMENT,
 } from '../../constants/urls';
+import { useHistory } from "react-router";
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
 
@@ -23,7 +24,7 @@ export const AppointmentAction = ({ id }) => {
 
   const cancelAppointment = (note) => {
     authAxios.put(UPDATE_APPOINTMENT(id), {
-        status: "declined",
+        status: "canceled",
         notes: note,
       }
     )
@@ -64,6 +65,7 @@ export const AppointmentAction = ({ id }) => {
 
 const AppointmentHistory = () => {
   const [appointments, setAppointments] = useState([]);
+  const history = useHistory();
 
   const columns = useMemo(() => 
     [
@@ -98,6 +100,12 @@ const AppointmentHistory = () => {
           } else if (value === "waiting") {
             return (
               <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
+                { value }
+              </div>
+            )
+          } else if (value === "canceled") {
+            return (
+              <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
                 { value }
               </div>
             )
@@ -142,6 +150,19 @@ const AppointmentHistory = () => {
     fetchAppointments();
   }, []);
 
+  // const exportHistory = () => {
+  //   axios.get(EXPORT_DATA, {
+  //     headers: {
+  //       Authorization: `Bearer ${getToken()}`,
+  //     },
+  //     responseType: 'blob',
+  //   })
+  //   .then(() => {
+  //     window.open(EXPORT_DATA);
+  //   })
+  //   .catch((err) => console.log(err))
+  // };
+
   const appointmentsData = useMemo(() => [...appointments], [appointments]);
   const appointmentsColumn = useMemo(() => [...columns], [columns]);
 
@@ -150,7 +171,7 @@ const AppointmentHistory = () => {
         <p className="text-4xl mb-10">Appointment History</p>
         <Table 
           columns={appointmentsColumn} 
-          data={appointmentsData} 
+          data={appointmentsData}
         />
       </div>
   )

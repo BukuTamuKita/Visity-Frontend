@@ -6,48 +6,34 @@ import React, {
 import axios from "axios";
 import { 
     DELETE_USER, 
-    JWT_HEADER,
-    SHOW_USERS, 
+    SHOW_PHOTO, 
+    SHOW_USERS,
 } from "../../constants/urls";
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
 import { Link } from "react-router-dom";
 
 export const UserAction = ({ id }) => {
-    // const [user, setUser] = useState({});
-
-    const authAxios = axios.create({
-        baseURL: "http://127.0.0.1:8000/api/",
-        headers: {
-            Authorization: `Bearer ${JWT_HEADER}`,
-        },
-    });
-
     const deleteUser = () => {
-        authAxios.delete(DELETE_USER(id));
+        axios 
+            .delete(DELETE_USER(id), {
+                headers: { Authorization: `Bearer ${getToken()}` }
+            })
+            .then((res) => {
+                if (res) {
+                    console.log(res);
+                    window.location.reload();
+                }
+            })
+            .catch((err) => console.log(err))
     };
-
-    // const fetchUser = async () => {
-    //     const response = await authAxios.get(SHOW_USER(id))
-    //     .catch((err) => console.log(err))
-    // 
-    //     if (response && isLogin()) {
-    //       const user = response.data;
-    // 
-    //       console.log("user: ", user);
-    //       setUser(response.data.data);
-    //     }
-    // };
 
     return (
         <>
             <Link
                 to={{ pathname: `/user-update/${id}`, state: id }}
             >
-                <button onClick={() => {
-                    // fetchUser();
-                    // console.log("user: ", user);
-                }}>
+                <button>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-green-500" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
@@ -56,7 +42,6 @@ export const UserAction = ({ id }) => {
             <button onClick={() => {
                 if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
                     deleteUser();
-                    window.location.reload();
                 }
             }}>
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
@@ -108,8 +93,8 @@ const UserAdmin = () => {
                     return (
                         <img 
                             alt="profile"
-                            src={value}
-                            className="w-12" 
+                            src={SHOW_PHOTO(value)}
+                            className="w-12 rounded-full" 
                         />
                     )
                 },

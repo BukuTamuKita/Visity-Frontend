@@ -7,7 +7,8 @@ import {
     CREATE_APPOINTMENT, 
     JWT_HEADER, 
     SHOW_HOSTS, 
-    SHOW_HOST_APPOINTMENT 
+    SHOW_HOST_APPOINTMENT,
+    SHOW_USER, 
 } from "../../constants/urls";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { getToken, isLogin } from "../../utils/auth";
@@ -22,6 +23,7 @@ const CreateAppointment = () => {
     const [hosts, setHosts] = useState([]);
     const [appointment, setAppointment] = useState([]);
     const [filteredHost, setFilteredHost] = useState({});
+    const [photo, setPhoto] = useState("");
     const [display, setDisplay] = useState(false);
 
     const searchBarAttr = {
@@ -72,6 +74,20 @@ const CreateAppointment = () => {
     fetchAppointment();
   }, [filteredHost]);
 
+  const fetchUser = async () => {
+      const response = await axios.get(SHOW_USER(filteredHost.id), {
+          headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .catch((err) => console.log(err))
+
+      if (response && isLogin()) {
+        const photo = response.data;
+
+        console.log("photo: ", photo);
+        setPhoto(response.data.data.photo);
+      }
+  };
+
     // const createAppointment = async () => {
     //     try {
     //         console.log(typeof filteredHost, typeof guestId, purpose);
@@ -118,6 +134,7 @@ const CreateAppointment = () => {
     const getFilteredHost = (host) => {
         console.log("host terpilih:", host);
         setFilteredHost(host);
+        fetchUser();
 
         if (host !== null) {
             setDisplay(true);
@@ -149,10 +166,10 @@ const CreateAppointment = () => {
 
     return (
         <div className="py-24 px-16 grid grid-cols-12">
+            <p className="col-span-12 text-4xl mb-10">Create Appointment</p>
             {/* Section 1 */}
-            <div className="col-span-6 divide-y divide-solid divide-gray-300">
+            <div className="col-span-5 divide-y divide-solid divide-gray-300">
                 <div className="pb-6">
-                    <p className="text-4xl mb-10">Create Appointment</p>
                     <p className="text-2xl mb-4">
                         Who would you like to meet today?
                     </p>
@@ -164,7 +181,7 @@ const CreateAppointment = () => {
                         getFilteredHost={getFilteredHost}
                     />
                     {/* Meeting List Card */}
-                    {display && (
+                    {/* {display && (
                         <div className="flex flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
                             <div className="flex gap-4 p-4">
                                 <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
@@ -194,7 +211,7 @@ const CreateAppointment = () => {
                                 })}
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Section 2 */}
@@ -371,6 +388,46 @@ const CreateAppointment = () => {
                     </div>
                 </div>
             </div>
+            {display ? (
+                <div className="col-start-7 col-span-4 h-auto flex flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
+                    <div className="flex gap-4 p-4">
+                        <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
+                            {/* <p className="text-xs">Image</p> */}
+                            <img alt="host-profile" className="h-12 w-12 rounded-full flex justify-center items-center" src={photo}></img>
+                        </div>
+                        <div className="flex flex-col">
+                            <p className="text-base font-semibold">{ filteredHost.name }</p>
+                            <p className="text-sm text-gray-500">{ filteredHost.position }</p>
+                        </div>
+                    </div>
+                    <div className="flex flex-col p-4">
+                        <p className="text-2xl font-semibold mb-8">Meeting List</p>
+                        {
+                            appointment.length !== 0 && 
+                            appointment.map((data) => {
+                            return (
+                                <div className="mb-1" key={data.id}>
+                                    <div 
+                                        key={data.id}
+                                        className="flex justify-between text-base"
+                                    >
+                                        <p>{ data.guest.name }</p>
+                                        <p>{ getStatusStyle(data.status) }</p>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            ) : (
+                <div className="flex flex-col p-4 col-start-7 col-span-4">
+                    <p>Meeting Information</p>
+                    <div className="border border-gray-200 rounded-lg shadow py-6 flex flex-col justify-center items-center">
+                        <p className="font-semibold">No Host Selected</p>
+                        <p>Please find your host</p>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
