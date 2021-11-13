@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-    Link,
-} from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SidebarData from "./SidebarData";
 import { logout } from "../../utils/auth";
 
@@ -45,7 +43,7 @@ const Drawer = () => {
             </div>
 
             {/* Sidebar Title */}
-            <div className="sidebar flex flex-col bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-2 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+            <div className="sidebar flex flex-col bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-4 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
                 <a
                     href="/#"
                     className="text-white flex items-center space-x-2 px-4"
@@ -71,17 +69,23 @@ const Drawer = () => {
                 <div className="flex flex-col justify-between flex-1 mt-6">
                     <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
                         <ul
-                            className="nav-menu-items auto-cols-auto"
+                            className="flex flex-col gap-2"
                             onClick={showSidebar}
                         >
                             {SidebarData.map((item, index) => {
                                 return (
                                     <div key={item.path} className="flex-auto">
-                                        <Link to={item.path}>
-                                            <li className={item.cName}>
+                                        <NavLink
+                                            exact
+                                            to={item.path}
+                                            className="block py-2.5 px-4 items-center rounded transition duration-200  hover:bg-blue-700 hover:text-white"
+                                            activeClassName="bg-blue-700 text-white"
+                                        >
+                                            <div className="flex flex-row items-center gap-x-2">
+                                                {item.icon}
                                                 <span>{item.title}</span>
-                                            </li>
-                                        </Link>
+                                            </div>
+                                        </NavLink>
                                     </div>
                                 );
                             })}
@@ -90,7 +94,23 @@ const Drawer = () => {
                     <div>
                         <Link to="/" onClick={logout}>
                             <li className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
-                                <span>Logout</span>
+                                <div className="flex flex-row items-center gap-x-2">
+                                    <svg
+                                        class="w-6 h-6"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                                        ></path>
+                                    </svg>
+                                    <span>Logout</span>
+                                </div>
                             </li>
                         </Link>
                     </div>
