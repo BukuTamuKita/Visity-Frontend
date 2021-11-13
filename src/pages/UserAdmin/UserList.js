@@ -6,13 +6,16 @@ import React, {
 import axios from "axios";
 import { 
     DELETE_USER, 
-    JWT_HEADER, 
-    SHOW_USERS } from "../../constants/urls";
+    JWT_HEADER,
+    SHOW_USERS, 
+} from "../../constants/urls";
 import Table from "../../components/Table/Table";
-import { isLogin } from "../../utils/auth";
+import { getToken, isLogin } from "../../utils/auth";
 import { Link } from "react-router-dom";
 
 export const UserAction = ({ id }) => {
+    // const [user, setUser] = useState({});
+
     const authAxios = axios.create({
         baseURL: "http://127.0.0.1:8000/api/",
         headers: {
@@ -24,14 +27,29 @@ export const UserAction = ({ id }) => {
         authAxios.delete(DELETE_USER(id));
     };
 
+    // const fetchUser = async () => {
+    //     const response = await authAxios.get(SHOW_USER(id))
+    //     .catch((err) => console.log(err))
+    // 
+    //     if (response && isLogin()) {
+    //       const user = response.data;
+    // 
+    //       console.log("user: ", user);
+    //       setUser(response.data.data);
+    //     }
+    // };
+
     return (
         <>
             <Link
-                to={{ pathname: "/user-update", state: id }}
+                to={{ pathname: `/user-update/${id}`, state: id }}
             >
-                <button onClick={() => console.log("edit dari userlist")}>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                <button onClick={() => {
+                    // fetchUser();
+                    // console.log("user: ", user);
+                }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
                 </button>
             </Link>
@@ -102,7 +120,7 @@ const UserAdmin = () => {
 
     const fetchUsers = async () => {
         const response = await axios.get(SHOW_USERS, {
-            headers: { Authorization: `Bearer ${JWT_HEADER}` },
+            headers: { Authorization: `Bearer ${getToken()}` },
         })
         .catch((err) => console.log(err))
 
@@ -125,7 +143,7 @@ const UserAdmin = () => {
         <div className="py-24 px-16">
             <p className="text-4xl mb-10">User List</p>
             <Table 
-                columns = {userColumn}
+                columns={userColumn}
                 data={userData}
             />
         </div>

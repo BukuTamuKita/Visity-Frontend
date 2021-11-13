@@ -3,11 +3,16 @@ import React, {
     useEffect,
 } from "react";
 import axios from "axios";
+import { 
+    CREATE_APPOINTMENT, 
+    JWT_HEADER, 
+    SHOW_HOSTS, 
+    SHOW_HOST_APPOINTMENT 
+} from "../../constants/urls";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { CREATE_APPOINTMENT, JWT_HEADER, SHOW_HOSTS, SHOW_HOST_APPOINTMENT } from "../../constants/urls";
-import { isLogin } from "../../utils/auth";
+import { getToken, isLogin } from "../../utils/auth";
 
-const AppointmentPage = () => {
+const CreateAppointment = () => {
     const [guestId, setGuestId] = useState();
     const [name, setName] = useState("");
     const [nik, setNik] = useState("");
@@ -33,7 +38,7 @@ const AppointmentPage = () => {
 
     const fetchHosts = async () => {
         const response = await axios.get(SHOW_HOSTS, {
-          headers: { Authorization: `Bearer ${JWT_HEADER}` },
+          headers: { Authorization: `Bearer ${getToken()}` },
         })
         .catch((err) => console.log(err))
         
@@ -51,7 +56,7 @@ const AppointmentPage = () => {
   
     const fetchAppointment = async () => {
         const response = await axios.get(SHOW_HOST_APPOINTMENT(filteredHost.id), {
-            headers: { Authorization: `Bearer ${JWT_HEADER}` },
+            headers: { Authorization: `Bearer ${getToken()}` },
         })
         .catch((err) => console.log(err))
 
@@ -115,7 +120,6 @@ const AppointmentPage = () => {
         setFilteredHost(host);
 
         if (host !== null) {
-            // setFilteredHost(host);
             setDisplay(true);
             console.log("filtered host: ", filteredHost);
         }
@@ -177,7 +181,7 @@ const AppointmentPage = () => {
                                     appointment.length !== 0 && 
                                     appointment.map((data) => {
                                     return (
-                                        <div className="mb-1">
+                                        <div className="mb-1" key={data.id}>
                                             <div 
                                                 key={data.id}
                                                 className="flex justify-between text-base"
@@ -371,4 +375,4 @@ const AppointmentPage = () => {
     );
 };
 
-export default AppointmentPage;
+export default CreateAppointment;
