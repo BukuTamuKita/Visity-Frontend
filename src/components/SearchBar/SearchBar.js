@@ -25,7 +25,6 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
     if (searchWord === "") {
       setFilterredHost([]);
     } else {
-      console.log("new filter: ", newFilter);
       setFilterredHost(newFilter);
     }
     setSearch(searchWord);

@@ -4,8 +4,18 @@ import { useHistory } from "react-router";
 import { CREATE_USER } from "../../constants/urls";
 import { getToken } from "../../utils/auth";
 
-const UserForm = ({ title, data, action }) => {
-    const [user, setUser] = useState({});
+const UserForm = ({ title, data }) => {
+    const [user, setUser] = useState({
+        name: data.name,
+        role: data.role,
+        nip: data.nip,
+        position: data.position,
+        photo: data.photo,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+    });
+
     const [display, setDisplay] = useState(false);
     const [image, setImage] = useState(null);
     const history = useHistory();
@@ -14,13 +24,6 @@ const UserForm = ({ title, data, action }) => {
         setImage(e.target.files[0]);
         setUser({ ...user, photo: image });
         setDisplay(!display);
-
-//         const formData = new FormData();
-//         formData.append("photo", file);
-//         console.log("formdata: " , formData);
-// 
-//         setUser({ ...user, photo: formData });
-//         setDisplay(!display);
     };
 
     const handleCreateUser = () => {
@@ -47,6 +50,30 @@ const UserForm = ({ title, data, action }) => {
             })
     };
 
+    // const handleUpdateUser = () => {
+    //     let formData = new FormData();
+    //     console.log(formData);
+    //     formData.append('photo', image);
+
+    //     for (let key in user) {
+    //         formData.append(key, user[key]);
+    //     }
+
+    //     axios 
+    //     .put(CREATE_USER,
+    //         formData,
+    //         {
+    //             headers: {
+    //                 Authorization: `Bearer ${getToken()}`,
+    //                 'Content-Type': 'application/form-data',
+    //             }
+    //         })
+    //         .then(() => {
+    //             history.push("/user-list");
+    //             window.location.reload();
+    //         })
+    // };
+
     return (
         <div className="py-24 px-16 grid grid-cols-12">
             <div className="col-span-6">
@@ -68,7 +95,7 @@ const UserForm = ({ title, data, action }) => {
                             placeholder="Enter your name"
                             autoComplete="name"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                            // value={data.name}
+                            defaultValue={data.name}
                             onChange={(e) => setUser({ ...user, name: e.target.value })}
                         />
                     </div>
@@ -83,12 +110,12 @@ const UserForm = ({ title, data, action }) => {
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             onChange={(e) => setUser({ ...user, role: e.target.value.toLowerCase() })}
                         >
-                            <option>Admin</option>
-                            <option>Host</option>
+                            <option selected={data.role === "admin" ? true : false}>admin</option>
+                            <option selected={data.role === "host" ? true : false}>host</option>
                         </select>
                     </div>
                     {
-                        user.role === "host" && (
+                        (user.role === "host" || data.role === "host") && (
                             <div className="grid grid-cols-6 gap-6">
                                 <div className="mb-4 col-span-3">
                                     <label
@@ -104,6 +131,7 @@ const UserForm = ({ title, data, action }) => {
                                         placeholder="Enter your NIP"
                                         autoComplete="nip"
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                        defaultValue={data.nip}
                                         onChange={(e) => setUser({ ...user, nip: e.target.value })}
                                     />
                                 </div>
@@ -121,7 +149,7 @@ const UserForm = ({ title, data, action }) => {
                                         placeholder="Enter your position"
                                         autoComplete="position"
                                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                        // value={user.name}
+                                        defaultValue={data.position}
                                         onChange={(e) => setUser({ ...user, position: e.target.value })}
                                     />
                                 </div>
@@ -158,6 +186,7 @@ const UserForm = ({ title, data, action }) => {
                                             type="file"
                                             className="sr-only"
                                             accept=".jpg, .png, .jpeg"
+                                            defaultValue={data.photo}
                                             onChange={(e) => handleImage(e)}
                                         />
                                     </label>
@@ -196,6 +225,7 @@ const UserForm = ({ title, data, action }) => {
                             placeholder="Enter your email"
                             autoComplete="email"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                            defaultValue={data.email}
                             onChange={(e) => setUser({ ...user, email: e.target.value })}
                         />
                     </div>
@@ -213,6 +243,7 @@ const UserForm = ({ title, data, action }) => {
                             placeholder="Enter your password"
                             autoComplete="password"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                            defaultValue={data.password}
                             onChange={(e) => setUser({ ...user, password: e.target.value })}
                         />
                     </div>
@@ -230,6 +261,7 @@ const UserForm = ({ title, data, action }) => {
                             placeholder="Confirm your password"
                             autoComplete="confirm"
                             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                            defaultValue={data.password_confirmation}
                             onChange={(e) => setUser({ ...user, password_confirmation: e.target.value })}
                         />
                     </div>
@@ -248,10 +280,7 @@ const UserForm = ({ title, data, action }) => {
                             type="submit"
                             onClick={() => {
                                 if (title === "Create") {
-                                    // console.log(typeof action);
-                                    // action(user);
                                     handleCreateUser();
-                                    // console.log(user);
                                 }
                             }}
                         >

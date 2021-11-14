@@ -10,7 +10,6 @@ import {
   JWT_HEADER, 
   SHOW_APPOINTMENT,
 } from '../../constants/urls';
-import { useHistory } from "react-router";
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
 
@@ -65,7 +64,6 @@ export const AppointmentAction = ({ id }) => {
 
 const AppointmentHistory = () => {
   const [appointments, setAppointments] = useState([]);
-  const history = useHistory();
 
   const columns = useMemo(() => 
     [
@@ -149,19 +147,6 @@ const AppointmentHistory = () => {
   useEffect(() => {
     fetchAppointments();
   }, []);
-
-  // const exportHistory = () => {
-  //   axios.get(EXPORT_DATA, {
-  //     headers: {
-  //       Authorization: `Bearer ${getToken()}`,
-  //     },
-  //     responseType: 'blob',
-  //   })
-  //   .then(() => {
-  //     window.open(EXPORT_DATA);
-  //   })
-  //   .catch((err) => console.log(err))
-  // };
 
   const appointmentsData = useMemo(() => [...appointments], [appointments]);
   const appointmentsColumn = useMemo(() => [...columns], [columns]);

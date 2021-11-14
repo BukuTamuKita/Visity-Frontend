@@ -5,26 +5,41 @@ import React, {
 import axios from "axios";
 import { 
     CREATE_APPOINTMENT, 
+    CREATE_GUEST, 
     JWT_HEADER, 
+    SCAN_KTP, 
     SHOW_HOSTS, 
     SHOW_HOST_APPOINTMENT,
-    SHOW_USER, 
 } from "../../constants/urls";
+import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { getToken, isLogin } from "../../utils/auth";
+import { buttonPrimary, buttonSecondary, inputField } from "../../components/Styles";
 
 const CreateAppointment = () => {
-    const [guestId, setGuestId] = useState();
-    const [name, setName] = useState("");
-    const [nik, setNik] = useState("");
+    // const [guestId, setGuestId] = useState();
+    let guestId = 0;
+    const [guestInfo, setGuestInfo] = useState({});
+    const [display, setDisplay] = useState(false);
+    const [displayFileName, setDisplayFileName] = useState(false);
+
+    // Guest
+    const [photo, setPhoto] = useState({});
     const [email, setEmail] = useState("");
-    const [address, setAddress] = useState("");
+
+    // Appointment
     const [purpose, setPurpose] = useState("");
     const [hosts, setHosts] = useState([]);
     const [appointment, setAppointment] = useState([]);
-    const [filteredHost, setFilteredHost] = useState({});
-    const [photo, setPhoto] = useState("");
-    const [display, setDisplay] = useState(false);
+    const [filteredHost, setFilteredHost] = useState({
+        id: 1,
+        name: '',
+        nip: '',
+        position: '',
+        users: null,
+    });
+
+    const history = useHistory();
 
     const searchBarAttr = {
         style: "w-full mb-4",
@@ -43,7 +58,7 @@ const CreateAppointment = () => {
           headers: { Authorization: `Bearer ${getToken()}` },
         })
         .catch((err) => console.log(err))
-        
+
         if (response && isLogin()) {
           const hosts = response.data;
     
@@ -70,37 +85,60 @@ const CreateAppointment = () => {
         }
     };
 
-  useEffect(() => {
-    fetchAppointment();
-  }, [filteredHost]);
+    useEffect(() => {
+        fetchAppointment();
+    }, [filteredHost.id]);
 
-  const fetchUser = async () => {
-      const response = await axios.get(SHOW_USER(filteredHost.id), {
-          headers: { Authorization: `Bearer ${getToken()}` },
-      })
-      .catch((err) => console.log(err))
+    const getFilteredHost = (host) => {
+        console.log("host terpilih:", host);
+        setFilteredHost(host);
+        // filteredHost = {
+        //     ...host
+        // };
 
-      if (response && isLogin()) {
-        const photo = response.data;
+        if (host !== null) {
+            setDisplay(true);
+            console.log("filtered host: ", filteredHost);
+        }
+    };
 
-        console.log("photo: ", photo);
-        setPhoto(response.data.data.photo);
-      }
-  };
+    const handleKTPImage = (e) => {
+        let file = e.target.files[0];
+        setPhoto(file);
+        setDisplayFileName(!displayFileName);
+    };
 
-    // const createAppointment = async () => {
-    //     try {
-    //         console.log(typeof filteredHost, typeof guestId, purpose);
-    //         const result = await authAxios.post("appointments", {
-    //             host: filteredHost.id,
-    //             guest: guestId,
-    //             purpose: purpose,
-    //         });
-    //         console.log(result);
-    //     } catch (err) {
-    //         console.log("error: ", err);
-    //     }
-    // };
+    const scanKTP = () => {
+        let file = photo;
+        let formData = new FormData();
+
+        formData.append('image', file);
+
+        axios
+            .post(SCAN_KTP, formData, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                console.log("KTP response: ", res);
+                setGuestInfo(res.data[0]);
+            })
+    };
+
+    const createGuest = async () => {
+        const response = await authAxios.post(CREATE_GUEST, {
+            name: capitalizeFirstLetter(guestInfo.name),
+            nik: capitalizeFirstLetter(guestInfo.nik),
+            address: capitalizeFirstLetter(guestInfo.address), 
+            email: email,
+        })
+        .catch((err) => console.log(err))
+
+        if (response) {
+            console.log("new guest id:", response.data.id);
+            guestId = response.data.id;
+            createAppointment();
+        }
+    };
 
     const createAppointment = async () => {
         const response = await authAxios.post(CREATE_APPOINTMENT, {
@@ -110,35 +148,10 @@ const CreateAppointment = () => {
         })
         .catch((err) => console.log(err))
 
-        if (response && isLogin()) {
+        if (response) {
             console.log(response);
-        }
-    };
-
-    const createGuest = async () => {
-        try {
-            const result = await authAxios.post("guests", {
-                name: name,
-                nik: nik,
-                email: email,
-                address: address,
-            });
-            console.log("ini response guest: ", result.data.id);
-            setGuestId(result.data.id);
-            createAppointment();
-        } catch (err) {
-            console.log("error: ", err);
-        }
-    };
-
-    const getFilteredHost = (host) => {
-        console.log("host terpilih:", host);
-        setFilteredHost(host);
-        fetchUser();
-
-        if (host !== null) {
-            setDisplay(true);
-            console.log("filtered host: ", filteredHost);
+            history.push("/appointment-history");
+            window.location.reload();
         }
     };
 
@@ -164,9 +177,26 @@ const CreateAppointment = () => {
         }
     };
 
+    const capitalizeFirstLetter = (words) => {
+        if (words) {
+            words = "" + words;
+            const arr = words.split(" ");
+    
+            for (let i = 0; i < arr.length; i++) {
+                arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
+            }
+    
+            const result = arr.join(" ");   
+            console.log("result: ", result);
+            return result;
+        }
+        
+        return "";
+    };
+
     return (
         <div className="py-24 px-16 grid grid-cols-12">
-            <p className="col-span-12 text-4xl mb-10">Create Appointment</p>
+            <p className="col-span-12 text-4xl mb-10 text-primary">Create Appointment</p>
             {/* Section 1 */}
             <div className="col-span-5 divide-y divide-solid divide-gray-300">
                 <div className="pb-6">
@@ -180,38 +210,6 @@ const CreateAppointment = () => {
                         data={hosts}
                         getFilteredHost={getFilteredHost}
                     />
-                    {/* Meeting List Card */}
-                    {/* {display && (
-                        <div className="flex flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
-                            <div className="flex gap-4 p-4">
-                                <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
-                                    <p className="text-xs">Image</p>
-                                </div>
-                                <div className="flex flex-col">
-                                    <p className="text-base font-semibold">{ filteredHost.name }</p>
-                                    <p className="text-sm text-gray-500">{ filteredHost.position }</p>
-                                </div>
-                            </div>
-                            <div className="flex flex-col p-4">
-                                <p className="text-2xl font-semibold mb-8">Meeting List</p>
-                                {
-                                    appointment.length !== 0 && 
-                                    appointment.map((data) => {
-                                    return (
-                                        <div className="mb-1" key={data.id}>
-                                            <div 
-                                                key={data.id}
-                                                className="flex justify-between text-base"
-                                            >
-                                                <p>{ data.guest.name }</p>
-                                                <p>{ getStatusStyle(data.status) }</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
-                        </div>
-                    )} */}
                 </div>
 
                 {/* Section 2 */}
@@ -248,21 +246,31 @@ const CreateAppointment = () => {
                                             name="file-upload"
                                             type="file"
                                             className="sr-only"
+                                            onChange={(e) => handleKTPImage(e)}
                                         />
                                     </label>
                                     <p className="pl-1">or drag and drop</p>
                                 </div>
-                                <p className="text-xs text-gray-500 text-center">
-                                    PNG, JPG, GIF up to 10MB
-                                </p>
+                                {
+                                    displayFileName ? (
+                                        <div>
+                                            <p className="text-xs text-gray-500 text-center">Upload status: <strong>Succeed</strong></p>
+                                        </div>
+                                    ) : (
+                                        <p className="text-xs text-gray-500 text-center">
+                                            PNG, JPG, GIF up to 10MB
+                                        </p>
+                                    )
+                                }
                             </div>
                         </div>
 
                         {/* Scan Button */}
                         <div className="flex justify-end">
                             <button
-                                className="px-12 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                                className={`${buttonSecondary}`}
                                 type="submit"
+                                onClick={scanKTP}
                             >
                                 Scan
                             </button>
@@ -284,9 +292,12 @@ const CreateAppointment = () => {
                                 placeholder="Enter your NIK"
                                 autoComplete="nik"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                onChange={(e) => {
-                                    setNik(e.target.value);
-                                }}
+                                defaultValue={guestInfo.nik}
+                                // defaultValue={nik}
+                                // value={tempData.nik}
+                                // onChange={(e) => setNik(e.target.value)}
+                                // onChange={(e) => setTempData({ ...tempData, nik: e.target.value })}
+                                onChange={(e) => setGuestInfo({ ...guestInfo, nik: e.target.value })}
                             />
                         </div>
                         <div className="mb-4">
@@ -303,9 +314,12 @@ const CreateAppointment = () => {
                                 placeholder="Enter your name"
                                 autoComplete="name"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                onChange={(e) => {
-                                    setName(e.target.value);
-                                }}
+                                defaultValue={guestInfo ? capitalizeFirstLetter(guestInfo.name) : guestInfo.name}
+                                // defaultValue={guestInfo ? capitalizeFirstLetter(name) : name}
+                                // value={tempData.name}
+                                // onChange={(e) => setName(e.target.value)}
+                                // onChange={(e) => setTempData({ ...tempData, name: e.target.value })}
+                                onChange={(e) => setGuestInfo({ ...guestInfo, name: e.target.value })}
                             />
                         </div>
                         <div className="mb-4">
@@ -322,9 +336,8 @@ const CreateAppointment = () => {
                                 placeholder="Enter your address"
                                 autoComplete="address"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                onChange={(e) => {
-                                    setAddress(e.target.value);
-                                }}
+                                defaultValue={guestInfo ? capitalizeFirstLetter(guestInfo.address) : guestInfo.address}
+                                onChange={(e) => setGuestInfo({ ...guestInfo, address: e.target.value })}
                             />
                         </div>
                         <div className="mb-4">
@@ -341,9 +354,7 @@ const CreateAppointment = () => {
                                 placeholder="Enter your Email"
                                 autoComplete="email"
                                 className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                onChange={(e) => {
-                                    setEmail(e.target.value);
-                                }}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
                         <div className="mb-6 row-span-2">
@@ -359,31 +370,21 @@ const CreateAppointment = () => {
                                 id="agenda"
                                 placeholder="Enter your agenda"
                                 autoComplete="agenda"
-                                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                onChange={(e) => {
-                                    setPurpose(e.target.value);
-                                }}
+                                className={`${inputField}`}
+                                onChange={(e) => setPurpose(e.target.value)}
                             />
                         </div>
 
-                        <div className="">
-                            <div className="flex flex-row justify-end gap-x-5">
-                                <button
-                                    className="px-12 py-2 rounded-lg text-sm text-purple-500 font-medium border border-purple-500 focus:outline-none focus:ring transition border-gray-200 hover:bg-purple-200 hover:border-purple-600 hover:text-purple-600 active:bg-gray-200 focus:ring-gray-300"
-                                    type="submit"
-                                >
-                                    Back
-                                </button>
-                                <button
-                                    className="px-12 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
-                                    type="submit"
-                                    onClick={() => {
-                                        createGuest();
-                                    }}
-                                >
-                                    Submit
-                                </button>
-                            </div>
+                        <div className="flex flex-row justify-end gap-x-5">
+                            <button
+                                className={`${buttonPrimary}`}
+                                type="submit"
+                                onClick={() => {
+                                    createGuest();
+                                }}
+                            >
+                                Make Appointment
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -391,10 +392,10 @@ const CreateAppointment = () => {
             {display ? (
                 <div className="col-start-7 col-span-4 h-auto flex flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
                     <div className="flex gap-4 p-4">
-                        <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
-                            {/* <p className="text-xs">Image</p> */}
+                        {/* <div className="h-12 w-12 rounded-full flex justify-center items-center">
+                            <p className="text-xs">Image</p>
                             <img alt="host-profile" className="h-12 w-12 rounded-full flex justify-center items-center" src={photo}></img>
-                        </div>
+                        </div> */}
                         <div className="flex flex-col">
                             <p className="text-base font-semibold">{ filteredHost.name }</p>
                             <p className="text-sm text-gray-500">{ filteredHost.position }</p>
@@ -412,7 +413,7 @@ const CreateAppointment = () => {
                                         className="flex justify-between text-base"
                                     >
                                         <p>{ data.guest.name }</p>
-                                        <p>{ getStatusStyle(data.status) }</p>
+                                        { getStatusStyle(data.status) }
                                     </div>
                                 </div>
                             )

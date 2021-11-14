@@ -8,9 +8,15 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      screens: {
-        // 'sm': '375px',
-        // 'md' : ''
+      colors: {
+        'primary': '#2E4DA7',
+        'secondary': '#7D8CF0',
+        'accent': '#E7EBF8',
+        'darker-accent': '#C7D2FF',
+        'success': '#10B981',
+        'info': '#10B981',
+        'warning': '#10B981',
+        'danger': '#10B981',
       }
     }
   },
