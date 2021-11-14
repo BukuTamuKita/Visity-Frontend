@@ -12,6 +12,7 @@ import { ColumnFilter } from "./ColumnFilter";
 import { Checkbox } from "./Checkbox";
 import { AppointmentAction } from "../../pages/AppointmentPage/AppointmentHistory";
 import { UserAction } from "../../pages/UserAdmin/UserList";
+import { EXPORT_DATA } from "../../constants/urls";
 
 const Table = ({ 
     columns, 
@@ -140,9 +141,14 @@ const Table = ({
                                             </button>
                                         </Link> 
                                     }
-                                    <button className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
-                                        Export
-                                    </button>
+                                    {window.location.pathname === "/appointment-history" &&
+                                        <button 
+                                            className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                                            onClick={(e) => window.open(EXPORT_DATA)}
+                                        >
+                                            Export
+                                        </button>
+                                    }
                                 </div>
 
                             </div>

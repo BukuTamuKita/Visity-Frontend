@@ -8,7 +8,7 @@ import {
   DELETE_APPOINTMENT, 
   UPDATE_APPOINTMENT, 
   JWT_HEADER, 
-  SHOW_APPOINTMENT, 
+  SHOW_APPOINTMENT,
 } from '../../constants/urls';
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
@@ -23,7 +23,7 @@ export const AppointmentAction = ({ id }) => {
 
   const cancelAppointment = (note) => {
     authAxios.put(UPDATE_APPOINTMENT(id), {
-        status: "declined",
+        status: "canceled",
         notes: note,
       }
     )
@@ -101,6 +101,12 @@ const AppointmentHistory = () => {
                 { value }
               </div>
             )
+          } else if (value === "canceled") {
+            return (
+              <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
+                { value }
+              </div>
+            )
           }
         },
       },
@@ -150,7 +156,7 @@ const AppointmentHistory = () => {
         <p className="text-4xl mb-10">Appointment History</p>
         <Table 
           columns={appointmentsColumn} 
-          data={appointmentsData} 
+          data={appointmentsData}
         />
       </div>
   )
