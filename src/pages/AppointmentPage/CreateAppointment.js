@@ -168,7 +168,7 @@ const CreateAppointment = () => {
     return (
         <div className="py-24 px-16 grid grid-cols-12 gap-16">
             <div className="flex-auto flex-column col-span-12">
-                <p className=" text-4xl font-bold text-blue-800">
+                <p className=" text-4xl font-bold text-primary">
                     Create Appointment
                 </p>
                 {/* Section 1 */}
@@ -179,7 +179,7 @@ const CreateAppointment = () => {
             <div className="flex flex-row col-span-10 gap-20">
                 <div className="flex-1 divide-y divide-solid divide-gray-300">
                     <div className="pb-6">
-                        <p className="text-2xl mb-4">
+                        <p className="text-2xl mb-4 font-bold">
                             Who would you like to meet today?
                         </p>
 
@@ -227,7 +227,7 @@ const CreateAppointment = () => {
                     <div>
                         {/* Scan KTP Section */}
                         <div className="mt-10 mb-6">
-                            <p className="text-2xl mb-4">
+                            <p className="text-2xl mb-4 font-bold">
                                 Please input your data
                             </p>
                             {/* Input KTP File */}
@@ -272,7 +272,7 @@ const CreateAppointment = () => {
                             {/* Scan Button */}
                             <div className="flex justify-end">
                                 <button
-                                    className="px-12 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                                    className="secondary-btn"
                                     type="submit"
                                 >
                                     Scan
@@ -380,19 +380,19 @@ const CreateAppointment = () => {
                             <div className="">
                                 <div className="flex flex-row justify-end gap-x-5">
                                     <button
-                                        className="px-12 py-2 rounded-lg text-sm text-purple-500 font-medium border border-purple-500 focus:outline-none focus:ring transition border-gray-200 hover:bg-purple-200 hover:border-purple-600 hover:text-purple-600 active:bg-gray-200 focus:ring-gray-300"
+                                        className="outline-btn"
                                         type="submit"
                                     >
                                         Back
                                     </button>
                                     <button
-                                        className="px-12 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                                        className="primary-btn"
                                         type="submit"
                                         onClick={() => {
                                             createGuest();
                                         }}
                                     >
-                                        Submit
+                                        Make Appointment
                                     </button>
                                 </div>
                             </div>
@@ -401,7 +401,7 @@ const CreateAppointment = () => {
                 </div>
                 <div className="flex-initial">
                     <div className="flex flex-col gap-4 ">
-                        <p className="text-xl text-blue-800 font-bold">
+                        <p className="text-xl text-primary font-bold">
                             Appointment Information
                         </p>
                         {display ? (

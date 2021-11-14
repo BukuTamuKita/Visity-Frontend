@@ -15,7 +15,6 @@ function App() {
         <Router>
             <Switch>
                 <>
-                
                     {APP_ROUTE.map((value, index) => {
                         return (
                             <PublicRoute
