@@ -45,7 +45,7 @@ const CreateAppointment = () => {
     const authAxios = axios.create({
         baseURL: "http://127.0.0.1:8000/api/",
         headers: {
-            Authorization: `Bearer ${JWT_HEADER}`,
+            Authorization: `Bearer ${getToken()}`,
         },
     });
 
@@ -438,14 +438,15 @@ const CreateAppointment = () => {
                         {display ? (
                             <div className="flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
                                 <div className="flex gap-4 p-4">
-                                    <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
-                                        {/* <p className="text-xs">Image</p> */}
+                                    {/* <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
+                                        
                                         <img
                                             alt="host-profile"
                                             className="h-12 w-12 rounded-full flex justify-center items-center"
                                             src={photo}
                                         ></img>
                                     </div>
+                                     */}
                                     <div className="flex flex-col">
                                         <p className="text-base font-semibold">
                                             {filteredHost.name}
