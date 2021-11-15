@@ -7,30 +7,41 @@ import axios from "axios";
 import { 
   DELETE_APPOINTMENT, 
   UPDATE_APPOINTMENT, 
-  JWT_HEADER, 
   SHOW_APPOINTMENT,
 } from '../../constants/urls';
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
 
 export const AppointmentAction = ({ id }) => {
-  const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
-    headers: {
-        Authorization: `Bearer ${JWT_HEADER}`,
-    },
-  });
-
   const cancelAppointment = (note) => {
-    authAxios.put(UPDATE_APPOINTMENT(id), {
+    axios
+      .put(UPDATE_APPOINTMENT(id), {
         status: "canceled",
         notes: note,
-      }
-    )
+      }, {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then((res) => {
+        if (res) {
+          console.log("cancel res: ", res);
+          window.location.reload();
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   const deleteAppointment = () => {
-    authAxios.delete(DELETE_APPOINTMENT(id))
+    axios
+      .delete(DELETE_APPOINTMENT(id), {
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      .then((res) => {
+        if (res) {
+          console.log("delete res: ", res);
+          window.location.reload();
+        }
+      })
+      .catch((err) => console.log(err))
   };
 
   return (
@@ -41,7 +52,6 @@ export const AppointmentAction = ({ id }) => {
 
         if (notes !== null) {
           cancelAppointment(notes);
-          window.location.reload();
         }
       }}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
@@ -51,7 +61,6 @@ export const AppointmentAction = ({ id }) => {
       <button onClick={() => {
         if (window.confirm("Are you sure want to delete id: " + id + " ?")) {
           deleteAppointment();
-          window.location.reload();
         }
       }}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">

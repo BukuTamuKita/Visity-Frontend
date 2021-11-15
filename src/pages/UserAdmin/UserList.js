@@ -11,7 +11,7 @@ import {
 } from "../../constants/urls";
 import Table from "../../components/Table/Table";
 import { getToken, isLogin } from "../../utils/auth";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export const UserAction = ({ id }) => {
     const deleteUser = () => {
@@ -30,7 +30,7 @@ export const UserAction = ({ id }) => {
 
     return (
         <>
-            <Link
+            {/* <Link
                 to={{ pathname: `/user-update/${id}`, state: id }}
             >
                 <button>
@@ -38,7 +38,7 @@ export const UserAction = ({ id }) => {
                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
                 </button>
-            </Link>
+            </Link> */}
             <button onClick={() => {
                 if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
                     deleteUser();

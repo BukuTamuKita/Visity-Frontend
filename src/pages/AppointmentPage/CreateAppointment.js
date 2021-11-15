@@ -3,19 +3,16 @@ import axios from "axios";
 import {
     CREATE_APPOINTMENT,
     CREATE_GUEST,
-    JWT_HEADER,
     SCAN_KTP,
     SEND_NOTIFICATION,
     SHOW_HOSTS,
     SHOW_HOST_APPOINTMENT,
-    SHOW_USER,
 } from "../../constants/urls";
 import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { getToken, isLogin } from "../../utils/auth";
 
 const CreateAppointment = () => {
-    // const [guestId, setGuestId] = useState();
     let guestId = 0;
     const [guestInfo, setGuestInfo] = useState({});
     const [display, setDisplay] = useState(false);
@@ -92,9 +89,6 @@ const CreateAppointment = () => {
     const getFilteredHost = (host) => {
         console.log("host terpilih:", host);
         setFilteredHost(host);
-        // filteredHost = {
-        //     ...host
-        // };
 
         if (host !== null) {
             setDisplay(true);
@@ -108,7 +102,7 @@ const CreateAppointment = () => {
         setDisplayFileName(!displayFileName);
     };
 
-    const scanKTP = () => {
+    const scanKTP = async () => {
         let file = photo;
         let formData = new FormData();
 
@@ -121,7 +115,8 @@ const CreateAppointment = () => {
             .then((res) => {
                 console.log("KTP response: ", res);
                 setGuestInfo(res.data[0]);
-            });
+            }
+        );
     };
 
     const createGuest = async () => {
@@ -186,6 +181,12 @@ const CreateAppointment = () => {
         } else if (value === "declined") {
             return (
                 <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
+                    {value}
+                </div>
+            );
+        } else if (value === "canceled") {
+            return (
+                <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
                     {value}
                 </div>
             );
@@ -273,6 +274,7 @@ const CreateAppointment = () => {
                                                 name="file-upload"
                                                 type="file"
                                                 className="sr-only"
+                                                accept=".jpg, .png, .jpeg"
                                                 onChange={(e) =>
                                                     handleKTPImage(e)
                                                 }
@@ -453,15 +455,6 @@ const CreateAppointment = () => {
                         {display ? (
                             <div className="flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
                                 <div className="flex gap-4 p-4">
-                                    {/* <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
-                                        
-                                        <img
-                                            alt="host-profile"
-                                            className="h-12 w-12 rounded-full flex justify-center items-center"
-                                            src={photo}
-                                        ></img>
-                                    </div>
-                                     */}
                                     <div className="flex flex-col">
                                         <p className="text-base font-semibold">
                                             {filteredHost.name}

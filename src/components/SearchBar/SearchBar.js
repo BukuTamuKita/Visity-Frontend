@@ -41,16 +41,16 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
               <div className="mt-1 flex rounded-md shadow-sm">
                   <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                       <svg
-                          class="w-6 h-6"
+                          className="w-6 h-6"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
                           xmlns="http://www.w3.org/2000/svg"
                       >
                           <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                           ></path>
                       </svg>
@@ -79,9 +79,6 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
                                       key={value.id}
                                       onClick={() => {
                                           updateHosts(value);
-                                          // console.log("Host hasil filter:", filteredHost);
-                                          // getFilteredHost(filteredHost);
-                                          // setDisplay(!display);
                                       }}
                                   >
                                       <p>{value.name}</p>
@@ -92,23 +89,6 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
                   )}
               </div>
           )}
-
-          {/* {display && (
-        <div className="autoContainer">
-          {data
-            .filter(({ name }) => name.indexOf(search.toLowerCase()) > -1)
-            .map((value, i) => {
-              return (
-                <div
-                  onClick={() => updateHosts(value.name)}
-                  key={i}
-                >
-                  <span>{value.name}</span>
-                </div>
-              );
-            })}
-        </div>
-      )} */}
       </div>
   );
 };
