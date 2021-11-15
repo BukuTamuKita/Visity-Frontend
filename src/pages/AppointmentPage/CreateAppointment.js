@@ -5,8 +5,10 @@ import {
     CREATE_GUEST,
     JWT_HEADER,
     SCAN_KTP,
+    SEND_NOTIFICATION,
     SHOW_HOSTS,
     SHOW_HOST_APPOINTMENT,
+    SHOW_USER,
 } from "../../constants/urls";
 import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
@@ -150,10 +152,23 @@ const CreateAppointment = () => {
 
         if (response) {
             console.log(response);
+            sendNotification();
             history.push("/appointment-history");
             window.location.reload();
         }
     };
+
+    const sendNotification = () => {
+        axios
+            .post(SEND_NOTIFICATION, {
+                name: filteredHost.name,
+                body: purpose,
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => console.log(err))
+    }
 
     const getStatusStyle = (value) => {
         if (value === "accepted") {
