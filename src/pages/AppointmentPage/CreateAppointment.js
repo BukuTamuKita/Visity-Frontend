@@ -169,6 +169,7 @@ const CreateAppointment = () => {
         axios
             .post(SEND_NOTIFICATION, {
                 name: filteredHost.name,
+                gname: capitalizeFirstLetter(guestInfo.name),
                 body: purpose,
             })
             .then((res) => {
