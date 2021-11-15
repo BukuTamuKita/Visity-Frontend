@@ -11,12 +11,14 @@ import {
 import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { getToken, isLogin } from "../../utils/auth";
+import Loader from "react-loader-spinner";
 
 const CreateAppointment = () => {
     let guestId = 0;
     const [guestInfo, setGuestInfo] = useState({});
     const [display, setDisplay] = useState(false);
     const [displayFileName, setDisplayFileName] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // Guest
     const [photo, setPhoto] = useState({});
@@ -103,6 +105,7 @@ const CreateAppointment = () => {
     };
 
     const scanKTP = async () => {
+        setLoading(true);
         let file = photo;
         let formData = new FormData();
 
@@ -115,8 +118,17 @@ const CreateAppointment = () => {
             .then((res) => {
                 console.log("KTP response: ", res);
                 setGuestInfo(res.data[0]);
-            }
-        );
+            })
+            .then((res) => {
+                if (res) {
+                    setLoading(false);
+                }
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            })
     };
 
     const createGuest = async () => {
@@ -304,7 +316,13 @@ const CreateAppointment = () => {
                                     type="submit"
                                     onClick={scanKTP}
                                 >
-                                    Scan
+                                    {loading ? (
+                                        <span className="flex justifty-center items-center">
+                                            <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                        </span>
+                                    ) : (
+                                        <span>Scan</span>
+                                    )}
                                 </button>
                             </div>
                         </div>
