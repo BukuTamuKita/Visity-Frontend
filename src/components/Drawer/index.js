@@ -20,7 +20,7 @@ const Drawer = () => {
     return (
         <div className="relative min-h-screen md:flex">
             {/* Responsive Sidebar Title */}
-            <div className="bg-blue-800 text-gray-100 flex flex-row justify-between md:hidden">
+            <div className="bg-primary text-gray-100 flex flex-row justify-between md:hidden">
                 <a href="/#" className="block p-4 text-white font-bold">
                     Visity
                 </a>
@@ -43,7 +43,7 @@ const Drawer = () => {
             </div>
 
             {/* Sidebar Title */}
-            <div className="sidebar flex flex-col bg-blue-800 text-blue-100 w-64 space-y-6 py-7 px-4 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
+            <div className="sidebar flex flex-col bg-primary text-white w-64 space-y-6 py-7 px-4 inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
                 <a
                     href="/#"
                     className="text-white flex items-center space-x-2 px-4"
@@ -78,8 +78,8 @@ const Drawer = () => {
                                         <NavLink
                                             exact
                                             to={item.path}
-                                            className="block py-2.5 px-4 items-center rounded transition duration-200  hover:bg-blue-700 hover:text-white"
-                                            activeClassName="bg-blue-700 text-white"
+                                            className="block py-2.5 px-4 items-center rounded transition duration-200 ease-in-out  hover:bg-primary-hover hover:text-white"
+                                            activeClassName="transition duration-500 ease-in-out bg-secondary text-white"
                                         >
                                             <div className="flex flex-row items-center gap-x-2">
                                                 {item.icon}
@@ -93,7 +93,7 @@ const Drawer = () => {
                     </nav>
                     <div>
                         <Link to="/" onClick={logout}>
-                            <li className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white">
+                            <li className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary-hover hover:text-white">
                                 <div className="flex flex-row items-center gap-x-2">
                                     <svg
                                         class="w-6 h-6"

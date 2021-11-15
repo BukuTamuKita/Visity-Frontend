@@ -1,5 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.primary-btn {
+    @apply transition duration-500 ease-in-out
+    px-12 py-2 rounded-lg text-sm font-medium border-0 
+    focus:outline-none focus:ring transition 
+    text-white bg-primary  
+    hover:bg-darker-accent hover:text-primary
+    focus:ring-secondary;
+}
+.outline-btn {
+    @apply transition duration-500 ease-in-out
+    px-12 py-2 rounded-lg text-sm 
+    text-primary
+    font-medium border 
+    border-primary
+    focus:outline-none focus:ring transition 
+    hover:border-primary-hover hover:bg-gray-100
+    focus:ring-gray-300;
+}
+.secondary-btn {
+    @apply transition duration-500 ease-in-out
+    px-12 py-2 rounded-lg text-sm font-medium border-0 
+    focus:outline-none focus:ring transition 
+    text-primary bg-accent
+    hover:bg-darker-accent hover:text-primary
+    focus:ring-secondary;
+}
