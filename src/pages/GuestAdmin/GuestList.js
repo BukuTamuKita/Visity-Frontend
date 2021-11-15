@@ -1,20 +1,63 @@
-import React, { 
-    useState,
-    useEffect,
-    useMemo,
-} from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Table from "../../components/Table/Table";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { SHOW_GUESTS, SHOW_APPOINTMENT } from "../../constants/urls";
+import {
+    DELETE_USER,
+    SHOW_APPOINTMENT,
+    UPDATE_APPOINTMENT,
+} from "../../constants/urls";
 import { getToken, isLogin } from "../../utils/auth";
 
-const authAxios = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
-    headers: {
-        Authorization: `Bearer ${getToken()}`,
-    },
-});
-const GuestList = ({id}) => {
+export const GuestListAction = ({ id }) => {
+    const authAxios = axios.create({
+        baseURL: "http://127.0.0.1:8000/api/",
+        headers: {
+            Authorization: `Bearer ${getToken()}`,
+        },
+    });
+    const deleteUser = () => {
+        axios
+            .delete(DELETE_USER(id), {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                if (res) {
+                    console.log(res);
+                    window.location.reload();
+                }
+            })
+            .catch((err) => console.log(err));
+    };
+    const cancelAppointment = (note) => {
+        authAxios.put(UPDATE_APPOINTMENT(id), {
+            status: "canceled",
+            notes: note,
+        });
+    };
+
+    return (
+        <>
+            <a
+                href="#"
+                onClick={() => {
+                    let value;
+                    let notes = window.prompt("Enter your notes: ", value);
+
+                    if (notes !== null) {
+                        cancelAppointment(notes);
+                        window.location.reload();
+                    }
+                }}
+                className = "text-warning"
+            >
+                Cancel Appointment
+            </a>
+        </>
+    );
+};
+
+const GuestList = ({ id }) => {
     const [guests, setGuests] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const columns = useMemo(
@@ -51,7 +94,7 @@ const GuestList = ({id}) => {
 
     //     if (response && isLogin()) {
     //         const guests = response.data;
-            
+
     //         console.log("guests: ", guests);
     //         setGuests(response.data.data);
     //     }
@@ -90,6 +133,6 @@ const GuestList = ({id}) => {
             </div>
         </div>
     );
-}
+};
 
 export default GuestList;

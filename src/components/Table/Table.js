@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { GlobalFilter } from "./GlobalFilter";
 import { ColumnFilter } from "./ColumnFilter";
 import { Checkbox } from "./Checkbox";
-import { AppointmentAction } from "../../pages/AppointmentPage/AppointmentHistory";
+import { GuestListAction } from "../../pages/GuestAdmin/GuestList";
 import { UserAction } from "../../pages/UserAdmin/UserList";
 import { EXPORT_DATA } from "../../constants/urls";
 
@@ -57,9 +57,8 @@ const Table = ({
                     id: "action",
                     Header: "Action",
                     Cell: ({ row }) => {
-                        return window.location.pathname ===
-                            "/appointment-history" ? (
-                            <AppointmentAction id={row.values.id} />
+                        return window.location.pathname === "/guest-list" ? (
+                            <GuestListAction id={row.values.id} />
                         ) : (
                             <UserAction id={row.values.id} />
                         );
