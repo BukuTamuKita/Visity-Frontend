@@ -50,19 +50,20 @@ const Table = ({
         })
     },
     (hooks) => {
-        if (window.location.pathname !== "/guest-list") {
+        if (window.location.pathname !== "/appointment-history") {
             hooks.visibleColumns.push((columns) => [
                 ...columns,
                 {
                     id: "action",
                     Header: "Action",
                     Cell: ({ row }) => {
-                        return window.location.pathname === "/appointment-history" ? (
+                        return window.location.pathname ===
+                            "/appointment-history" ? (
                             <AppointmentAction id={row.values.id} />
                         ) : (
-                            <UserAction id={row.values.id} /> 
-                        )
-                    }
+                            <UserAction id={row.values.id} />
+                        );
+                    },
                 },
             ]);
         }
@@ -97,35 +98,6 @@ const Table = ({
     
     return (
         <>
-            <pre>
-                <code>
-                    {JSON.stringify(
-                        {
-                            pageIndex,
-                            pageSize,
-                            pageCount,
-                            canNextPage,
-                            canPreviousPage,
-                        },
-                        null,
-                        2,
-                    )}
-                </code>
-            </pre>
-            <pre className="mb-4">
-                <code>
-                    {JSON.stringify(
-                        {
-                            selectedRowIds: selectedRowIds,
-                            'selectedFlatRows[].original': selectedFlatRows.map(
-                                d => d.original
-                            ),
-                        },
-                        null,
-                        2,
-                    )}
-                </code>
-            </pre>
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
