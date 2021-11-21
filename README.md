@@ -70,3 +70,6 @@ npm start
 - Appointment Administration (CRUD)
 - User Administration (CRUD)
 - Export data
+
+## Sprint 3 Upcoming Features
+- Scan KTP with Camera
