@@ -27,7 +27,13 @@ const Table = ({
     const tableInstance = useTable({
         columns,
         data,
-        defaultColumn,
+        defaultColumn,    
+        initialState: {
+            sortBy: [{
+                id: 'id',
+                desc: true
+            }]
+        }
     },
     useGlobalFilter,
     useSortBy,

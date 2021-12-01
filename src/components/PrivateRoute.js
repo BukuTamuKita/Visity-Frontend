@@ -15,7 +15,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 isLogin() ? (
                     <Component {...props} />
                 ) : (
-                    <Redirect to="/appointment-create" />
+                    // <Redirect to="/appointment-create" />
+                    <Redirect to={{ pathname: "/", from: props.location }} />
                 )
             )} 
         />
