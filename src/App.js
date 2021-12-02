@@ -92,7 +92,7 @@ function App() {
                     <Route path="/" render={() => (
                         <Redirect to="/" />
                     )} />
-                    <Route path="*" component={ErrorPage} />
+                    <Route component={ErrorPage} />
                 </Switch>
             </Router>
         </ThemeProvider>

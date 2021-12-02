@@ -12,6 +12,8 @@ import { useHistory } from "react-router-dom";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { getToken, isLogin } from "../../utils/auth";
 import Loader from "react-loader-spinner";
+import { capitalizeFirstLetter } from '../../utils/utility';
+import { Status } from '../../components/Status';
 
 const CreateAppointment = () => {
     let guestId = 0;
@@ -178,52 +180,53 @@ const CreateAppointment = () => {
             .catch((err) => console.log(err))
     }
 
-    const getStatusStyle = (value) => {
-        if (value === "accepted") {
-            return (
-                <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
-                    {value}
-                </div>
-            );
-        } else if (value === "waiting") {
-            return (
-                <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
-                    {value}
-                </div>
-            );
-        } else if (value === "declined") {
-            return (
-                <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
-                    {value}
-                </div>
-            );
-        } else if (value === "canceled") {
-            return (
-                <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
-                    {value}
-                </div>
-            );
-        }
-    };
+    // const getStatusStyle = (value) => {
+    //     if (value === "accepted") {
+    //         return (
+    //             <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "waiting") {
+    //         return (
+    //             <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "declined") {
+    //         return (
+    //             <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "canceled") {
+    //         return (
+    //             <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     }
+    // };
 
-    const capitalizeFirstLetter = (words) => {
-        if (words) {
-            words = "" + words;
-            const arr = words.split(" ");
-
-            for (let i = 0; i < arr.length; i++) {
-                arr[i] =
-                    arr[i].charAt(0).toUpperCase() +
-                    arr[i].slice(1).toLowerCase();
-            }
-
-            const result = arr.join(" ");
-            console.log("result: ", result);
-            return result;
-        }
-
-        return "";
-    };
+//     const capitalizeFirstLetter = (words) => {
+//         if (words) {
+//             words = "" + words;
+//             const arr = words.split(" ");
+// 
+//             for (let i = 0; i < arr.length; i++) {
+//                 arr[i] =
+//                     arr[i].charAt(0).toUpperCase() +
+//                     arr[i].slice(1).toLowerCase();
+//             }
+// 
+//             const result = arr.join(" ");
+//             console.log("result: ", result);
+//             
+//             return result;
+//         }
+// 
+//         return "";
+//     };
 
     return (
         <div className="py-24 px-16 grid grid-cols-12 gap-16">
@@ -499,9 +502,10 @@ const CreateAppointment = () => {
                                                     </div>
                                                     <div>
                                                         <p>
-                                                            {getStatusStyle(
+                                                            {/* {getStatusStyle(
                                                                 data.status
-                                                            )}
+                                                            )} */}
+                                                            <Status value={data.status} />
                                                         </p>
                                                     </div>
                                                 </div>

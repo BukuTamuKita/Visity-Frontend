@@ -6,8 +6,8 @@ import CreateUser from "../pages/UserAdmin/CreateUser";
 import UpdateUser from "../pages/UserAdmin/UpdateUser";
 import GuestList from "../pages/GuestAdmin/GuestList";
 import Testing from "../pages/Testing";
-import ErrorPage from "../pages/ErrorPage";
 import SearchUser from "../pages/SearchUser";
+// import ErrorPage from "../pages/ErrorPage";
 
 export const PUBLIC_ROUTE = [
     {
@@ -26,7 +26,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: CreateAppointment,
         private: true,
-        
         restricted: false,
     },
     {
@@ -35,7 +34,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: SearchUser,
         private: true,
-        
         restricted: false,
     },
     {
@@ -44,7 +42,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: AppointmentHistory,
         private: true,
-
         restricted: false,
     },
     {
@@ -53,7 +50,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: UserList,
         private: true,
-
         restricted: false,
     },
     {
@@ -62,7 +58,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: CreateUser,
         private: true,
-
         restricted: false,
     },
     {
@@ -71,7 +66,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: UpdateUser,
         private: true,
-
         restricted: false,
     },
     {
@@ -80,7 +74,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: GuestList,
         private: true,
-
         restricted: false,
     },
     {
@@ -89,7 +82,6 @@ export const PRIVATE_ROUTE = [
         exact: true,
         component: Testing,
         private: true,
-
         restricted: false,
     },
     // {
