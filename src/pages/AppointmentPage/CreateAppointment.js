@@ -1,25 +1,26 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     CREATE_APPOINTMENT,
     CREATE_GUEST,
-    JWT_HEADER,
     SCAN_KTP,
     SEND_NOTIFICATION,
     SHOW_HOSTS,
     SHOW_HOST_APPOINTMENT,
-    SHOW_USER,
-} from "../../constants/urls";
-import { useHistory } from "react-router-dom";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import { getToken, isLogin } from "../../utils/auth";
+} from '../../constants/urls';
+import { useHistory } from 'react-router-dom';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { getToken, isLogin } from '../../utils/auth';
+import Loader from 'react-loader-spinner';
+import { capitalizeFirstLetter } from '../../utils/utility';
+import { Status } from '../../components/Status';
 
 const CreateAppointment = () => {
-    // const [guestId, setGuestId] = useState();
     let guestId = 0;
     const [guestInfo, setGuestInfo] = useState({});
     const [display, setDisplay] = useState(false);
     const [displayFileName, setDisplayFileName] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     // Guest
     const [photo, setPhoto] = useState({});
@@ -92,9 +93,6 @@ const CreateAppointment = () => {
     const getFilteredHost = (host) => {
         console.log("host terpilih:", host);
         setFilteredHost(host);
-        // filteredHost = {
-        //     ...host
-        // };
 
         if (host !== null) {
             setDisplay(true);
@@ -108,7 +106,8 @@ const CreateAppointment = () => {
         setDisplayFileName(!displayFileName);
     };
 
-    const scanKTP = () => {
+    const scanKTP = async () => {
+        setLoading(true);
         let file = photo;
         let formData = new FormData();
 
@@ -121,7 +120,17 @@ const CreateAppointment = () => {
             .then((res) => {
                 console.log("KTP response: ", res);
                 setGuestInfo(res.data[0]);
-            });
+            })
+            .then((res) => {
+                if (res) {
+                    setLoading(false);
+                }
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            })
     };
 
     const createGuest = async () => {
@@ -162,6 +171,7 @@ const CreateAppointment = () => {
         axios
             .post(SEND_NOTIFICATION, {
                 name: filteredHost.name,
+                gname: capitalizeFirstLetter(guestInfo.name),
                 body: purpose,
             })
             .then((res) => {
@@ -170,67 +180,74 @@ const CreateAppointment = () => {
             .catch((err) => console.log(err))
     }
 
-    const getStatusStyle = (value) => {
-        if (value === "accepted") {
-            return (
-                <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
-                    {value}
-                </div>
-            );
-        } else if (value === "waiting") {
-            return (
-                <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
-                    {value}
-                </div>
-            );
-        } else if (value === "declined") {
-            return (
-                <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
-                    {value}
-                </div>
-            );
-        }
-    };
+    // const getStatusStyle = (value) => {
+    //     if (value === "accepted") {
+    //         return (
+    //             <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "waiting") {
+    //         return (
+    //             <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "declined") {
+    //         return (
+    //             <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     } else if (value === "canceled") {
+    //         return (
+    //             <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
+    //                 {value}
+    //             </div>
+    //         );
+    //     }
+    // };
 
-    const capitalizeFirstLetter = (words) => {
-        if (words) {
-            words = "" + words;
-            const arr = words.split(" ");
-
-            for (let i = 0; i < arr.length; i++) {
-                arr[i] =
-                    arr[i].charAt(0).toUpperCase() +
-                    arr[i].slice(1).toLowerCase();
-            }
-
-            const result = arr.join(" ");
-            console.log("result: ", result);
-            return result;
-        }
-
-        return "";
-    };
+//     const capitalizeFirstLetter = (words) => {
+//         if (words) {
+//             words = "" + words;
+//             const arr = words.split(" ");
+// 
+//             for (let i = 0; i < arr.length; i++) {
+//                 arr[i] =
+//                     arr[i].charAt(0).toUpperCase() +
+//                     arr[i].slice(1).toLowerCase();
+//             }
+// 
+//             const result = arr.join(" ");
+//             console.log("result: ", result);
+//             
+//             return result;
+//         }
+// 
+//         return "";
+//     };
 
     return (
-        <div className="py-24 px-16 grid grid-cols-12 gap-16">
-            <div className="flex-auto flex-column col-span-12">
-                <p className=" text-4xl font-bold text-primary">
+        <div className="py-16 px-16 grid grid-cols-12">
+            <div className="flex-auto flex-column col-span-12 mb-12">
+                <p className=" text-4xl font-bold text-primary mb-2">
                     Create Appointment
                 </p>
                 {/* Section 1 */}
-                <p className="text-lg">
+                <p className="text-lg text-primary">
                     Fill the form below to make an appointment
                 </p>
             </div>
             <div className="flex flex-row col-span-10 gap-20">
-                <div className="flex-1 divide-y divide-solid divide-gray-300">
-                    <div className="pb-6">
+                <div className="rounded-lg p-6 shadow-lg flex-1">
+                    <div className="mb-6">
                         <p className="text-2xl mb-4 font-bold">
                             Who would you like to meet today?
                         </p>
 
                         <SearchBar
-                            placeholder="Cari nama..."
+                            placeholder="Search host"
                             attribute={searchBarAttr}
                             data={hosts}
                             getFilteredHost={getFilteredHost}
@@ -240,12 +257,12 @@ const CreateAppointment = () => {
                     {/* Section 2 */}
                     <div>
                         {/* Scan KTP Section */}
-                        <div className="mt-10 mb-6">
+                        <div className="mb-6">
                             <p className="text-2xl mb-4 font-bold">
                                 Please input your data
                             </p>
                             {/* Input KTP File */}
-                            <label className="text-sm mb-1">Scan KTP</label>
+                            <label className="text-sm mb-2">Scan KTP</label>
                             <div className="w-full h-52 rounded-lg border-2 border-dashed border-gray-300 col-span-4 flex flex-col justify-center items-center mb-6 bg-red-yellow-100">
                                 <div>
                                     <svg
@@ -273,6 +290,7 @@ const CreateAppointment = () => {
                                                 name="file-upload"
                                                 type="file"
                                                 className="sr-only"
+                                                accept=".jpg, .png, .jpeg"
                                                 onChange={(e) =>
                                                     handleKTPImage(e)
                                                 }
@@ -302,12 +320,18 @@ const CreateAppointment = () => {
                                     type="submit"
                                     onClick={scanKTP}
                                 >
-                                    Scan
+                                    {loading ? (
+                                        <span className="flex justifty-center items-center">
+                                            <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                        </span>
+                                    ) : (
+                                        <span>Scan</span>
+                                    )}
                                 </button>
                             </div>
                         </div>
 
-                        <div className="">
+                        <div>
                             <div className="mb-4">
                                 <label
                                     htmlFor="nik"
@@ -329,7 +353,7 @@ const CreateAppointment = () => {
                                             nik: e.target.value,
                                         })
                                     }
-                                />
+                                /> 
                             </div>
                             <div className="mb-4">
                                 <label
@@ -408,7 +432,7 @@ const CreateAppointment = () => {
                                     }}
                                 />
                             </div>
-                            <div className="mb-6 row-span-2">
+                            <div className="mb-4 row-span-2">
                                 <label
                                     htmlFor="agenda"
                                     className="block text-sm mb-1 font-medium text-gray-600"
@@ -453,15 +477,6 @@ const CreateAppointment = () => {
                         {display ? (
                             <div className="flex-col border rounded-lg border-gray-200 shadow divide-y divide-gray-100">
                                 <div className="flex gap-4 p-4">
-                                    {/* <div className="h-12 w-12 bg-gray-100 rounded-full flex justify-center items-center">
-                                        
-                                        <img
-                                            alt="host-profile"
-                                            className="h-12 w-12 rounded-full flex justify-center items-center"
-                                            src={photo}
-                                        ></img>
-                                    </div>
-                                     */}
                                     <div className="flex flex-col">
                                         <p className="text-base font-semibold">
                                             {filteredHost.name}
@@ -487,9 +502,10 @@ const CreateAppointment = () => {
                                                     </div>
                                                     <div>
                                                         <p>
-                                                            {getStatusStyle(
+                                                            {/* {getStatusStyle(
                                                                 data.status
-                                                            )}
+                                                            )} */}
+                                                            <Status value={data.status} />
                                                         </p>
                                                     </div>
                                                 </div>
