@@ -2,16 +2,15 @@ import React, {
     useState,
     useEffect,
     useMemo 
-} from "react";
-import axios from "axios";
+} from 'react';
+import axios from 'axios';
 import { 
     DELETE_USER, 
     SHOW_PHOTO, 
     SHOW_USERS,
-} from "../../constants/urls";
-import Table from "../../components/Table/Table";
-import { getToken, isLogin } from "../../utils/auth";
-// import { Link } from "react-router-dom";
+} from '../../constants/urls';
+import Table from '../../components/Table/Table';
+import { getToken, isLogin } from '../../utils/auth';
 
 export const UserAction = ({ id }) => {
     const deleteUser = () => {
@@ -55,52 +54,53 @@ export const UserAction = ({ id }) => {
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);
 
-    const columns = useMemo(() => 
-        [
-            {
-                Header: "ID",
-                accessor: "id",
-            },
-            {
-                Header: "Name",
-                accessor: "name",
-            },
-            {
-                Header: "Email",
-                accessor: "email",
-            },
-            {
-                Header: "Role",
-                accessor: "role",
-                Cell: ({ value }) => {
-                    if (value === "admin") {
-                        return (
-                            <div className="text-xs text-center text-blue-500 font-semibold py-1 px-2 border rounded-2xl bg-blue-100">
-                                { value }
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <p>{ value }</p>
-                        )
-                    }
-                }
-            },
-            {
-                Header: "Photo",
-                accessor: "photo",
-                Cell: ({ value }) => {
+    const columns = useMemo(() => [
+        {
+            Header: "ID",
+            accessor: "id",
+        },
+        {
+            Header: "Name",
+            accessor: "name",
+            show: false,
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+            show: false,
+        },
+        {
+            Header: "Role",
+            accessor: "role",
+            Cell: ({ value }) => {
+                if (value === "admin") {
                     return (
-                        <img 
-                            alt="profile"
-                            src={SHOW_PHOTO(value)}
-                            className="w-12 rounded-full" 
-                        />
+                        <div className="text-xs text-center text-blue-500 font-semibold py-1 px-2 border rounded-2xl bg-blue-100">
+                            { value }
+                        </div>
                     )
-                },
+                } else {
+                    return (
+                        <p>{ value }</p>
+                    )
+                }
             }
-        ],
-        []
+        },
+        {
+            Header: "Photo",
+            accessor: "photo",
+            Cell: ({ value }) => {
+                return (
+                    <img 
+                        alt="profile"
+                        src={SHOW_PHOTO(value)}
+                        className="w-12 rounded-full" 
+                    />
+                )
+            },
+            show: false,
+        }
+    ], []
     );
 
     const fetchUsers = async () => {

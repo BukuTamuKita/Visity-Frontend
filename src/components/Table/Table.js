@@ -1,61 +1,40 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useEffect } from 'react';
 import { 
     useTable, 
     useSortBy,
     useGlobalFilter,
     usePagination,
     useRowSelect,
-} from "react-table";
-import { Link } from "react-router-dom";
-import { GlobalFilter } from "./GlobalFilter";
-import { ColumnFilter } from "./ColumnFilter";
-import { Checkbox } from "./Checkbox";
-import { AppointmentAction } from "../../pages/AppointmentPage/AppointmentHistory";
-import { UserAction } from "../../pages/UserAdmin/UserList";
-import { EXPORT_DATA } from "../../constants/urls";
+    useColumnOrder,
+} from 'react-table';
+import { Link } from 'react-router-dom';
+import { GlobalFilter } from './GlobalFilter';
+import { ColumnFilter } from './ColumnFilter';
+import { Checkbox } from './Checkbox';
+import { AppointmentAction } from '../../pages/AppointmentPage/AppointmentHistory';
+import { UserAction } from '../../pages/UserAdmin/UserList';
+import { EXPORT_DATA, SHOW_PHOTO } from '../../constants/urls';
+import { 
+    ChevronDoubleLeftIcon, 
+    ChevronDoubleRightIcon, 
+    ChevronLeftIcon, 
+    ChevronRightIcon 
+} from '@heroicons/react/solid';
+import { 
+    SwitchVerticalIcon, 
+    CloudDownloadIcon, 
+    PlusCircleIcon 
+} from '@heroicons/react/outline';
 
-const Table = ({ 
-    columns, 
-    data,
- }) => {
+const Table = ({ columns, data }) => {
     const defaultColumn = useMemo(() => {
         return { 
             Filter: ColumnFilter
         }
     }, []);
 
-    const tableInstance = useTable({
-        columns,
-        data,
-        defaultColumn,    
-        initialState: {
-            sortBy: [{
-                id: 'id',
-                desc: true
-            }]
-        }
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination,
-    useRowSelect,
-    (hooks) => { 
-        hooks.visibleColumns.push((columns) => {
-            return [
-                {
-                    id: 'selection',
-                    Header: ({ getToggleAllPageRowsSelectedProps }) => (
-                        <Checkbox {...getToggleAllPageRowsSelectedProps()} />
-                    ),
-                    Cell: ({ row }) => (
-                        <Checkbox {...row.getToggleRowSelectedProps()} />
-                    ),
-                },
-                ...columns,
-            ]
-        })
-    },
-    (hooks) => {
+    // Custom kolom action
+    const actionHooks = (hooks) => {
         if (window.location.pathname !== "/guest-list") {
             hooks.visibleColumns.push((columns) => [
                 ...columns,
@@ -72,8 +51,108 @@ const Table = ({
                 },
             ]);
         }
+    };
+
+    // Custom kolom user (user list)
+    const userHooks = (hooks) => {
+        if (window.location.pathname === "/user-list") {
+            hooks.visibleColumns.push((columns) => [
+                ...columns,
+                {
+                    id: "user",
+                    Header: "User",
+                    Cell: ({ row }) => {
+                        return (
+                            <div>
+                                <img 
+                                    alt="profile"
+                                    src={SHOW_PHOTO(row.values.photo)}
+                                    className="w-8 rounded-full" 
+                                />
+                                <div>
+                                    <p>{ row.values.name }</p>
+                                    <p>{ row.values.email }</p>
+                                </div>
+                            </div>
+                        )
+                    }
+                },
+            ]);
+        }
+    };
+
+    // Custom kolom waktu (appointment history)
+    // const timeHooks = (hooks) => {
+    //     if (window.location.pathname === "/appointment-history") {
+    //         hooks.visibleColumns.push((columns) => [
+    //             ...columns,
+    //             {
+    //                 id: "date",
+    //                 Header: "Date",
+    //                 Cell: ({ row }) => {
+    //                     return (
+    //                         <div className="flex flex-row items-center gap-2">
+    //                             <img 
+    //                                 alt="profile"
+    //                                 src={SHOW_PHOTO(row.values.photo)}
+    //                                 className="w-8 rounded-full" 
+    //                             />
+    //                             <div>
+    //                                 <p>{ row.values.name }</p>
+    //                                 <p>{ row.values.email }</p>
+    //                             </div>
+    //                         </div>
+    //                     )
+    //                 }
+    //             },
+    //         ]);
+    //     }
+    // };
+
+    const tableInstance = useTable({
+        columns,
+        data,
+        defaultColumn,    
+        initialState: {
+            sortBy: [{
+                id: 'id',
+                desc: true
+            }],
+            hiddenColumns: window.location.pathname === "/user-list" ? ["name", "email", "photo"] : [""],
+        }
+    },
+    userHooks,
+    actionHooks,
+    useGlobalFilter,
+    useSortBy,
+    usePagination,
+    useRowSelect,
+    useColumnOrder,
+    (hooks) => { 
+        hooks.visibleColumns.push((columns) => {
+            return [
+                {
+                    id: 'selection',
+                    Header: ({ getToggleAllPageRowsSelectedProps }) => (
+                        <Checkbox {...getToggleAllPageRowsSelectedProps()} />
+                    ),
+                    Cell: ({ row }) => (
+                        <Checkbox {...row.getToggleRowSelectedProps()} />
+                    ),
+                },
+                ...columns,
+            ]
+        })
     },
     );
+
+    const changeOrder = () => {
+        setColumnOrder(['id', 'user', 'role']);
+    }
+
+    useEffect(() => {
+        changeOrder();
+    }, []);
 
     const { 
         getTableProps,
@@ -91,14 +170,15 @@ const Table = ({
         prepareRow,
         state,
         setGlobalFilter,
-        selectedFlatRows, 
+        // selectedFlatRows,
+        setColumnOrder, 
     } = tableInstance;
 
     const { 
         globalFilter, 
         pageIndex, 
         pageSize, 
-        selectedRowIds 
+        // selectedRowIds 
     } = state;
     
     return (
@@ -132,6 +212,9 @@ const Table = ({
                     )}
                 </code>
             </pre> */}
+
+            {/* <button onClick={changeOrder}>Change order</button> */}
+
             <div className="flex flex-col">
                 <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                     <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -142,50 +225,62 @@ const Table = ({
                                 <div className="flex flex-row justify-center items-center gap-5">
                                     {window.location.pathname === "/user-list" &&
                                         <Link to="/user-create">
-                                            <button className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
+                                            <button className="flex flex-row gap-2 px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300">
+                                                <PlusCircleIcon className="w-6" />
                                                 Create
                                             </button>
                                         </Link> 
                                     }
                                     {window.location.pathname === "/appointment-history" &&
                                         <button 
-                                            className="px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
-                                            onClick={(e) => window.open(EXPORT_DATA)}
+                                            className="flex flex-row gap-2 px-12 py-3.5 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
+                                            onClick={() => window.open(EXPORT_DATA)}
                                         >
-                                            Export
+                                            <CloudDownloadIcon className="w-6" />
+                                            Export 
                                         </button>
                                     }
                                 </div>
-
                             </div>
+
                             <table className="w-full" {...getTableProps()}>
                                 <thead className="border-b border-gray-100">
                                     {headerGroups.map((headerGroup) => (
                                         <tr {...headerGroup.getHeaderGroupProps()}>
                                             {headerGroup.headers.map((column) => (
                                                 <th className="p-2" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                                    {column.render('Header')}
-                                                    <span>
-                                                        {column.isSorted? (column.iSortedDesc ? ' 🔽' : ' 🔼') : ''}
-                                                    </span>
+                                                    <div className="flex flex-row justify-between items-center">
+                                                        {column.render('Header')}
+                                                        <span>
+                                                            {/* {column.isSorted? (column.iSortedDesc ? ' 🔽' : ' 🔼') : ''} */}
+                                                            {column.isSorted ? (
+                                                                column.iSortedDesc ? (
+                                                                    <SwitchVerticalIcon className="text-gray-500 w-4" /> 
+                                                                ) : (
+                                                                    <SwitchVerticalIcon className="text-gray-500 w-4" />) 
+                                                                )
+                                                            : ''}
+                                                        </span>
+                                                    </div>
                                                 </th>
                                             ))}
                                         </tr>
                                     ))}
                                 </thead>
-                                <tbody className="" {...getTableBodyProps()}>
+                                <tbody {...getTableBodyProps()}>
                                     {page.map((row) => {
                                         prepareRow(row)
                                         return (
                                             <tr className="border-b border-gray-100" {...row.getRowProps()}>
                                                 {row.cells.map((cell) => {
-                                                    return <td className="p-4 " {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                                    return <td className="p-2" {...cell.getCellProps()}>{cell.render('Cell')}</td>
                                                 })}
                                             </tr>
                                         )
                                     })}
                                 </tbody>
                             </table>
+
                             <div className="flex flex-row justify-between items-center p-4">
                                 <div>
                                     Displaying <strong>10</strong> of <strong>{data.length}</strong> data -  
@@ -216,25 +311,16 @@ const Table = ({
                                     </select>
                                     <div className="flex flex-row gap-2">
                                         <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M15.707 15.707a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 010 1.414zm-6 0a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414l5-5a1 1 0 011.414 1.414L5.414 10l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-                                            </svg>
+                                            <ChevronDoubleLeftIcon className="text-gray-500 w-6" />
                                         </button>
                                         <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
-                                            </svg>
+                                            <ChevronLeftIcon className="text-gray-500 w-6" />
                                         </button>
                                         <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => nextPage()} disabled={!canNextPage}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                            </svg>
+                                            <ChevronRightIcon className="text-gray-500 w-6" />
                                         </button>
                                         <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                            <path fillRule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                                <path fillRule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clipRule="evenodd" />
-                                            </svg>
+                                            <ChevronDoubleRightIcon className="text-gray-500 w-6" />
                                         </button>
                                     </div>
                                 </div>

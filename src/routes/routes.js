@@ -1,13 +1,12 @@
-import Login from "../pages/Login";
-import CreateAppointment from "../pages/AppointmentPage/CreateAppointment";
-import AppointmentHistory from "../pages/AppointmentPage/AppointmentHistory";
-import UserList from "../pages/UserAdmin/UserList";
-import CreateUser from "../pages/UserAdmin/CreateUser";
-import UpdateUser from "../pages/UserAdmin/UpdateUser";
-import GuestList from "../pages/GuestAdmin/GuestList";
-import Testing from "../pages/Testing";
-import SearchUser from "../pages/SearchUser";
-// import ErrorPage from "../pages/ErrorPage";
+import Login from '../pages/Login';
+import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
+import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
+import UserList from '../pages/UserAdmin/UserList';
+import CreateUser from '../pages/UserAdmin/CreateUser';
+import UpdateUser from '../pages/UserAdmin/UpdateUser';
+import GuestList from '../pages/GuestAdmin/GuestList';
+import Testing from '../pages/Testing';
+// import ErrorPage from '../pages/ErrorPage';
 
 export const PUBLIC_ROUTE = [
     {
@@ -25,14 +24,6 @@ export const PRIVATE_ROUTE = [
         path: "/appointment-create",
         exact: true,
         component: CreateAppointment,
-        private: true,
-        restricted: false,
-    },
-    {
-        name: "Search User",
-        path: "/search",
-        exact: true,
-        component: SearchUser,
         private: true,
         restricted: false,
     },

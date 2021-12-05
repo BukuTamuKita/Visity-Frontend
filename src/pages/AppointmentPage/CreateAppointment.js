@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     CREATE_APPOINTMENT,
     CREATE_GUEST,
@@ -7,11 +7,11 @@ import {
     SEND_NOTIFICATION,
     SHOW_HOSTS,
     SHOW_HOST_APPOINTMENT,
-} from "../../constants/urls";
-import { useHistory } from "react-router-dom";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import { getToken, isLogin } from "../../utils/auth";
-import Loader from "react-loader-spinner";
+} from '../../constants/urls';
+import { useHistory } from 'react-router-dom';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { getToken, isLogin } from '../../utils/auth';
+import Loader from 'react-loader-spinner';
 import { capitalizeFirstLetter } from '../../utils/utility';
 import { Status } from '../../components/Status';
 
@@ -229,25 +229,25 @@ const CreateAppointment = () => {
 //     };
 
     return (
-        <div className="py-24 px-16 grid grid-cols-12 gap-16">
-            <div className="flex-auto flex-column col-span-12">
-                <p className=" text-4xl font-bold text-primary">
+        <div className="py-16 px-16 grid grid-cols-12">
+            <div className="flex-auto flex-column col-span-12 mb-12">
+                <p className=" text-4xl font-bold text-primary mb-2">
                     Create Appointment
                 </p>
                 {/* Section 1 */}
-                <p className="text-lg">
+                <p className="text-lg text-primary">
                     Fill the form below to make an appointment
                 </p>
             </div>
             <div className="flex flex-row col-span-10 gap-20">
-                <div className="flex-1 divide-y divide-solid divide-gray-300">
-                    <div className="pb-6">
+                <div className="rounded-lg p-6 shadow-lg flex-1">
+                    <div className="mb-6">
                         <p className="text-2xl mb-4 font-bold">
                             Who would you like to meet today?
                         </p>
 
                         <SearchBar
-                            placeholder="Cari nama..."
+                            placeholder="Search host"
                             attribute={searchBarAttr}
                             data={hosts}
                             getFilteredHost={getFilteredHost}
@@ -257,12 +257,12 @@ const CreateAppointment = () => {
                     {/* Section 2 */}
                     <div>
                         {/* Scan KTP Section */}
-                        <div className="mt-10 mb-6">
+                        <div className="mb-6">
                             <p className="text-2xl mb-4 font-bold">
                                 Please input your data
                             </p>
                             {/* Input KTP File */}
-                            <label className="text-sm mb-1">Scan KTP</label>
+                            <label className="text-sm mb-2">Scan KTP</label>
                             <div className="w-full h-52 rounded-lg border-2 border-dashed border-gray-300 col-span-4 flex flex-col justify-center items-center mb-6 bg-red-yellow-100">
                                 <div>
                                     <svg
@@ -331,7 +331,7 @@ const CreateAppointment = () => {
                             </div>
                         </div>
 
-                        <div className="">
+                        <div>
                             <div className="mb-4">
                                 <label
                                     htmlFor="nik"
@@ -353,7 +353,7 @@ const CreateAppointment = () => {
                                             nik: e.target.value,
                                         })
                                     }
-                                />
+                                /> 
                             </div>
                             <div className="mb-4">
                                 <label
@@ -432,7 +432,7 @@ const CreateAppointment = () => {
                                     }}
                                 />
                             </div>
-                            <div className="mb-6 row-span-2">
+                            <div className="mb-4 row-span-2">
                                 <label
                                     htmlFor="agenda"
                                     className="block text-sm mb-1 font-medium text-gray-600"

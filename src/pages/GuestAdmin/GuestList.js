@@ -2,39 +2,37 @@ import React, {
     useState,
     useEffect,
     useMemo,
-} from "react";
-import Table from "../../components/Table/Table";
-import axios from "axios";
-import { SHOW_GUESTS } from "../../constants/urls";
-import { getToken, isLogin } from "../../utils/auth";
+} from 'react';
+import Table from '../../components/Table/Table';
+import axios from 'axios';
+import { SHOW_GUESTS } from '../../constants/urls';
+import { getToken, isLogin } from '../../utils/auth';
 
 const GuestList = () => {
     const [guests, setGuests] = useState([]);
 
-    const columns = useMemo(() => 
-        [
-            {
-                Header: "ID",
-                accessor: "id",
-            },
-            {
-                Header: "Name",
-                accessor: "name",
-            },
-            {
-                Header: "NIK",
-                accessor: "nik",
-            },
-            {
-                Header: "Address",
-                accessor: "address",
-            },
-            {
-                Header: "Email",
-                accessor: "email",
-            }
-        ],
-        []
+    const columns = useMemo(() => [
+        {
+            Header: "ID",
+            accessor: "id",
+        },
+        {
+            Header: "Name",
+            accessor: "name",
+        },
+        {
+            Header: "NIK",
+            accessor: "nik",
+        },
+        {
+            Header: "Address",
+            accessor: "address",
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+        }
+    ], []
     );
 
     const fetchGuests = async () => {

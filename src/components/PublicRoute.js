@@ -4,9 +4,9 @@
     for example, we go to the login page even though we are already logged in 
 */
 
-import React from "react";
-import { Redirect, Route } from "react-router-dom";
-import { isLogin } from "../utils/auth";
+import React from 'react';
+import { Redirect, Route } from 'react-router-dom';
+import { isLogin } from '../utils/auth';
 
 const PublicRoute = ({ 
     component: Component, 

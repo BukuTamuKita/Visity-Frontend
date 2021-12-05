@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { CREATE_USER } from "../../constants/urls";
-import { getToken } from "../../utils/auth";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router';
+import { CREATE_USER } from '../../constants/urls';
+import { getToken } from '../../utils/auth';
 
 const UserForm = ({ title }) => {
     const [user, setUser] = useState({});

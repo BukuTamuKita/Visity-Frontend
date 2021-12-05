@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { login, isLogin } from "../utils/auth";
-import Loader from "react-loader-spinner";
-import axios from "axios";
-import { LOGIN_API } from "../constants/urls";
+import React, { useState, useEffect } from 'react';
+import { login, isLogin } from '../utils/auth';
+import Loader from 'react-loader-spinner';
+import axios from 'axios';
+import { LOGIN_API } from '../constants/urls';
 
 const Login = (props) => {
     const [email, setEmail] = useState("");

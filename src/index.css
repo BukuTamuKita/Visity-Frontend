@@ -7,7 +7,7 @@
 .primary-btn {
     @apply transition duration-500 ease-in-out
     px-12 py-2 rounded-lg text-sm font-medium border-0 
-    focus:outline-none focus:ring transition 
+    focus:outline-none focus:ring-2 transition 
     text-white bg-primary  
     hover:bg-darker-accent hover:text-primary
     focus:ring-secondary;
