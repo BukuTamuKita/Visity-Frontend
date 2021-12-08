@@ -6,7 +6,6 @@ import CreateUser from '../pages/UserAdmin/CreateUser';
 import UpdateUser from '../pages/UserAdmin/UpdateUser';
 import GuestList from '../pages/GuestAdmin/GuestList';
 import Testing from '../pages/Testing';
-// import ErrorPage from '../pages/ErrorPage';
 
 export const PUBLIC_ROUTE = [
     {
@@ -75,12 +74,4 @@ export const PRIVATE_ROUTE = [
         private: true,
         restricted: false,
     },
-    // {
-    //     name: "Error | Page Not Found",
-    //     path: "/error",
-    //     exact: true,
-    //     component: ErrorPage,
-    //     private: true,
-    //     isNotFound: true,
-    // },
 ];

@@ -4,6 +4,7 @@ import { SearchIcon } from '@heroicons/react/solid';
 
 export const GlobalFilter = ({ filter, setFilter }) => {
     const [value, setValue] = useState(filter);
+    
     const onChange = useAsyncDebounce(value => {
         setFilter(value || undefined); 
     }, 1000);
@@ -29,7 +30,6 @@ export const GlobalFilter = ({ filter, setFilter }) => {
                 name="search-host"
                 id="search-host"
                 className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                // placeholder="Search appointments..."
                 placeholder={getPlaceholder()}
                 value={value || ''}
                 onChange={(e) => {

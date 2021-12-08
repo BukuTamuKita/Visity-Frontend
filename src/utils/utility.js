@@ -1,23 +1,22 @@
 export const capitalizeFirstLetter = (words) => {
     if (words) {
-        words = "" + words;
-        const arr = words.split(" ");
+        words = '' + words;
+        const arr = words.split(' ');
 
         for (let i = 0; i < arr.length; i++) {
             arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
         }
 
-        const result = arr.join(" ");
-        console.log("result: ", result);
+        const result = arr.join(' ');
 
         return result;
     }
 
-    return "";
+    return '';
 };
 
 export const dataURLtoFile = (url, filename) => {
-    let arr = url.split(","),
+    let arr = url.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
         n = bstr.length,

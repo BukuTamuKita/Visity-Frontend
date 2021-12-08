@@ -35,7 +35,7 @@ const UserForm = ({ title }) => {
                 }
             })
             .then(() => {
-                history.push("/user-list");
+                history.push('/user-list');
                 window.location.reload();
             })
     };
@@ -44,7 +44,6 @@ const UserForm = ({ title }) => {
         <div className="py-24 px-16 grid grid-cols-12">
             <div className="col-span-6">
                 <p className="text-4xl mb-10">{ title } User</p>
-                {/* User Information */}
                 <div>
                     <p className="text-lg font-semibold mb-4">User Information</p>
                     <div className="mb-4">
@@ -169,9 +168,7 @@ const UserForm = ({ title }) => {
                         </div>
                     </div>
                 </div>
-
-                {/* User Credentials */}
-                <div className="">
+                <div>
                     <p className="text-lg font-semibold mb-4">User Credentials</p>
                     <div className="mb-4">
                         <label

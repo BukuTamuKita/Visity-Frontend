@@ -5,6 +5,7 @@ import {
     Switch,
     Redirect
 } from 'react-router-dom';
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 import Layout from './components/Layout';
 import 'tailwindcss/tailwind.css';
 import './App.css';
@@ -12,9 +13,6 @@ import { PUBLIC_ROUTE, PRIVATE_ROUTE } from './routes/routes';
 import PublicRoute from './components/PublicRoute';
 import PrivateRoute from './components/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
-// import { ThemeProvider } from '@material-ui/styles';
-import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
-// import { StyledEngineProvider } from '@mui/styled-engine-sc';
 
 const theme = createTheme({
     components: {
@@ -27,6 +25,7 @@ const theme = createTheme({
             }
         },
     },
+
     typography: {
         fontFamily: [
             'Inter',
@@ -45,41 +44,6 @@ const theme = createTheme({
 
 function App() {
     return (
-//         <Router>
-//             <Switch>
-//                 {APP_ROUTE.map((value, index) => {
-//                     return (
-//                         <PublicRoute
-//                             key={value.name}
-//                             restricted={value.restricted}
-//                             component={value.component}
-//                             path={value.path}
-//                             exact={value.exact}
-//                         />
-//                     )
-//                 })}
-//                 <div className="flex">
-//                     <div className="h-screen sticky top-0">
-//                         <Drawer />
-//                     </div>
-// 
-//                     {/* Main Content */}
-//                     <div className="flex-auto">
-//                         {PRIVATE_ROUTE.map((value, index) => {
-//                             return (
-//                                 <PrivateRoute
-//                                     key={value.name}
-//                                     component={value.component}
-//                                     path={value.path}
-//                                     exact={value.exact}
-//                                 />
-//                             )
-//                         })}
-//                     </div>
-//                 </div>
-//             </Switch>
-//         </Router>
-
         <StyledEngineProvider>
             <ThemeProvider theme={theme}>
                 <Router>

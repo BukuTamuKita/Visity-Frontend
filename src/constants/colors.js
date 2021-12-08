@@ -3,14 +3,11 @@ export const COLORS = {
   primaryHover: '#1B398F',
   primaryFocus: '#9CA9D7',
   primaryOutline: '#E7EAF5',
-
   secondary: '#FDB537',
   secondaryHover: '#F99431',
   secondaryFocus: '#FFE08D',
-
   accent: '#E7EBF8',
   darkerAccent: '#C7D2FF',
-
   success: '#14760F',
   successShade: '#E5FAD1',
   danger: '#B3350C',
@@ -18,4 +15,4 @@ export const COLORS = {
   warning: '#7A6200',
   warningShade: '#FEFACB',
   info: '#38CFE0',
-}
+};

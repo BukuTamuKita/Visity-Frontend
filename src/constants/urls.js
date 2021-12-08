@@ -4,6 +4,7 @@ export const SERVER_NAME = 'http://127.0.0.1:8000';
 export const BASE_URL = SERVER_NAME + '/api';
 
 let JWT = null;
+
 if (Cookies.get('JWT') !== undefined) {
     JWT = Cookies.get('JWT');
 }
