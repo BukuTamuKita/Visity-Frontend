@@ -1,27 +1,27 @@
 export const Status = ({ value }) => {
-  if (value === "accepted") {
-      return (
-          <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
-              {value}
-          </div>
-      );
-  } else if (value === "waiting") {
-      return (
-          <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
-              {value}
-          </div>
-      );
-  } else if (value === "declined") {
-      return (
-          <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
-              {value}
-          </div>
-      );
-  } else if (value === "canceled") {
-      return (
-          <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
-              {value}
-          </div>
-      );
-  }
+    if (value === "accepted") {
+        return (
+            <p className="w-24 text-xs text-center text-success font-semibold py-1 border rounded-2xl bg-successShade">
+                {value.toUpperCase()}
+            </p>
+        );
+    } else if (value === "waiting") {
+        return (
+            <p className="w-24 text-xs text-center text-gray-600 font-semibold py-1 border rounded-2xl bg-gray-300">
+                {value.toUpperCase()}
+            </p>
+        );
+    } else if (value === "declined") {
+        return (
+            <p className="w-24 text-xs text-center text-danger font-semibold py-1 border rounded-2xl bg-dangerShade">
+                {value.toUpperCase()}
+            </p>
+        );
+    } else if (value === "canceled") {
+        return (
+            <p className="w-24 text-xs text-center text-warning font-semibold py-1 border rounded-2xl bg-warningShade">
+                {value.toUpperCase()}
+            </p>
+        );
+    }
 };

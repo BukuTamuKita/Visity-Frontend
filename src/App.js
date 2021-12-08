@@ -22,10 +22,25 @@ const theme = createTheme({
             styleOverrides: {
                 paper: {
                     background: "#2E4DA7",
+                    fontFamily: "Inter",
                 }
             }
         },
     },
+    typography: {
+        fontFamily: [
+            'Inter',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    }
 });
 
 function App() {
@@ -66,7 +81,6 @@ function App() {
 //         </Router>
 
         <StyledEngineProvider>
-
             <ThemeProvider theme={theme}>
                 <Router>
                     <Switch>

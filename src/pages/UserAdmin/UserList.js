@@ -11,6 +11,8 @@ import {
 } from '../../constants/urls';
 import Table from '../../components/Table/Table';
 import { getToken, isLogin } from '../../utils/auth';
+import { TrashIcon } from '@heroicons/react/outline';
+import { capitalizeFirstLetter } from '../../utils/utility';
 
 export const UserAction = ({ id }) => {
     const deleteUser = () => {
@@ -38,14 +40,14 @@ export const UserAction = ({ id }) => {
                     </svg>
                 </button>
             </Link> */}
-            <button onClick={() => {
+            <button
+                className="p-2 bg-white rounded-full transition duration-300 ease-in-out hover:bg-dangerShade" 
+                onClick={() => {
                 if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
                     deleteUser();
                 }
             }}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
+                <TrashIcon className="w-6 h-6 text-danger" />
             </button>
         </>
     )
@@ -73,17 +75,24 @@ const UserAdmin = () => {
             Header: "Role",
             accessor: "role",
             Cell: ({ value }) => {
-                if (value === "admin") {
-                    return (
-                        <div className="text-xs text-center text-blue-500 font-semibold py-1 px-2 border rounded-2xl bg-blue-100">
-                            { value }
+                // if (value === "admin") {
+                //     return (
+                //         <div>
+                //             <div className="text-blue-500 w-1 h-1 border rounded-2xl bg-blue-100"></div>
+                //             <p>{ value }</p>
+                //         </div>
+                //     )
+                // }
+                return (
+                    value === "admin" ? (
+                        <div className="flex flex-row items-center gap-2">
+                            <span className="w-1.5 h-1.5 border rounded-full bg-primary"></span>
+                            <p>{ capitalizeFirstLetter(value) }</p>
                         </div>
+                    ) : (
+                        <p>{ capitalizeFirstLetter(value) }</p>
                     )
-                } else {
-                    return (
-                        <p>{ value }</p>
-                    )
-                }
+                )
             }
         },
         {
@@ -125,8 +134,11 @@ const UserAdmin = () => {
     const userColumn = useMemo(() => [...columns], [columns]);
 
     return (
-        <div className="py-24 px-16">
-            <p className="text-4xl mb-10">User List</p>
+        <div className="py-16 px-16">
+            <div className="flex flex-col mb-12">
+                <p className="text-4xl text-primary font-bold mb-2">Users</p>
+                <p className="text-lg text-primary">Showing all the users in this app</p>
+            </div>
             <Table 
                 columns={userColumn}
                 data={userData}

@@ -1,13 +1,16 @@
 import React from 'react';
+import { ListItemIcon } from '@mui/material';
 import { Link, NavLink } from 'react-router-dom';
+import ListItem from '@mui/material/ListItem';
+import { LogoutOutlined } from '@mui/icons-material';
+import ListItemText from '@mui/material/ListItemText';
 import SidebarData from './SidebarData';
 import { logout } from '../../utils/auth';
-import { LogoutIcon } from '@heroicons/react/outline';
-import { ListItemIcon } from '@mui/material';
+import { COLORS } from '../../constants/colors';
 
 const Sidebar = () => {
     return (
-        <div className="flex flex-col flex-1 justify-between my-6 mx-2">
+        <div className="flex flex-col flex-1 justify-between mt-12 mb-6 mx-2">
             <ul className="flex flex-col gap-2">
                 {SidebarData.map((item, index) => {
                     return (
@@ -15,15 +18,29 @@ const Sidebar = () => {
                             <NavLink
                                 exact
                                 to={item.path}
-                                className="block py-2.5 px-4 text-white items-center rounded transition duration-200 ease-in-out hover:bg-primary-hover hover:text-white"
-                                activeClassName="transition duration-500 ease-in-out bg-secondary text-primary"
                             >
-                                <div className="flex flex-row items-center gap-x-2">
-                                    <ListItemIcon>
+                                <ListItem
+                                    button key={item.title} 
+                                    sx={{ 
+                                        color: "white",
+                                        borderRadius: 1.5,
+                                        '&:active': {
+                                            backgroundColor: COLORS.secondary,
+                                            color: COLORS.primary,
+                                        },
+                                     }}>
+                                    <ListItemIcon 
+                                        sx={{ 
+                                            color: "white", 
+                                            '&:active': {
+                                                backgroundColor: COLORS.secondary,
+                                                color: COLORS.primary,
+                                            }, 
+                                        }}>
                                         {item.icon}
                                     </ListItemIcon>
-                                    <span className="-ml-4">{item.title}</span>
-                                </div>
+                                    <ListItemText primary={item.title} />
+                                </ListItem>
                             </NavLink>
                         </div>
                     );
@@ -31,16 +48,17 @@ const Sidebar = () => {
             </ul>
             <div>
                 <Link to="/" onClick={logout}>
-                    <li className="block py-2.5 px-4 rounded transition duration-200 hover:bg-primary-hover hover:text-white">
-                        <div className="flex flex-row items-center gap-x-2">
-                            <div className="flex flex-row items-center gap-x-2">
-                                <ListItemIcon>
-                                    <LogoutIcon className="w-6" />
-                                </ListItemIcon>
-                                <span>Logout</span>
-                            </div>
-                        </div>
-                    </li>
+                    <ListItem 
+                        button
+                        sx={{ 
+                            color: "white",
+                            borderRadius: 1.5,
+                        }}>
+                        <ListItemIcon sx={{ color: "white", }}>
+                            <LogoutOutlined />
+                        </ListItemIcon>
+                        <ListItemText>Logout</ListItemText>
+                    </ListItem>
                 </Link>
             </div>
         </div>

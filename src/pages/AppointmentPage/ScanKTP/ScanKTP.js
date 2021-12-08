@@ -6,7 +6,7 @@ import { dataURLtoFile } from '../../../utils/utility';
 import WebcamKTP from './WebcamKTP';
 import UploadKTP from './UploadKTP';
 
-const ScanKTP = () => {
+const ScanKTP = ({ setGuestInfo }) => {
     const [loading, setLoading] = useState(false);
 
     const scanKTP = (image, scanType) => {
@@ -31,6 +31,7 @@ const ScanKTP = () => {
             })
             .then((res) => {
                 console.log("KTP response: ", res);
+                setGuestInfo(res.data[0]);
             })
             .then((res) => {
                 if (res) {
@@ -45,10 +46,15 @@ const ScanKTP = () => {
     };
 
     return (
-        <>
-            <WebcamKTP scanKTP={scanKTP} loading={loading} />
-            <UploadKTP scanKTP={scanKTP} loading={loading} />
-        </>
+        <div className="mb-6">
+            <p className="text-2xl font-bold mb-4">Please input your data</p>
+            <label className="label">KTP Scan</label>
+            <div className="flex flex-row items-center gap-2">
+                <WebcamKTP scanKTP={scanKTP} loading={loading} />
+                <p className="font-bold text-sm">or</p>
+                <UploadKTP scanKTP={scanKTP} loading={loading} />
+            </div>
+        </div>
     );
 };
 

@@ -1,4 +1,4 @@
-import Login from '../pages/Login';
+import Login from '../pages/Login/Login';
 import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
 import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
 import UserList from '../pages/UserAdmin/UserList';
