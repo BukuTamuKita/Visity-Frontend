@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-export const SERVER_NAME = 'http://127.0.0.1:8000';
+export const SERVER_NAME = 'https://api.visity.me';
 export const BASE_URL = SERVER_NAME + '/api';
 
 let JWT = null;

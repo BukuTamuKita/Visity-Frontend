@@ -6,9 +6,9 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
     const [search, setSearch] = useState('');
     const [display, setDisplay] = useState(false);
 
-    const updateHosts = (option) => {
-        getFilteredHost(option);
-        setSearch(option.name);
+    const updateHosts = (host) => {
+        getFilteredHost(host);
+        setSearch(host.name);
         setDisplay(!display);
     };
 
@@ -24,6 +24,7 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
         } else {
             setFilterredHost(newFilter);
         }
+        
         setSearch(searchWord);
     };
 
@@ -41,7 +42,7 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
                         type="search"
                         name="search-host"
                         id="search-host"
-                        className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                        className="focus:ring-primary focus:border-primary transition flex-1 block w-full rounded-none rounded-r-md text-sm text-gray-700 border-gray-300 placeholder-gray-300"
                         placeholder={attribute.placeholder}
                         onChange={handleFilter}
                         value={search}
@@ -51,10 +52,10 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
             </div>
 
             {display && (
-                <div>
+                <>
                     {filteredHost.length !== 0 && (
                         <ul className="no-scrollbar absolute w-full h-48 mt-1 rounded-lg shadow-lg select-none bg-white overflow-hidden overflow-y-auto">
-                            {filteredHost.slice(0, 10).map((value) => {
+                            {filteredHost.slice(0, 10).map((value, index) => {
                                 return (
                                     <li
                                         className="hover:bg-gray-200 cursor-pointer"
@@ -67,7 +68,7 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
                             })}
                         </ul>
                     )}
-                </div>
+                </>
             )}
         </div>
     );

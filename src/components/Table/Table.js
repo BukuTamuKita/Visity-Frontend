@@ -17,7 +17,8 @@ import {
 import { 
     SwitchVerticalIcon, 
     CloudDownloadIcon, 
-    PlusCircleIcon 
+    PlusCircleIcon,
+    EmojiSadIcon,
 } from '@heroicons/react/outline';
 // import Checkbox from './Checkbox';
 import { Styles } from './TableStyles';
@@ -27,38 +28,57 @@ import { UserAction } from '../../pages/UserAdmin/UserList';
 import { EXPORT_DATA, SHOW_PHOTO } from '../../constants/urls';
 import { GuestAction } from '../../pages/GuestAdmin/GuestList';
 import { convertTime } from '../../utils/utility';
+import { AppointmentDetail } from '../../pages/AppointmentPage/AppointmentDetail';
 
 const Table = ({ columns, data }) => {
+    let pathname = window.location.pathname;
     const defaultColumn = useMemo(() => {
         return { 
             Filter: ColumnFilter
         }
     }, []);
 
-    // Custom kolom action
+    // Action column hook
     const actionHooks = (hooks) => {
-        if (window.location.pathname !== "/appointment-history") {
-            hooks.visibleColumns.push((columns) => [
-                ...columns,
-                {
-                    id: "action",
-                    Header: "Action",
-                    Cell: ({ row }) => {
-                        console.log("action: ", row.values);
-                        return window.location.pathname === "/guest-list" ? (
+        hooks.visibleColumns.push((columns) => [
+            ...columns,
+            {
+                id: "action",
+                Header: "Action",
+                Cell: ({ row }) => {
+                    if (pathname === '/guest-list') {
+                        return (
                             <GuestAction id={row.values.id} />
-                        ) : (
+                        )
+                    } else if (pathname === '/user-list') {
+                        return (
                             <UserAction id={row.values.id} /> 
                         )
+                    } else if (pathname === '/appointment-history') {
+                        return (
+                            <AppointmentDetail meetingId={row.values.id} /> 
+                        )
                     }
-                },
-            ]);
-        }
+                }
+            },
+        ]);
     };
 
     // Custom kolom user (user list)
     const userHooks = (hooks) => {
-        if (window.location.pathname === "/user-list") {
+        let pathname = window.location.pathname;
+
+        const getImage = (photo) => {
+            if (photo === null) {
+                return '';
+            } else if (photo.includes('https')) {
+                return photo;
+            } else {
+                return SHOW_PHOTO(photo);
+            }
+        };
+
+        if (pathname === "/user-list") {
             hooks.visibleColumns.push((columns) => [
                 ...columns,
                 {
@@ -69,7 +89,9 @@ const Table = ({ columns, data }) => {
                             <div className="flex flex-row gap-4">
                                 <img 
                                     alt="profile"
-                                    src={row.values.photo.includes("http") ? row.values.photo : SHOW_PHOTO(row.values.photo)}
+                                    // src={row.values.photo.includes("https") ? row.values.photo : SHOW_PHOTO(row.values.photo)}
+                                    // src={row.values.photo}
+                                    src={getImage(row.values.photo)}
                                     className="w-10 h-10 rounded-full" 
                                 />
                                 <div className="flex flex-col">
@@ -93,7 +115,7 @@ const Table = ({ columns, data }) => {
                     id: "time",
                     Header: "Time",
                     Cell: ({ row }) => {
-                        console.log("row: ", row.values.date_time[1]);
+                        console.log(row.values.date_time[0]);
                         return (
                             <p>{ row.values.date_time[1] }</p>
                         )
@@ -103,7 +125,6 @@ const Table = ({ columns, data }) => {
                     id: "date",
                     Header: "Date",
                     Cell: ({ row }) => {
-                        console.log("row: ", row.values.date_time[0]);
                         return (
                             <div className="flex flex-col">
                                 <p className="font-medium">{ row.values.date_time[0] }</p>
@@ -117,42 +138,15 @@ const Table = ({ columns, data }) => {
         }
     };
 
-    const nameHooks = (hooks) => {
-        let pathname = window.location.pathname;
-        if (pathname === '/appointment-history' || pathname === '/guest-list') {
-            hooks.visibleColumns.push((columns) => [
-                ...columns,
-                {
-                    id: "newHost",
-                    Header: "Host Name",
-                    Cell: ({ row }) => {
-                        return (
-                            <p>{ row.values.host.name }</p>
-                        )
-                    }
-                },
-                {
-                    id: "newGuest",
-                    Header: "Guest Name",
-                    Cell: ({ row }) => {
-                        return (
-                            <p>{ row.values.guest.name }</p>
-                        )
-                    }
-                },
-            ]);
-        }
-    };
-
     const hideColumns = () => {
         let pathname = window.location.pathname;
 
         if (pathname === '/user-list') {
             return ['name', 'email', 'photo'];
         } else if (pathname === '/guest-list') {
-            return ['id', 'purpose', 'notes', 'status', 'date_time', 'host', 'guest'];
+            return ['id', 'purpose', 'notes', 'status', 'date_time'];
         } else if (pathname === '/appointment-history') {
-            return ['id', 'purpose', 'notes', 'date_time', 'host', 'guest'];
+            return ['id', 'purpose', 'notes', 'date_time'];
         } else {
             return [""];
         }
@@ -171,7 +165,6 @@ const Table = ({ columns, data }) => {
         }
     },
     userHooks,
-    nameHooks,
     timeHooks,
     actionHooks,
     useGlobalFilter,
@@ -200,7 +193,7 @@ const Table = ({ columns, data }) => {
     const changeOrder = () => {
         let pathname = window.location.pathname;
         if (pathname === '/appointment-history') {
-            setColumnOrder(['time', 'date', 'newHost', 'newGuest','status']);
+            setColumnOrder(['time', 'date', 'host', 'guest', 'status']);
         } else if (pathname === '/user-list') {
             setColumnOrder(['id', 'user', 'role']);
         }
@@ -277,7 +270,7 @@ const Table = ({ columns, data }) => {
                                 <Link to="/user-create">
                                     <button className="primary-btn">
                                         <PlusCircleIcon className="w-6" />
-                                        Create
+                                        Create User
                                     </button>
                                 </Link> 
                             }
@@ -293,40 +286,55 @@ const Table = ({ columns, data }) => {
                         </div>
                     </div>
 
-                    <table className="border-b border-gray-100" {...getTableProps()}>
-                        <thead>
-                            {headerGroups.map((headerGroup) => (
-                                <tr className="bg-gray-50 h-14 border-b border-gray-100" {...headerGroup.getHeaderGroupProps()}>
-                                    {headerGroup.headers.map((column) => (
-                                        <th className="px-6 text-sm font-semibold" {...column.getHeaderProps(column.getSortByToggleProps())}>
-                                            <div className="flex flex-row items-center gap-4">
-                                                {column.render('Header')}
-                                                <span>
-                                                    {/* {column.isSorted? (column.iSortedDesc ? ' 🔽' : ' 🔼') : ''} */}
-                                                    {column.isSorted ? (
-                                                        column.iSortedDesc ? (
-                                                            <SwitchVerticalIcon className="text-gray-500 w-4" /> 
-                                                        ) : (
-                                                            <SwitchVerticalIcon className="text-gray-500 w-4" />) 
-                                                        )
-                                                    : ''}
-                                                </span>
-                                            </div>
-                                        </th>
-                                    ))}
-                                </tr>
-                            ))}
-                        </thead>
-                        <tbody className="text-sm text-gray-900" {...getTableBodyProps()}>
-                            {page.map((row) => {
-                                prepareRow(row)
-                                return (
-                                    window.location.pathname === "/guest-list" ? (
-                                        row.values.status === "waiting" && (
-                                            <tr 
-                                                {...row.getRowProps()}
-                                                className="h-14 border-b border-gray-100"
-                                            >
+                    {page.length !== 0 ? (
+                        <table className="border-b border-gray-100" {...getTableProps()}>
+                            <thead>
+                                {headerGroups.map((headerGroup) => (
+                                    <tr className="bg-gray-50 h-14 border-b border-gray-100" {...headerGroup.getHeaderGroupProps()}>
+                                        {headerGroup.headers.map((column) => (
+                                            <th className="px-6 text-sm font-semibold" {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                                <div className="flex flex-row items-center gap-4">
+                                                    {column.render('Header')}
+                                                    <span>
+                                                        {/* {column.isSorted? (column.iSortedDesc ? ' 🔽' : ' 🔼') : ''} */}
+                                                        {column.isSorted ? (
+                                                            column.iSortedDesc ? (
+                                                                <SwitchVerticalIcon className="text-gray-500 w-4" /> 
+                                                            ) : (
+                                                                <SwitchVerticalIcon className="text-gray-500 w-4" />) 
+                                                            )
+                                                        : ''}
+                                                    </span>
+                                                </div>
+                                            </th>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </thead>
+                            <tbody className="text-sm text-gray-900" {...getTableBodyProps()}>
+                                {page.map((row) => {
+                                    prepareRow(row)
+                                    return (
+                                        window.location.pathname === "/guest-list" ? (
+                                            row.values.status === "waiting" && (
+                                                <tr 
+                                                    {...row.getRowProps()}
+                                                    className="h-14 border-b border-gray-100"
+                                                >
+                                                    {row.cells.map((cell) => {
+                                                        return (
+                                                            <td 
+                                                                className="px-6"
+                                                                {...cell.getCellProps()}
+                                                            >
+                                                                {cell.render('Cell')}
+                                                            </td>
+                                                        ) 
+                                                    })}
+                                                </tr>
+                                            )
+                                        ) : (
+                                            <tr className="h-14 border-b border-gray-100" {...row.getRowProps()}>
                                                 {row.cells.map((cell) => {
                                                     return (
                                                         <td 
@@ -339,26 +347,18 @@ const Table = ({ columns, data }) => {
                                                 })}
                                             </tr>
                                         )
-                                    ) : (
-                                        <tr className="h-14 border-b border-gray-100" {...row.getRowProps()}>
-                                            {row.cells.map((cell) => {
-                                                return (
-                                                    <td 
-                                                        className="px-6"
-                                                        {...cell.getCellProps()}
-                                                    >
-                                                        {cell.render('Cell')}
-                                                    </td>
-                                                ) 
-                                            })}
-                                        </tr>
                                     )
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                })}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center">
+                            <EmojiSadIcon className="w-12 h-12 mb-1" />
+                            <p>Oops, there's no data here</p>
+                        </div>
+                    )}
 
-                    <div className="pagination flex flex-row justify-between items-center p-4">
+                    <div className="flex flex-row justify-between items-center h-14 px-6 border-t border-gray-100">
                         <div>
                             Displaying <strong>10</strong> of <strong>{data.length}</strong> data -  
                             Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
@@ -388,16 +388,16 @@ const Table = ({ columns, data }) => {
                             </select>
                             <div className="flex flex-row gap-2">
                                 <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                                    <ChevronDoubleLeftIcon className="text-gray-500 w-6" />
+                                    <ChevronDoubleLeftIcon className="text-gray-400 w-6 h-6" />
                                 </button>
                                 <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                                    <ChevronLeftIcon className="text-gray-500 w-6" />
+                                    <ChevronLeftIcon className="text-gray-400 w-6 h-6" />
                                 </button>
                                 <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => nextPage()} disabled={!canNextPage}>
-                                    <ChevronRightIcon className="text-gray-500 w-6" />
+                                    <ChevronRightIcon className="text-gray-400 w-6 h-6" />
                                 </button>
                                 <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                                    <ChevronDoubleRightIcon className="text-gray-500 w-6" />
+                                    <ChevronDoubleRightIcon className="text-gray-400 w-6 h-6" />
                                 </button>
                             </div>
                         </div>

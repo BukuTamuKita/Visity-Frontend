@@ -8,7 +8,7 @@ const WebcamKTP = ({ scanKTP, loading }) => {
     const [image, setImage] = useState("");
 
     const dialogAttr = {
-        title: 'Open webcam',
+        detail: 'Open webcam',
     };
 
     const videoConstraints = {

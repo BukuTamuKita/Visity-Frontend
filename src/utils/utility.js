@@ -42,10 +42,10 @@ export const convertTime = (date, time) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
     const getRelativeTime = (d1, d2 = new Date()) => {
-        var elapsed = d1 - d2
+        let elapsed = d1 - d2;
     
         // "Math.abs" accounts for both "past" & "future" scenarios
-        for (var u in units) {
+        for (let u in units) {
             if (Math.abs(elapsed) > units[u] || u === 'second') {
                 return rtf.format(Math.round(elapsed / units[u]), u)
             }

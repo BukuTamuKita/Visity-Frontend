@@ -1,8 +1,33 @@
 import React, { Fragment, useState } from 'react';
+import axios from 'axios';
 import { Dialog, Transition } from '@headlessui/react';
+import { InfoOutlined } from '@mui/icons-material';
+import { APPOINTMENT_DETAIL } from '../../constants/urls';
+import { getToken } from '../../utils/auth'; 
 
-const Popup = (props) => {
+export const AppointmentDetail = ({ meetingId }) => {
     let [isOpen, setIsOpen] = useState(false);
+    const [appointment, setAppointment] = useState({
+        id: 0,
+        notes: '',
+        status: '',
+        purpose: '',
+        date_time: [],
+        guest: {
+            id: 0,
+            email: '',
+            nik: '',
+            name: '',
+            address: '',
+        },
+        host: {
+            id: 0,
+            name: '',
+            nip: '',
+            position: '',
+            users: {},
+        },
+    });
 
     const closeModal = () => {
         setIsOpen(false);
@@ -10,19 +35,31 @@ const Popup = (props) => {
 
     const openModal = () => {
         setIsOpen(true);
+        fetchAppointment();
+    };
+
+    const fetchAppointment = () => {
+        axios
+            .get(APPOINTMENT_DETAIL(meetingId), {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setAppointment(res.data.data);
+            })
+            .catch((err) => console.log(err))
     };
 
     return (
         <>
             <div className="flex items-center">
-                    <button
-                        type="button"
-                        onClick={openModal}
-                        className="secondary-btn"
-                    >
-                        { props.icon }
-                        { props.attribute.detail }
-                    </button>
+                <button
+                    type="button"
+                    onClick={openModal}
+                    className="secondary-btn"
+                >
+                    <InfoOutlined />
+                    Meeting Detail
+                </button>
             </div>
 
             <Transition appear show={isOpen} as={Fragment}>
@@ -61,14 +98,20 @@ const Popup = (props) => {
                             leaveTo="opacity-0 scale-95"
                         >
                             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                                { props.children }
+                                {/* {appointment.map((value, index))} */}
+                                {/* { appointment.host.map((value, index) => (
+                                    <p>{ value.name }</p>
+                                ))} */}
+                                <p>{ appointment.guest.name }</p>
+                                <p>{ appointment.host.name }</p>
+                                <p>{ appointment.date_time[0] }</p>
+                                <p>{ appointment.date_time[1] }</p>
+                                <button onClick={closeModal} className="outline-btn">Close</button>
                             </div>
                         </Transition.Child>
                     </div>
                 </Dialog>
             </Transition>
         </>
-    );
+    )
 };
-
-export default Popup;

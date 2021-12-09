@@ -56,7 +56,7 @@ const Login = (props) => {
             })
             .catch(() => {
                 clearFormFields();
-                setErrorMessage(`Sorry, you're not authorized.`);
+                setErrorMessage("Sorry, you're not authorized.");
                 setLoading(false);
             });
     };
@@ -98,7 +98,7 @@ const Login = (props) => {
                                 <AtSymbolIcon className="w-6 h-6 text-gray-400" />
                             </span>
                             <input
-                                className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="email"
                                 type="text"
                                 value={email}
@@ -113,7 +113,7 @@ const Login = (props) => {
                                 <LockClosedIcon className="w-6 h-6 text-gray-400" />
                             </span>
                             <input
-                                className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="password"
                                 type={visiblePass}
                                 value={password}
@@ -125,7 +125,7 @@ const Login = (props) => {
                     </div>
                     <div className="flex items-start mb-8">
                         <div className="flex items-center h-5">
-                            <input id="comments" name="comments" type="checkbox" className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" onChange={onVisibleChange} />
+                            <input id="comments" name="comments" type="checkbox" className="focus:ring-primaryFocus h-4 w-4 text-primary border-gray-300 rounded" onChange={onVisibleChange} />
                         </div>
                         <div className="ml-3 text-sm">
                             <label htmlFor="comments" className="text-gray-600">
@@ -134,13 +134,13 @@ const Login = (props) => {
                         </div>
                     </div>
                     {errorMessage && (
-                        <div className="flex flex-row items-center gap-2 mb-4 border p-4 rounded-lg bg-danger-shade">
+                        <div className="flex flex-row items-center gap-2 mb-4 border p-4 rounded-lg bg-dangerShade">
                             <XCircleIcon className="w-6 h-6 text-danger" />
                             <p className="text-danger">{ errorMessage }</p>
                         </div>
                     )}
                     <button
-                        className="px-4 py-2 w-full text-white border-2 border-white rounded-lg transition bg-indigo-700 hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        className="primary-btn w-full"
                         onClick={validateLogin}
                         disabled={loading}
                     >

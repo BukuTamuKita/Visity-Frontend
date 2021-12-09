@@ -25,6 +25,22 @@ const ProfileIcon = () => {
 		fetchAdmin();
 	}, []);
 
+	console.log(admin);
+
+	const getImage = () => {
+// 		if (admin.photo.includes('storage')) {
+// 			return SHOW_PHOTO(admin.photo);
+// 		}
+// 
+// 		if (admin.photo.includes('https')) {
+// 			return admin.photo
+// 		}
+
+		if (admin) {
+			console.log('ada');
+		}
+	};
+
 	return (
 		<Menu as="div" className="ml-3 relative">
 			<div className="flex flex-row items-center gap-4">
@@ -33,7 +49,8 @@ const ProfileIcon = () => {
 					<span className="sr-only">Open user menu</span>
 					<img
 						className="h-10 w-10 rounded-full"
-						src={SHOW_PHOTO(admin.photo)}
+						// src={SHOW_PHOTO(admin.photo)}
+						src={getImage()}
 						alt="Admin"
 					/>
 				</Menu.Button>

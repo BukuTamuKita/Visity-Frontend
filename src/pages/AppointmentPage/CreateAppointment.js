@@ -102,6 +102,19 @@ const CreateAppointment = () => {
         }
     };
 
+    const sendNotification = () => {
+        axios
+            .post(SEND_NOTIFICATION, {
+                name: filteredHost.name,
+                gname: capitalizeFirstLetter(guestInfo.name),
+                body: purpose,
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => console.log(err))
+    };
+
     const createAppointment = async () => {
         const response = await authAxios
             .post(CREATE_APPOINTMENT, {
@@ -114,28 +127,14 @@ const CreateAppointment = () => {
         if (response) {
             console.log(response);
             sendNotification();
-            history.push("/appointment-history");
             window.location.reload();
         }
     };
 
-    const sendNotification = () => {
-        axios
-            .post(SEND_NOTIFICATION, {
-                name: filteredHost.name,
-                gname: capitalizeFirstLetter(guestInfo.name),
-                body: purpose,
-            })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => console.log(err))
-    }
-
     return (
         <div className="p-16 grid grid-cols-12">
             <div className="flex-auto flex-column col-span-12 mb-12">
-                <p className=" text-4xl text-primary font-bold mb-2">
+                <p className="text-4xl text-primary font-bold mb-2">
                     Create Appointment
                 </p>
                 <p className="text-lg text-primary">
@@ -143,7 +142,7 @@ const CreateAppointment = () => {
                 </p>
             </div>
             <div className="flex flex-row col-span-10 gap-20">
-                <div className="rounded-lg p-6 shadow-lg flex-1">
+                <div className="rounded-lg p-6 shadow-lg flex-1 bg-white">
                     <div className="mb-6">
                         <p className="text-2xl mb-4 font-bold">
                             Who would you like to meet today?
@@ -165,7 +164,7 @@ const CreateAppointment = () => {
                                     id="nik"
                                     placeholder="Enter your NIK"
                                     autoComplete="nik"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={guestInfo.nik}
                                     onChange={(e) => setGuestInfo({...guestInfo, nik: e.target.value})}
                                 /> 
@@ -177,7 +176,7 @@ const CreateAppointment = () => {
                                     id="name"
                                     placeholder="Enter your name"
                                     autoComplete="name"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={
                                         guestInfo
                                             ? capitalizeFirstLetter(
@@ -200,7 +199,7 @@ const CreateAppointment = () => {
                                     id="address"
                                     placeholder="Enter your address"
                                     autoComplete="address"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={
                                         guestInfo
                                             ? capitalizeFirstLetter(
@@ -223,7 +222,7 @@ const CreateAppointment = () => {
                                     id="email"
                                     placeholder="Enter your Email"
                                     autoComplete="email"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
@@ -234,15 +233,12 @@ const CreateAppointment = () => {
                                     id="agenda"
                                     placeholder="Enter your agenda"
                                     autoComplete="agenda"
-                                    className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
                                     onChange={(e) => setPurpose(e.target.value)}
                                 />
                             </div>
 
                             <div className="flex flex-row justify-end gap-x-5">
-                                <button className="outline-btn" type="submit">
-                                    Back
-                                </button>
                                 <button
                                     className="primary-btn"
                                     type="submit"

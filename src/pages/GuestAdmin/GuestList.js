@@ -21,7 +21,7 @@ import Popup from '../../components/Popup/Popup';
 
 export const GuestAction = ({ id }) => {
     const dialogAttr = {
-        title: 'Cancel meeting',
+        detail: 'Cancel meeting',
     };
 
     // const cancelAppointment = (note) => {
@@ -96,12 +96,20 @@ const GuestList = () => {
             accessor: "id",
         },
         {
+            id: "host",
             Header: "Host Name",
-            accessor: "host",
+            accessor: (originalRow, rowIndex) => {
+                console.log(typeof originalRow.host.name);
+                return originalRow.host.name;
+            }
         },
         {
+            id: "guest",
             Header: "Guest Name",
-            accessor: "guest",
+            accessor: (originalRow, rowIndex) => {
+                console.log(typeof originalRow.host.name);
+                return originalRow.guest.name;
+            }
         },
         {
             Header: "Status",

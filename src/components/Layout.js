@@ -6,10 +6,11 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import IconButton from '@mui/material/IconButton';
-import { MenuAlt2Icon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
+import { ChevronLeftRounded, ChevronRightRounded, MenuRounded } from '@mui/icons-material';
 import ProfileIcon from './ProfileIcon';
 import Sidebar from './Sidebar/Sidebar';
 import { logoLight } from '../assets/logo';
+import { COLORS } from '../constants/colors';
 
 const drawerWidth = 240;
 
@@ -77,7 +78,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
 
 function Layout(props) {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -90,11 +91,10 @@ function Layout(props) {
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open} style={{ background: "#FFFFFF" }}>
+            <AppBar position="fixed" elevation={0} open={open} style={{ background: "#FFFFFF", borderBottom: "2px solid rgb(238, 238, 238)" }}>
                 <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <IconButton
-                            color="inherit"
                             aria-label="open drawer"
                             onClick={handleDrawerOpen}
                             edge="start"
@@ -103,7 +103,7 @@ function Layout(props) {
                                 ...(open && { display: "none" }),
                             }}
                         >
-                            <MenuAlt2Icon className="text-primary w-6" />
+                            <MenuRounded sx={{ color: COLORS.primary }} />
                         </IconButton>
                     </Box>
                     <ProfileIcon />
@@ -122,11 +122,21 @@ function Layout(props) {
                     }}
                 >
                     <img src={logoLight} alt="logo" className="w-10 h-10" />
-                    <IconButton onClick={handleDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon className="text-white w-6" /> : <ChevronLeftIcon className="text-white w-6" />}</IconButton>
+                    <IconButton 
+                        sx={{
+                            "&:hover": {
+                                backgroundColor: COLORS.primaryHover,
+                            },
+                            color: "white",
+                        }} 
+                        onClick={handleDrawerClose}
+                    >
+                        {theme.direction === "rtl" ? <ChevronRightRounded /> : <ChevronLeftRounded />}
+                    </IconButton>
                 </DrawerHeader>
                 <Sidebar />
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box component="main" sx={{ flexGrow: 1 }}>
                 <DrawerHeader />
                 {props.children}
             </Box>

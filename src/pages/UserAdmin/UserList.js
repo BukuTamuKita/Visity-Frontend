@@ -1,7 +1,7 @@
 import React, { 
     useState,
     useEffect,
-    useMemo 
+    useMemo, 
 } from 'react';
 import axios from 'axios';
 import { 
@@ -30,26 +30,15 @@ export const UserAction = ({ id }) => {
     };
 
     return (
-        <>
-            {/* <Link
-                to={{ pathname: `/user-update/${id}`, state: id }}
-            >
-                <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
-                </button>
-            </Link> */}
-            <button
-                className="p-2 bg-white rounded-full transition duration-300 ease-in-out hover:bg-dangerShade" 
-                onClick={() => {
-                if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
-                    deleteUser();
-                }
-            }}>
-                <TrashIcon className="w-6 h-6 text-danger" />
-            </button>
-        </>
+        <button
+            className="p-2 bg-white rounded-full transition duration-300 ease-in-out hover:bg-dangerShade" 
+            onClick={() => {
+            if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
+                deleteUser();
+            }
+        }}>
+            <TrashIcon className="w-6 h-6 text-danger" />
+        </button>
     )
 };
 
@@ -75,14 +64,7 @@ const UserAdmin = () => {
             Header: "Role",
             accessor: "role",
             Cell: ({ value }) => {
-                // if (value === "admin") {
-                //     return (
-                //         <div>
-                //             <div className="text-blue-500 w-1 h-1 border rounded-2xl bg-blue-100"></div>
-                //             <p>{ value }</p>
-                //         </div>
-                //     )
-                // }
+                console.log("role", value);
                 return (
                     value === "admin" ? (
                         <div className="flex flex-row items-center gap-2">
