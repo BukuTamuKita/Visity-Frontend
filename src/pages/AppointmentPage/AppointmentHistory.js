@@ -9,6 +9,7 @@ import {
     SHOW_APPOINTMENT,
     // DELETE_APPOINTMENT, 
 } from '../../constants/urls';
+import { Status } from '../../components/Status';
 import Table from '../../components/Table/Table';
 import { getToken, isLogin } from '../../utils/auth';
 import { XCircleIcon } from '@heroicons/react/outline';
@@ -85,42 +86,11 @@ const AppointmentHistory = () => {
         },
         {
             Header: "Host Name",
-            accessor: "host.name",
+            accessor: "host",
         },
         {
             Header: "Guest Name",
-            accessor: "guest.name",
-        },
-        {
-            Header: "Status",
-            accessor: "status",
-            Cell: ({ value }) => {
-                if (value === "accepted") {
-                    return (
-                    <div className="text-xs text-center text-green-500 font-semibold py-1 px-2 border rounded-2xl bg-green-100">
-                        { value }
-                    </div>
-                    )
-                } else if (value === "declined") {
-                    return (
-                    <div className="text-xs text-center text-red-500 font-semibold py-1 px-2 border rounded-2xl bg-red-100">
-                        { value }
-                    </div>
-                    )
-                } else if (value === "waiting") {
-                    return (
-                    <div className="text-xs text-center text-yellow-500 font-semibold py-1 px-2 border rounded-2xl bg-yellow-100">
-                        { value }
-                    </div>
-                    )
-                } else if (value === "canceled") {
-                    return (
-                    <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
-                        { value }
-                    </div>
-                    )
-                }
-            },
+            accessor: "guest",
         },
         {
             Header: "Purpose",
@@ -130,13 +100,26 @@ const AppointmentHistory = () => {
             Header: "Note",
             accessor: "notes",
         },
+        // {
+        //     Header: "Date",
+        //     accessor: "date_time[0]",
+        // },
+        // {
+        //     Header: "Time",
+        //     accessor: "date_time[1]",
+        // },
         {
-            Header: "Date",
-            accessor: "date_time[0]",
+            Header: "Date Time",
+            accessor: "date_time",
         },
         {
-            Header: "Time",
-            accessor: "date_time[1]",
+            Header: "Status",
+            accessor: "status",
+            Cell: ({ value }) => {
+                return (
+                    <Status value={value} />
+                );
+            },
         },
     ], []
     );

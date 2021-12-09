@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { styled, useTheme } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Sidebar from './Sidebar/Sidebar';
 import { MenuAlt2Icon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/outline';
-import { makeStyles } from '@material-ui/core/styles';
 import ProfileIcon from './ProfileIcon';
+import Sidebar from './Sidebar/Sidebar';
+import { logoLight } from '../assets/logo';
 
 const drawerWidth = 240;
 
@@ -77,22 +76,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" 
     }),
 }));
 
-const useStyles = makeStyles({
-    list: {
-        width: 250
-    },
-    fullList: {
-        width: "auto"
-    },
-    paper: {
-        background: "blue"
-    }
-});
-
 function Layout(props) {
     const theme = useTheme();
-    const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(true);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -120,14 +106,12 @@ function Layout(props) {
                         >
                             <MenuAlt2Icon className="text-primary w-6" />
                         </IconButton>
-                        {/* <span className="text-2xl font-extrabold text-primary">Visity</span> */}
                     </Box>
                     <ProfileIcon />
                 </Toolbar>
             </AppBar>
             <Drawer 
                 variant="permanent" 
-                classes={{ paper: classes.paper }} 
                 open={open}
             >
                 <DrawerHeader 
@@ -135,12 +119,12 @@ function Layout(props) {
                         display: 'flex', 
                         justifyContent: 'space-between', 
                         alignItems: 'center',
-                     }}
+                        paddingX: 2,
+                    }}
                 >
-                    <span className="text-2xl font-extrabold text-white">Visity</span>
+                    <img src={logoLight} alt="logo" className="w-10 h-10" />
                     <IconButton onClick={handleDrawerClose}>{theme.direction === "rtl" ? <ChevronRightIcon className="text-white w-6" /> : <ChevronLeftIcon className="text-white w-6" />}</IconButton>
                 </DrawerHeader>
-                <Divider />
                 <Sidebar />
             </Drawer>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

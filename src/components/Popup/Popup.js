@@ -1,32 +1,27 @@
 import React, { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CameraIcon } from '@heroicons/react/outline';
 
-const Testing = () => {
+const Popup = (props) => {
     let [isOpen, setIsOpen] = useState(false);
 
     const closeModal = () => {
         setIsOpen(false);
-    }
+    };
 
     const openModal = () => {
         setIsOpen(true);
-    }
+    };
 
     return (
-        // <div className="flex h-screen">
-        //     <h1 className="m-auto">Testing page</h1>
-        // </div>
-
         <>
-            <div className="fixed inset-0 flex items-center justify-center">
+            <div className="flex items-center">
                 <button
                     type="button"
                     onClick={openModal}
-                    className="px-4 py-2 flex flex-row items-center gap-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-75"
+                    className="secondary-btn"
                 >
-                    <CameraIcon className="w-6" />
-                    Capture with camera
+                    { props.icon }
+                    { props.attribute.title }
                 </button>
             </div>
 
@@ -88,7 +83,8 @@ const Testing = () => {
                                         Got it, thanks!
                                     </button>
                                 </div> */}
-                                <p>testing</p>
+                                {/* <p>testing</p> */}
+                                { props.children }
                             </div>
                         </Transition.Child>
                     </div>
@@ -96,6 +92,6 @@ const Testing = () => {
             </Transition>
         </>
     );
-}
+};
 
-export default Testing;
+export default Popup;
