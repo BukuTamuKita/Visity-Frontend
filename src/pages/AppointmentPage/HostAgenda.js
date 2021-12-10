@@ -7,8 +7,20 @@ import { getToken } from '../../utils/auth';
 const HostAgenda = ({ display, appointment, filteredHost }) => {
     const [users, setUsers] = useState({});
 
-    const fetchUsers = () => {
-		axios
+    // const fetchUsers = () => {
+	// 	axios
+	// 		.get(SHOW_USERS, {
+	// 			headers: { Authorization: `Bearer ${getToken()}` },
+	// 		})
+	// 		.then((res) => {
+	// 			setUsers(res.data.data);
+	// 		})
+	// 		.catch((err) => console.log(err));
+	// };
+
+    useEffect(() => {
+        // fetchUsers();
+        axios
 			.get(SHOW_USERS, {
 				headers: { Authorization: `Bearer ${getToken()}` },
 			})
@@ -16,10 +28,10 @@ const HostAgenda = ({ display, appointment, filteredHost }) => {
 				setUsers(res.data.data);
 			})
 			.catch((err) => console.log(err));
-	};
-
-    useEffect(() => {
-        fetchUsers();
+        
+        return () => {
+            setUsers({});
+        }
     }, []);
 
     return (        
@@ -53,26 +65,22 @@ const HostAgenda = ({ display, appointment, filteredHost }) => {
                                             className="flex flex-row justify-between gap-6"
                                             key={data.id}
                                         >
-                                            <div key={data.id}>
                                                 <p className="text-sm font-semibold">{data.guest.name}</p>
-                                            </div>
-                                            <div>
-                                                <p>
+                                                <p className="text-sm">
                                                     {convertTime(data.date_time[0], data.date_time[1])}
                                                 </p>
-                                            </div>
                                         </div>
                                     );
                                 })
                             ) : (
                                 <div>
-                                    <p className="text-center">No appointments yet</p>
+                                    <p className="text-center text-gray-700">No appointments yet</p>
                                 </div>
                             )}
                         </div>
                     </div>
                 ) : (
-                    <div className="p-6 flex-col rounded-lg shadow-lg flex flex-col justify-center items-center bg-white">
+                    <div className="p-6 text-gray-700 flex-col rounded-lg shadow-lg flex flex-col justify-center items-center bg-white">
                         <p className="font-semibold">
                             No Host Selected
                         </p>

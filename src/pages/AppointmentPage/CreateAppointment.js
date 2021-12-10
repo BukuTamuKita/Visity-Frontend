@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import SearchBar from '../../components/SearchBar/SearchBar';
-import { getToken, isLogin } from '../../utils/auth';
+import SearchBar from '../../components/SearchUser/SearchUser';
+import { getToken } from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/utility';
 import HostAgenda from './HostAgenda';
 import ScanKTP from './ScanKTP/ScanKTP';
 import {
+    BASE_URL,
     CREATE_APPOINTMENT,
     CREATE_GUEST,
     SEND_NOTIFICATION,
-    SHOW_HOSTS,
     SHOW_HOST_APPOINTMENT,
 } from '../../constants/urls';
+import Loader from 'react-loader-spinner';
 
 const CreateAppointment = () => {
     let guestId = 0;
     const [guestInfo, setGuestInfo] = useState({});
     const [display, setDisplay] = useState(false);
-    // Guest
     const [email, setEmail] = useState('');
-    // Appointment
     const [purpose, setPurpose] = useState('');
-    const [hosts, setHosts] = useState([]);
+    const [loading, setLoading] = useState(false);
     const [appointment, setAppointment] = useState([]);
     const [filteredHost, setFilteredHost] = useState({
         id: 1,
@@ -32,50 +30,31 @@ const CreateAppointment = () => {
         users: null,
     });
 
-    const history = useHistory();
-
     const searchBarAttr = {
         style: 'w-full mb-4',
         placeholder: 'Search host name',
     };
 
     const authAxios = axios.create({
-        baseURL: 'http://127.0.0.1:8000/api/',
+        baseURL: BASE_URL,
         headers: {
             Authorization: `Bearer ${getToken()}`,
         },
     });
 
-    const fetchHosts = async () => {
-        const response = await axios
-            .get(SHOW_HOSTS, {
-                headers: { Authorization: `Bearer ${getToken()}` },
-            })
-            .catch((err) => console.log(err));
-
-        if (response && isLogin()) {
-            setHosts(response.data.data);
-        }
-    };
-
     useEffect(() => {
-        fetchHosts();
-    }, []);
-
-    const fetchAppointment = async () => {
-        const response = await axios
+        axios
             .get(SHOW_HOST_APPOINTMENT(filteredHost.id), {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
-            .catch((err) => console.log(err));
-
-        if (response && isLogin()) {
-            setAppointment(response.data.data);
+            .then((res) => {
+                setAppointment(res.data.data);
+            })
+            .catch((err) => console.log(err))
+        
+        return () => {
+            setAppointment([]);
         }
-    };
-
-    useEffect(() => {
-        fetchAppointment();
     }, [filteredHost.id]);
 
     const getFilteredHost = (host) => {
@@ -86,20 +65,19 @@ const CreateAppointment = () => {
         }
     };
 
-    const createGuest = async () => {
-        const response = await authAxios
+    const createGuest = () => {
+        authAxios
             .post(CREATE_GUEST, {
                 name: capitalizeFirstLetter(guestInfo.name),
                 nik: capitalizeFirstLetter(guestInfo.nik),
                 address: capitalizeFirstLetter(guestInfo.address),
                 email: email,
             })
-            .catch((err) => console.log(err));
-
-        if (response) {
-            guestId = response.data.id;
-            createAppointment();
-        }
+            .then((res) => {
+                guestId = res.data.id;
+                createAppointment();
+            })
+            .catch((err) => console.log(err))
     };
 
     const sendNotification = () => {
@@ -109,26 +87,26 @@ const CreateAppointment = () => {
                 gname: capitalizeFirstLetter(guestInfo.name),
                 body: purpose,
             })
-            .then((res) => {
-                console.log(res);
-            })
             .catch((err) => console.log(err))
     };
 
-    const createAppointment = async () => {
-        const response = await authAxios
+    const createAppointment = () => {
+        setLoading(true);
+        authAxios
             .post(CREATE_APPOINTMENT, {
                 host: filteredHost.id,
                 guest: guestId,
                 purpose: purpose,
             })
-            .catch((err) => console.log(err));
-
-        if (response) {
-            console.log(response);
-            sendNotification();
-            window.location.reload();
-        }
+            .then(() => {
+                sendNotification();
+                window.location.reload();
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            }) 
     };
 
     return (
@@ -144,13 +122,12 @@ const CreateAppointment = () => {
             <div className="flex flex-row col-span-10 gap-20">
                 <div className="rounded-lg p-6 shadow-lg flex-1 bg-white">
                     <div className="mb-6">
-                        <p className="text-2xl mb-4 font-bold">
+                        <p className="text-2xl text-gray-700 mb-4 font-bold">
                             Who would you like to meet today?
                         </p>
                         <SearchBar
                             placeholder="Search host"
                             attribute={searchBarAttr}
-                            data={hosts}
                             getFilteredHost={getFilteredHost}
                         />
                     </div>
@@ -164,7 +141,7 @@ const CreateAppointment = () => {
                                     id="nik"
                                     placeholder="Enter your NIK"
                                     autoComplete="nik"
-                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={guestInfo.nik}
                                     onChange={(e) => setGuestInfo({...guestInfo, nik: e.target.value})}
                                 /> 
@@ -176,7 +153,7 @@ const CreateAppointment = () => {
                                     id="name"
                                     placeholder="Enter your name"
                                     autoComplete="name"
-                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={
                                         guestInfo
                                             ? capitalizeFirstLetter(
@@ -199,7 +176,7 @@ const CreateAppointment = () => {
                                     id="address"
                                     placeholder="Enter your address"
                                     autoComplete="address"
-                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
                                     defaultValue={
                                         guestInfo
                                             ? capitalizeFirstLetter(
@@ -222,18 +199,18 @@ const CreateAppointment = () => {
                                     id="email"
                                     placeholder="Enter your Email"
                                     autoComplete="email"
-                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
-                            <div className="mb-4 row-span-2">
+                            <div className="mb-6 row-span-2">
                                 <label htmlFor="agenda" className="label">Agenda</label>
                                 <textarea
                                     type="text"
                                     id="agenda"
                                     placeholder="Enter your agenda"
                                     autoComplete="agenda"
-                                    className="mt-1 focus:ring-primary focus:border-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-lg placeholder-gray-300"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
                                     onChange={(e) => setPurpose(e.target.value)}
                                 />
                             </div>
@@ -244,7 +221,13 @@ const CreateAppointment = () => {
                                     type="submit"
                                     onClick={() => createGuest()}
                                 >
-                                    Make Appointment
+                                    {loading ? (
+                                        <span className="flex justifty-center items-center">
+                                            <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                        </span>
+                                    ) : (
+                                        <span>Create Appointment</span>
+                                    )}
                                 </button>
                             </div>
                         </div>

@@ -1,10 +1,32 @@
-import React, { useState} from 'react';
-import { SearchIcon } from '@heroicons/react/solid';
+import React, { useState, useEffect } from 'react';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import axios from 'axios';
+import { getToken } from '../../utils/auth';
+import { SHOW_HOSTS } from '../../constants/urls';
 
-const SearchBar = ({ data, getFilteredHost, attribute }) => {
+const SearchBar = ({ getFilteredHost, attribute }) => {
     const [filteredHost, setFilterredHost] = useState([]);
     const [search, setSearch] = useState('');
     const [display, setDisplay] = useState(false);
+    
+    const [hosts, setHosts] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get(SHOW_HOSTS, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setHosts(res.data.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+
+        return () => {
+            setHosts([]);
+        } 
+    }, []);
 
     const updateHosts = (host) => {
         getFilteredHost(host);
@@ -15,7 +37,7 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
     const handleFilter = (e) => {
         const searchWord = e.target.value;
 
-        const newFilter = data.filter((value) => {
+        const newFilter = hosts.filter((value) => {
             return value.name.toLowerCase().includes(searchWord.toLowerCase());
         });
 
@@ -35,14 +57,14 @@ const SearchBar = ({ data, getFilteredHost, attribute }) => {
                     {attribute.label}
                 </label>
                 <div className="mt-1 flex rounded-lg shadow-sm">
-                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                        <SearchIcon className="w-6 h-6 text-gray-400" />
+                    <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
+                        <SearchRoundedIcon />
                     </span>
                     <input
                         type="search"
                         name="search-host"
                         id="search-host"
-                        className="focus:ring-primary focus:border-primary transition flex-1 block w-full rounded-none rounded-r-md text-sm text-gray-700 border-gray-300 placeholder-gray-300"
+                        className="bg-gray-50 focus:ring-primary focus:border-primary transition flex-1 block w-full rounded-none rounded-r-md text-sm text-gray-700 border-gray-300 placeholder-gray-300"
                         placeholder={attribute.placeholder}
                         onChange={handleFilter}
                         value={search}

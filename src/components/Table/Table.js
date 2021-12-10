@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { 
     useTable, 
@@ -9,28 +9,28 @@ import {
     useColumnOrder,
 } from 'react-table';
 import { 
-    ChevronDoubleLeftIcon, 
-    ChevronDoubleRightIcon, 
-    ChevronLeftIcon, 
-    ChevronRightIcon 
-} from '@heroicons/react/solid';
-import { 
-    SwitchVerticalIcon, 
-    CloudDownloadIcon, 
-    PlusCircleIcon,
-    EmojiSadIcon,
-} from '@heroicons/react/outline';
-// import Checkbox from './Checkbox';
-import { Styles } from './TableStyles';
+    ChevronLeftOutlined,
+    ChevronRightOutlined,
+    FirstPageOutlined,
+    LastPageOutlined,
+    FileDownloadOutlined,
+    AddCircleOutlineOutlined,
+    SortOutlined,
+    SentimentDissatisfiedOutlined,
+} from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import Loader from 'react-loader-spinner';
 import { GlobalFilter } from './GlobalFilter';
 import { ColumnFilter } from './ColumnFilter';
 import { UserAction } from '../../pages/UserAdmin/UserList';
 import { EXPORT_DATA, SHOW_PHOTO } from '../../constants/urls';
-import { GuestAction } from '../../pages/GuestAdmin/GuestList';
+import { GuestAction } from '../../pages/GuestAdmin/GuestAction';
 import { convertTime } from '../../utils/utility';
 import { AppointmentDetail } from '../../pages/AppointmentPage/AppointmentDetail';
+import { COLORS } from '../../constants/colors';
 
-const Table = ({ columns, data }) => {
+const Table = (props) => {
+    const { columns, data, loading, action } = props;
     let pathname = window.location.pathname;
     const defaultColumn = useMemo(() => {
         return { 
@@ -48,13 +48,15 @@ const Table = ({ columns, data }) => {
                 Cell: ({ row }) => {
                     if (pathname === '/guest-list') {
                         return (
-                            <GuestAction id={row.values.id} />
+                            <GuestAction id={row.values.id} action={action} loading={loading} />
                         )
-                    } else if (pathname === '/user-list') {
+                    } 
+                    else if (pathname === '/user-list') {
                         return (
-                            <UserAction id={row.values.id} /> 
+                            <UserAction id={row.values.id} action={action} />
                         )
-                    } else if (pathname === '/appointment-history') {
+                    } 
+                    else if (pathname === '/appointment-history') {
                         return (
                             <AppointmentDetail meetingId={row.values.id} /> 
                         )
@@ -64,7 +66,7 @@ const Table = ({ columns, data }) => {
         ]);
     };
 
-    // Custom kolom user (user list)
+    // User column hook (user list)
     const userHooks = (hooks) => {
         let pathname = window.location.pathname;
 
@@ -89,8 +91,6 @@ const Table = ({ columns, data }) => {
                             <div className="flex flex-row gap-4">
                                 <img 
                                     alt="profile"
-                                    // src={row.values.photo.includes("https") ? row.values.photo : SHOW_PHOTO(row.values.photo)}
-                                    // src={row.values.photo}
                                     src={getImage(row.values.photo)}
                                     className="w-10 h-10 rounded-full" 
                                 />
@@ -106,18 +106,16 @@ const Table = ({ columns, data }) => {
         }
     };
 
-    // Custom kolom waktu (appointment history)
+    // Time column hook (guest & history)
     const timeHooks = (hooks) => {
-        let pathname = window.location.pathname;
         if (pathname === '/appointment-history' || pathname === '/guest-list') {
             hooks.visibleColumns.push((columns) => [
                 {
                     id: "time",
                     Header: "Time",
                     Cell: ({ row }) => {
-                        console.log(row.values.date_time[0]);
                         return (
-                            <p>{ row.values.date_time[1] }</p>
+                            <p>{ row.values.date_time[1] } WIB</p>
                         )
                     }
                 },
@@ -152,6 +150,14 @@ const Table = ({ columns, data }) => {
         }
     }
 
+    const customColumnOrder = () => {
+        if (pathname === '/appointment-history') {
+            return ['time', 'date', 'host', 'guest', 'status'];
+        } else if (pathname === '/user-list') {
+            return ['id', 'user', 'role'];
+        }
+    }
+
     const tableInstance = useTable({
         columns,
         data,
@@ -162,6 +168,7 @@ const Table = ({ columns, data }) => {
                 desc: true
             }],
             hiddenColumns: hideColumns(),
+            columnOrder: customColumnOrder(),
         }
     },
     userHooks,
@@ -172,36 +179,7 @@ const Table = ({ columns, data }) => {
     usePagination,
     useRowSelect,
     useColumnOrder,
-    // (hooks) => { 
-    //     hooks.visibleColumns.push((columns) => {
-    //         return [
-    //             {
-    //                 id: 'selection',
-    //                 Header: ({ getToggleAllPageRowsSelectedProps }) => (
-    //                     <Checkbox {...getToggleAllPageRowsSelectedProps()} />
-    //                 ),
-    //                 Cell: ({ row }) => (
-    //                     <Checkbox {...row.getToggleRowSelectedProps()} />
-    //                 ),
-    //             },
-    //             ...columns,
-    //         ]
-    //     })
-    // },
     );
-
-    const changeOrder = () => {
-        let pathname = window.location.pathname;
-        if (pathname === '/appointment-history') {
-            setColumnOrder(['time', 'date', 'host', 'guest', 'status']);
-        } else if (pathname === '/user-list') {
-            setColumnOrder(['id', 'user', 'role']);
-        }
-    }
-
-    useEffect(() => {
-        changeOrder();
-    }, []);
 
     const { 
         getTableProps,
@@ -219,78 +197,50 @@ const Table = ({ columns, data }) => {
         prepareRow,
         state,
         setGlobalFilter,
-        // selectedFlatRows,
-        setColumnOrder, 
     } = tableInstance;
 
     const { 
         globalFilter, 
         pageIndex, 
-        pageSize, 
-        // selectedRowIds 
+        pageSize,
     } = state;
     
     return (
         <>
-            {/* <pre>
-                <code>
-                    {JSON.stringify(
-                        {
-                            pageIndex,
-                            pageSize,
-                            pageCount,
-                            canNextPage,
-                            canPreviousPage,
-                        },
-                        null,
-                        2,
-                    )}
-                </code>
-            </pre>
-            <pre className="mb-4">
-                <code>
-                    {JSON.stringify(
-                        {
-                            selectedRowIds: selectedRowIds,
-                            'selectedFlatRows[].original': selectedFlatRows.map(
-                                d => d.original
-                            ),
-                        },
-                        null,
-                        2,
-                    )}
-                </code>
-            </pre> */}
-            <Styles>
-                <div className="tableWrap shadow-lg">
-                    <div className="flex flex-row justify-between items-center px-6 py-4 sticky top-0 bg-white border-b border-gray-100">
-                        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-                        <div>
-                            {window.location.pathname === "/user-list" &&
-                                <Link to="/user-create">
-                                    <button className="primary-btn">
-                                        <PlusCircleIcon className="w-6" />
-                                        Create User
-                                    </button>
-                                </Link> 
-                            }
-                            {window.location.pathname === "/appointment-history" &&
-                                <button
-                                    className="primary-btn"
-                                    onClick={() => window.open(EXPORT_DATA)}
-                                >
-                                    <CloudDownloadIcon className="w-6" />
-                                    Export 
+            <div className="shadow-lg rounded-lg">
+                <div className="flex flex-row justify-between items-center px-6 py-4 sticky top-0 bg-white border-b border-gray-100">
+                    <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                    <div>
+                        {window.location.pathname === "/user-list" &&
+                            <Link to="/user-create">
+                                <button className="primary-btn">
+                                    <AddCircleOutlineOutlined />
+                                    Create User
                                 </button>
-                            }
-                        </div>
+                            </Link> 
+                        }
+                        {window.location.pathname === "/appointment-history" &&
+                            <button
+                                className="primary-btn"
+                                onClick={() => window.open(EXPORT_DATA)}
+                            >
+                                <FileDownloadOutlined />
+                                Export 
+                            </button>
+                        }
                     </div>
+                </div>
 
-                    {page.length !== 0 ? (
-                        <table className="border-b border-gray-100" {...getTableProps()}>
+                {loading ? (
+                    <span className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center">
+                        <Loader type="Oval" radius={18} color={COLORS.primary} secondaryColor={COLORS.accent} height={24} width={24} />
+                    </span>
+                ) : (
+                    page.length !== 0 ? (
+                        <table className="w-full overflow-x-scroll overflow-y-hidden border-b border-gray-100" {...getTableProps()}>
                             <thead>
                                 {headerGroups.map((headerGroup) => (
-                                    <tr className="bg-gray-50 h-14 border-b border-gray-100" {...headerGroup.getHeaderGroupProps()}>
+                                    <tr className="bg-gray-50 h-14 border-b border-gray-100 text-gray-700" {...headerGroup.getHeaderGroupProps()}>
                                         {headerGroup.headers.map((column) => (
                                             <th className="px-6 text-sm font-semibold" {...column.getHeaderProps(column.getSortByToggleProps())}>
                                                 <div className="flex flex-row items-center gap-4">
@@ -299,9 +249,9 @@ const Table = ({ columns, data }) => {
                                                         {/* {column.isSorted? (column.iSortedDesc ? ' 🔽' : ' 🔼') : ''} */}
                                                         {column.isSorted ? (
                                                             column.iSortedDesc ? (
-                                                                <SwitchVerticalIcon className="text-gray-500 w-4" /> 
+                                                                <SortOutlined /> 
                                                             ) : (
-                                                                <SwitchVerticalIcon className="text-gray-500 w-4" />) 
+                                                                <SortOutlined />) 
                                                             )
                                                         : ''}
                                                     </span>
@@ -319,7 +269,7 @@ const Table = ({ columns, data }) => {
                                             row.values.status === "waiting" && (
                                                 <tr 
                                                     {...row.getRowProps()}
-                                                    className="h-14 border-b border-gray-100"
+                                                    className="h-14 border-b border-gray-100 text-gray-700"
                                                 >
                                                     {row.cells.map((cell) => {
                                                         return (
@@ -352,58 +302,58 @@ const Table = ({ columns, data }) => {
                             </tbody>
                         </table>
                     ) : (
-                        <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center">
-                            <EmojiSadIcon className="w-12 h-12 mb-1" />
+                        <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center text-gray-700">
+                            <SentimentDissatisfiedOutlined sx={{ fontSize: "12rem", color: "#d1d5db" }} />
                             <p>Oops, there's no data here</p>
                         </div>
-                    )}
+                    )
+                )}
 
-                    <div className="flex flex-row justify-between items-center h-14 px-6 border-t border-gray-100">
+                <div className="flex flex-row justify-between items-center h-14 px-6 py-4 border-t border-gray-100 text-gray-700">
+                    <div>
+                        Displaying <strong>10</strong> of <strong>{data.length}</strong> data -  
+                        Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
+                    </div>
+                    <div className="flex flex-row justify-center items-center gap-4">
                         <div>
-                            Displaying <strong>10</strong> of <strong>{data.length}</strong> data -  
-                            Page <strong>{pageIndex + 1}</strong> of <strong>{pageOptions.length}</strong>
+                            <input 
+                                type="number" 
+                                defaultValue={pageIndex + 1} 
+                                onChange={(e) => {
+                                    const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
+                                    gotoPage(pageNumber); 
+                                }}
+                                className="block w-16 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            />
                         </div>
-                        <div className="flex flex-row justify-center items-center gap-4">
-                            <div>
-                                <input 
-                                    type="number" 
-                                    defaultValue={pageIndex + 1} 
-                                    onChange={(e) => {
-                                        const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
-                                        gotoPage(pageNumber); 
-                                    }}
-                                    className="block w-16 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                />
-                            </div>
-                            <select 
-                                value={pageSize} 
-                                onChange={(e) => setPageSize(Number(e.target.value))}
-                                className="block w-20 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            >
-                                {[10, 25, 50].map((pageSize) => (
-                                    <option key={pageSize} value={pageSize}>
-                                        { pageSize }
-                                    </option>
-                                ))}
-                            </select>
-                            <div className="flex flex-row gap-2">
-                                <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                                    <ChevronDoubleLeftIcon className="text-gray-400 w-6 h-6" />
-                                </button>
-                                <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                                    <ChevronLeftIcon className="text-gray-400 w-6 h-6" />
-                                </button>
-                                <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => nextPage()} disabled={!canNextPage}>
-                                    <ChevronRightIcon className="text-gray-400 w-6 h-6" />
-                                </button>
-                                <button className="p-1 bg-white rounded-full hover:bg-gray-100" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                                    <ChevronDoubleRightIcon className="text-gray-400 w-6 h-6" />
-                                </button>
-                            </div>
+                        <select 
+                            value={pageSize} 
+                            onChange={(e) => setPageSize(Number(e.target.value))}
+                            className="block w-20 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                        >
+                            {[10, 25, 50].map((pageSize) => (
+                                <option key={pageSize} value={pageSize}>
+                                    { pageSize }
+                                </option>
+                            ))}
+                        </select>
+                        <div className="flex flex-row gap-2">
+                            <IconButton onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                                <FirstPageOutlined />
+                            </IconButton>
+                            <IconButton onClick={() => previousPage()} disabled={!canPreviousPage}>
+                                <ChevronLeftOutlined />
+                            </IconButton>
+                            <IconButton onClick={() => nextPage()} disabled={!canNextPage}>
+                                <ChevronRightOutlined />
+                            </IconButton>
+                            <IconButton onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                                <LastPageOutlined />
+                            </IconButton>
                         </div>
                     </div>
                 </div>
-            </Styles>
+            </div>
         </>
     )
 }

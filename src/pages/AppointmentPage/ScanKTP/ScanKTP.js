@@ -47,11 +47,11 @@ const ScanKTP = ({ setGuestInfo }) => {
 
     return (
         <div className="mb-6">
-            <p className="text-2xl font-bold mb-4">Please input your data</p>
+            <p className="text-2xl text-gray-700 font-bold mb-4">Please input your data</p>
             <label className="label">KTP Scan</label>
             <div className="flex flex-row items-center gap-2">
                 <WebcamKTP scanKTP={scanKTP} loading={loading} />
-                <p className="font-bold text-sm">or</p>
+                <p className="font-bold text-sm text-gray-700">or</p>
                 <UploadKTP scanKTP={scanKTP} loading={loading} />
             </div>
         </div>

@@ -30,7 +30,7 @@
 }
 .label {
     @apply block 
-    text-sm font-medium text-gray-600 
+    text-sm font-medium text-gray-500 
     mb-1; 
 }
 .tableWrap {

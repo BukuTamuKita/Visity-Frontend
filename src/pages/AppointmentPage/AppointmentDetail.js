@@ -1,17 +1,17 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Dialog, Transition } from '@headlessui/react';
-import { InfoOutlined } from '@mui/icons-material';
+import { Dialog, IconButton, Tooltip, Backdrop, CircularProgress } from '@mui/material';
+import { InfoOutlined, EventNoteRounded, AccessTimeRounded } from '@mui/icons-material';
+import { getToken } from '../../utils/auth';
+import { COLORS } from '../../constants/colors'; 
 import { APPOINTMENT_DETAIL } from '../../constants/urls';
-import { getToken } from '../../utils/auth'; 
+import { Status } from '../../components/Status';
 
-export const AppointmentDetail = ({ meetingId }) => {
-    let [isOpen, setIsOpen] = useState(false);
+export const AppointmentDetail = (props) => {
+    const { meetingId } = props;
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [appointment, setAppointment] = useState({
-        id: 0,
-        notes: '',
-        status: '',
-        purpose: '',
         date_time: [],
         guest: {
             id: 0,
@@ -29,89 +29,95 @@ export const AppointmentDetail = ({ meetingId }) => {
         },
     });
 
-    const closeModal = () => {
-        setIsOpen(false);
-    };
-
-    const openModal = () => {
-        setIsOpen(true);
+    const handleClickOpen = () => {
+        setOpen(true);
         fetchAppointment();
     };
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const fetchAppointment = () => {
+        setLoading(true);
         axios
             .get(APPOINTMENT_DETAIL(meetingId), {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
             .then((res) => {
                 setAppointment(res.data.data);
+                setLoading(false);
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            }) 
     };
 
     return (
         <>
-            <div className="flex items-center">
-                <button
-                    type="button"
-                    onClick={openModal}
-                    className="secondary-btn"
+            <Tooltip title="Appointment Info" arrow>
+                <IconButton 
+                    sx={{ 
+                        '&:hover': { backgroundColor: COLORS.primaryOutline }
+                    }}  
+                    onClick={handleClickOpen}
                 >
-                    <InfoOutlined />
-                    Meeting Detail
-                </button>
-            </div>
-
-            <Transition appear show={isOpen} as={Fragment}>
-                <Dialog
-                    as="div"
-                    className="fixed inset-0 z-10 overflow-y-auto bg-black bg-opacity-25"
-                    onClose={closeModal}
-                >
-                    <div className="min-h-screen px-4 text-center">
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0"
-                            enterTo="opacity-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100"
-                            leaveTo="opacity-0"
+                    <InfoOutlined sx={{ color: COLORS.primary }} />
+                </IconButton>
+            </Tooltip>
+            <Dialog onClose={handleClose} open={open}>
+                {loading ? (
+                    <span className="flex justifty-center items-center">
+                        <Backdrop
+                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={loading}
                         >
-                            <Dialog.Overlay className="fixed inset-0" />
-                        </Transition.Child>
-
-                        {/* This element is to trick the browser into centering the modal contents. */}
-                        <span
-                            className="inline-block h-screen align-middle"
-                            aria-hidden="true"
-                        >
-                            &#8203;
-                        </span>
-                        <Transition.Child
-                            as={Fragment}
-                            enter="ease-out duration-300"
-                            enterFrom="opacity-0 scale-95"
-                            enterTo="opacity-100 scale-100"
-                            leave="ease-in duration-200"
-                            leaveFrom="opacity-100 scale-100"
-                            leaveTo="opacity-0 scale-95"
-                        >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-                                {/* {appointment.map((value, index))} */}
-                                {/* { appointment.host.map((value, index) => (
-                                    <p>{ value.name }</p>
-                                ))} */}
-                                <p>{ appointment.guest.name }</p>
-                                <p>{ appointment.host.name }</p>
-                                <p>{ appointment.date_time[0] }</p>
-                                <p>{ appointment.date_time[1] }</p>
-                                <button onClick={closeModal} className="outline-btn">Close</button>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
+                    </span>
+                ) : (
+                    <div className="p-6">
+                        <div className="flex flex-row justify-between items-center gap-10 mb-6">
+                            <div>
+                                <p className="font-bold text-primary">{ appointment.host.name }</p>
+                                <div className="flex flex-row gap-2 items-center text-xs text-gray-300">
+                                    <span className="flex flex-row items-center gap-1">
+                                        <EventNoteRounded sx={{ fontSize: "0.75rem" }} />
+                                        { appointment.date_time[0] } 
+                                    </span>
+                                    <span className="flex flex-row items-center gap-1">
+                                        <AccessTimeRounded sx={{ fontSize: "0.75rem" }} />
+                                        { appointment.date_time[1] }
+                                    </span>
+                                </div>
                             </div>
-                        </Transition.Child>
+                            {appointment.status !== null && (
+                                <span>
+                                    <Status value={appointment.status} />
+                                </span>
+                            )}
+                        </div>
+                        <div className="text-gray-700">
+                            <div className="mb-4">
+                                <label className="label">Guest Name</label>
+                                <p>{ appointment.guest.name }</p>
+                            </div>
+                            <div className="mb-4">
+                                <label className="label">Purpose</label>
+                                <p>{ appointment.purpose }</p>
+                            </div>
+                            <div>
+                                <label className="label">Notes</label>
+                                <p>{ appointment.notes }</p>
+                            </div>
+                        </div>
+                        <div className="flex justify-end">
+                            <button className="outline-btn mt-6" onClick={handleClose}>Close</button>
+                        </div>
                     </div>
-                </Dialog>
-            </Transition>
+                )}
+            </Dialog>
         </>
     )
 };

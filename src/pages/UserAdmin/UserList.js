@@ -1,49 +1,37 @@
-import React, { 
-    useState,
-    useEffect,
-    useMemo, 
-} from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { 
-    DELETE_USER, 
-    SHOW_PHOTO, 
-    SHOW_USERS,
-} from '../../constants/urls';
+import { IconButton, Tooltip } from '@mui/material';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { DELETE_USER, SHOW_USERS } from '../../constants/urls';
 import Table from '../../components/Table/Table';
-import { getToken, isLogin } from '../../utils/auth';
-import { TrashIcon } from '@heroicons/react/outline';
+import { getToken } from '../../utils/auth';
 import { capitalizeFirstLetter } from '../../utils/utility';
+import Notification from '../../components/Notification';
+import { COLORS } from '../../constants/colors';
 
-export const UserAction = ({ id }) => {
-    const deleteUser = () => {
-        axios 
-            .delete(DELETE_USER(id), {
-                headers: { Authorization: `Bearer ${getToken()}` }
-            })
-            .then((res) => {
-                if (res) {
-                    console.log(res);
-                    window.location.reload();
-                }
-            })
-            .catch((err) => console.log(err))
-    };
+export const UserAction = (props) => {
+    const { id, action } = props;
 
     return (
-        <button
-            className="p-2 bg-white rounded-full transition duration-300 ease-in-out hover:bg-dangerShade" 
-            onClick={() => {
-            if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
-                deleteUser();
-            }
-        }}>
-            <TrashIcon className="w-6 h-6 text-danger" />
-        </button>
-    )
+        <>
+            <Tooltip title="Delete User" arrow>
+                <IconButton 
+                    sx={{ 
+                        '&:hover': { backgroundColor: COLORS.dangerShade }
+                    }} 
+                    onClick={() => action(id)}
+                >
+                    <DeleteOutlineRoundedIcon sx={{ color: COLORS.danger }} />
+                </IconButton>
+            </Tooltip>
+        </>
+    );
 };
 
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
 
     const columns = useMemo(() => [
         {
@@ -53,18 +41,15 @@ const UserAdmin = () => {
         {
             Header: "Name",
             accessor: "name",
-            show: false,
         },
         {
             Header: "Email",
             accessor: "email",
-            show: false,
         },
         {
             Header: "Role",
             accessor: "role",
             Cell: ({ value }) => {
-                console.log("role", value);
                 return (
                     value === "admin" ? (
                         <div className="flex flex-row items-center gap-2">
@@ -80,52 +65,68 @@ const UserAdmin = () => {
         {
             Header: "Photo",
             accessor: "photo",
-            Cell: ({ value }) => {
-                return (
-                    <img 
-                        alt="profile"
-                        src={SHOW_PHOTO(value)}
-                        className="w-12 rounded-full" 
-                    />
-                )
-            },
-            show: false,
         }
-    ], []
-    );
-
-    const fetchUsers = async () => {
-        const response = await axios.get(SHOW_USERS, {
-            headers: { Authorization: `Bearer ${getToken()}` },
-        })
-        .catch((err) => console.log(err))
-
-        if (response && isLogin()) {
-            const users = response.data;
-
-            console.log("users: ", users);
-            setUsers(response.data.data);
-        }
-    };
+    ], []);
 
     useEffect(() => {
-        fetchUsers();
+        setLoading(true);
+        axios
+            .get(SHOW_USERS, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setUsers(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => console.log(err))
+        
+        return () => {
+            setUsers([]);
+        } 
     }, []);
 
     const userData = useMemo(() => [...users], [users]);
     const userColumn = useMemo(() => [...columns], [columns]);
 
+    const deleteUser = (meetingId) => {
+        if (window.confirm("Are you sure want to delete user with id: " + meetingId + " ?")) {
+            axios 
+                .delete(DELETE_USER(meetingId), {
+                    headers: { Authorization: `Bearer ${getToken()}` }
+                })
+                .then((res) => {
+                    const newUsers = [...users];
+                    const index = users.findIndex((user) => user.id === meetingId);
+                    newUsers.splice(index, 1);
+                    setUsers(newUsers);
+                    
+                })
+                .catch((err) => console.log(err))
+        }
+
+        // setNotify({
+        //     isOpen: true,
+        //     message: `id nya ${id}`,
+        //     type: 'error',
+        // });
+    };
+
     return (
-        <div className="py-16 px-16">
-            <div className="flex flex-col mb-12">
-                <p className="text-4xl text-primary font-bold mb-2">Users</p>
-                <p className="text-lg text-primary">Showing all the users in this app</p>
+        <>
+            <div className="py-16 px-16">
+                <div className="flex flex-col mb-12">
+                    <p className="text-4xl text-primary font-bold mb-2">Users</p>
+                    <p className="text-lg text-primary">Showing all the users in this app</p>
+                </div>
+                <Table 
+                    columns={userColumn}
+                    data={userData}
+                    loading={loading}
+                    action={deleteUser}
+                />
             </div>
-            <Table 
-                columns={userColumn}
-                data={userData}
-            />
-        </div>
+            <Notification notify={notify} setNotify={setNotify} />
+        </>
     );
 }
 

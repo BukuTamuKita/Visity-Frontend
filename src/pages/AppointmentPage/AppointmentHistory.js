@@ -3,10 +3,11 @@ import axios from 'axios';
 import { SHOW_APPOINTMENT } from '../../constants/urls';
 import { Status } from '../../components/Status';
 import Table from '../../components/Table/Table';
-import { getToken, isLogin } from '../../utils/auth';
+import { getToken } from '../../utils/auth';
 
 const AppointmentHistory = () => {
     const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const columns = useMemo(() => [
         {
@@ -16,14 +17,14 @@ const AppointmentHistory = () => {
         {
             id: "host",
             Header: "Host Name",
-            accessor: (originalRow, rowIndex) => {
+            accessor: originalRow => {
                 return originalRow.host.name;
             }
         },
         {
             id: "guest",
             Header: "Guest Name",
-            accessor: (originalRow, rowIndex) => {
+            accessor: originalRow => {
                 return originalRow.guest.name;
             }
         },
@@ -48,22 +49,23 @@ const AppointmentHistory = () => {
                 );
             },
         },
-    ], []
-    );
-
-    const fetchAppointments = async () => {
-        const response = await axios.get(SHOW_APPOINTMENT, {
-            headers: { Authorization: `Bearer ${getToken()}` },
-        })
-        .catch((err) => console.log(err))
-
-        if (response && isLogin()) {
-            setAppointments(response.data.data); 
-        }
-    };
+    ], []);
 
     useEffect(() => {
-        fetchAppointments();
+        setLoading(true);
+        axios
+            .get(SHOW_APPOINTMENT, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setAppointments(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => console.log(err))
+        
+        return () => {
+            setAppointments([]);
+        } 
     }, []);
 
     const appointmentsData = useMemo(() => [...appointments], [appointments]);
@@ -82,6 +84,7 @@ const AppointmentHistory = () => {
             <Table 
                 columns={appointmentsColumn} 
                 data={appointmentsData}
+                loading={loading}
             />
         </div>
     );

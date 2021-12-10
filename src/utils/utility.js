@@ -52,7 +52,7 @@ export const convertTime = (date, time) => {
         }
     }
 
-    date = date.substr(-10, date.length);
+    date = date.substr(4, date.length);
 
     return getRelativeTime(+new Date(`${date} ${time}`));
 };

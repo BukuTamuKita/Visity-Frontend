@@ -1,27 +1,78 @@
+// import { Chip } from '@mui/material';
+// import { COLORS } from '../constants/colors';
+// 
+// export const Status = ({ value }) => {
+//     if (value === "accepted") {
+//         return (
+//             <Chip 
+//                 label={value.toUpperCase()}
+//                 sx={{
+//                     fontWeight: "bold",
+//                     color: COLORS.success,
+//                     backgroundColor: COLORS.successShade,
+//                 }}
+//             />
+//         );
+//     } else if (value === "waiting") {
+//         return (
+//             <Chip 
+//                 label={value.toUpperCase()}
+//                 sx={{
+//                     fontWeight: "bold",
+//                     color: "#77757C",
+//                     backgroundColor: "#F0EEF6",
+//                 }}
+//             />
+//         );
+//     } else if (value === "declined") {
+//         return (
+//             <Chip 
+//                 label={value.toUpperCase()}
+//                 sx={{
+//                     fontWeight: "bold",
+//                     color: COLORS.danger,
+//                     backgroundColor: COLORS.dangerShade,
+//                 }}
+//             />
+//         );
+//     } else if (value === "canceled") {
+//         return (
+//             <Chip 
+//                 label={value.toUpperCase()}
+//                 sx={{
+//                     fontWeight: "bold",
+//                     color: COLORS.warning,
+//                     backgroundColor: COLORS.warningShade,
+//                 }}
+//             />
+//         );
+//     }
+// };
+
 export const Status = ({ value }) => {
     if (value === "accepted") {
         return (
-            <p className="w-24 text-xs text-center text-success font-semibold py-1 border rounded-2xl bg-successShade">
+            <div className="text-xs text-center text-success font-semibold py-1 px-2 border rounded-2xl bg-successShade">
                 {value.toUpperCase()}
-            </p>
+            </div>
         );
     } else if (value === "waiting") {
         return (
-            <p className="w-24 text-xs text-center text-gray-600 font-semibold py-1 border rounded-2xl bg-gray-300">
+            <div className="text-xs text-center text-gray-500 font-semibold py-1 px-2 border rounded-2xl bg-gray-100">
                 {value.toUpperCase()}
-            </p>
+            </div>
         );
     } else if (value === "declined") {
         return (
-            <p className="w-24 text-xs text-center text-danger font-semibold py-1 border rounded-2xl bg-dangerShade">
+            <div className="text-xs text-center text-danger font-semibold py-1 px-2 border rounded-2xl bg-dangerShade">
                 {value.toUpperCase()}
-            </p>
+            </div>
         );
     } else if (value === "canceled") {
         return (
-            <p className="w-24 text-xs text-center text-warning font-semibold py-1 border rounded-2xl bg-warningShade">
+            <div className="text-xs text-center text-warning font-semibold py-1 px-2 border rounded-2xl bg-warningShade">
                 {value.toUpperCase()}
-            </p>
+            </div>
         );
     }
 };
