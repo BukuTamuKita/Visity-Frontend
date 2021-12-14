@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
 import { 
     useTable, 
     useSortBy,
@@ -14,7 +13,6 @@ import {
     FirstPageOutlined,
     LastPageOutlined,
     FileDownloadOutlined,
-    AddCircleOutlineOutlined,
     SortOutlined,
     SentimentDissatisfiedOutlined,
 } from '@mui/icons-material';
@@ -28,9 +26,10 @@ import { GuestAction } from '../../pages/GuestAdmin/GuestAction';
 import { convertTime } from '../../utils/utility';
 import { AppointmentDetail } from '../../pages/AppointmentPage/AppointmentDetail';
 import { COLORS } from '../../constants/colors';
+import UserForm from '../../pages/UserAdmin/UserForm';
 
 const Table = (props) => {
-    const { columns, data, loading, action } = props;
+    const { columns, data, loading, action, fetchUsers } = props;
     let pathname = window.location.pathname;
     const defaultColumn = useMemo(() => {
         return { 
@@ -68,8 +67,6 @@ const Table = (props) => {
 
     // User column hook (user list)
     const userHooks = (hooks) => {
-        let pathname = window.location.pathname;
-
         const getImage = (photo) => {
             if (photo === null) {
                 return '';
@@ -95,7 +92,7 @@ const Table = (props) => {
                                     className="w-10 h-10 rounded-full" 
                                 />
                                 <div className="flex flex-col">
-                                    <p className="font-semibold">{ row.values.name }</p>
+                                    <p className="font-semibold text-gray-700">{ row.values.name }</p>
                                     <p className="text-xs text-gray-400">{ row.values.email }</p>
                                 </div>
                             </div>
@@ -137,8 +134,6 @@ const Table = (props) => {
     };
 
     const hideColumns = () => {
-        let pathname = window.location.pathname;
-
         if (pathname === '/user-list') {
             return ['name', 'email', 'photo'];
         } else if (pathname === '/guest-list') {
@@ -212,12 +207,13 @@ const Table = (props) => {
                     <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
                     <div>
                         {window.location.pathname === "/user-list" &&
-                            <Link to="/user-create">
-                                <button className="primary-btn">
-                                    <AddCircleOutlineOutlined />
-                                    Create User
-                                </button>
-                            </Link> 
+                            // <Link to="/user-create">
+                            //     <button className="primary-btn">
+                            //         <AddCircleOutlineOutlined />
+                            //         Create User
+                            //     </button>
+                            // </Link>
+                            <UserForm fetchUsers={fetchUsers} />
                         }
                         {window.location.pathname === "/appointment-history" &&
                             <button
@@ -242,7 +238,7 @@ const Table = (props) => {
                                 {headerGroups.map((headerGroup) => (
                                     <tr className="bg-gray-50 h-14 border-b border-gray-100 text-gray-700" {...headerGroup.getHeaderGroupProps()}>
                                         {headerGroup.headers.map((column) => (
-                                            <th className="px-6 text-sm font-semibold" {...column.getHeaderProps(column.getSortByToggleProps())}>
+                                            <th className="px-6 text-sm font-semibold text-gray-700" {...column.getHeaderProps(column.getSortByToggleProps())}>
                                                 <div className="flex flex-row items-center gap-4">
                                                     {column.render('Header')}
                                                     <span>

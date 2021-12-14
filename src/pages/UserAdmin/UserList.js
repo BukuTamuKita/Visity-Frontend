@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { IconButton, Tooltip } from '@mui/material';
+import { Dialog, IconButton, Tooltip } from '@mui/material';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { DELETE_USER, SHOW_USERS } from '../../constants/urls';
 import Table from '../../components/Table/Table';
@@ -13,18 +13,17 @@ export const UserAction = (props) => {
     const { id, action } = props;
 
     return (
-        <>
-            <Tooltip title="Delete User" arrow>
-                <IconButton 
-                    sx={{ 
-                        '&:hover': { backgroundColor: COLORS.dangerShade }
-                    }} 
-                    onClick={() => action(id)}
-                >
-                    <DeleteOutlineRoundedIcon sx={{ color: COLORS.danger }} />
-                </IconButton>
-            </Tooltip>
-        </>
+        <Tooltip title="Delete User" arrow>
+            <IconButton 
+                sx={{ 
+                    '&:hover': { backgroundColor: COLORS.dangerShade },
+                    zIndex: 1,
+                }} 
+                onClick={() => action(id)}
+            >
+                <DeleteOutlineRoundedIcon sx={{ color: COLORS.danger }} />
+            </IconButton>
+        </Tooltip>
     );
 };
 
@@ -32,6 +31,7 @@ const UserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
+    const [openPopup, setOpenPopup] = useState(false);
 
     const columns = useMemo(() => [
         {
@@ -68,8 +68,7 @@ const UserAdmin = () => {
         }
     ], []);
 
-    useEffect(() => {
-        setLoading(true);
+    const fetchUsers = () => {
         axios
             .get(SHOW_USERS, {
                 headers: { Authorization: `Bearer ${getToken()}` },
@@ -78,7 +77,15 @@ const UserAdmin = () => {
                 setUsers(res.data.data);
                 setLoading(false);
             })
-            .catch((err) => console.log(err))
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            })
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        fetchUsers();
         
         return () => {
             setUsers([]);
@@ -89,26 +96,26 @@ const UserAdmin = () => {
     const userColumn = useMemo(() => [...columns], [columns]);
 
     const deleteUser = (meetingId) => {
-        if (window.confirm("Are you sure want to delete user with id: " + meetingId + " ?")) {
+        if (window.confirm(`Are you sure want to delete user with id: ${meetingId} ?`)) {
             axios 
                 .delete(DELETE_USER(meetingId), {
                     headers: { Authorization: `Bearer ${getToken()}` }
                 })
-                .then((res) => {
-                    const newUsers = [...users];
-                    const index = users.findIndex((user) => user.id === meetingId);
-                    newUsers.splice(index, 1);
-                    setUsers(newUsers);
+                .then(() => {
+                    // const newUsers = [...users];
+                    // const index = users.findIndex((user) => user.id === meetingId);
+                    // newUsers.splice(index, 1);
+                    // setUsers(newUsers);
+                    fetchUsers();
+                    setNotify({
+                        isOpen: true,
+                        message: `Users with ID ${meetingId} successfully deleted!`,
+                        type: 'success',
+                    });
                     
                 })
                 .catch((err) => console.log(err))
         }
-
-        // setNotify({
-        //     isOpen: true,
-        //     message: `id nya ${id}`,
-        //     type: 'error',
-        // });
     };
 
     return (
@@ -123,8 +130,15 @@ const UserAdmin = () => {
                     data={userData}
                     loading={loading}
                     action={deleteUser}
+                    // setOpenPopup={setOpenPopup}
+                    fetchUsers={fetchUsers}
                 />
             </div>
+            {/* <Dialog>
+                <div className="p-6">
+
+                </div>
+            </Dialog> */}
             <Notification notify={notify} setNotify={setNotify} />
         </>
     );

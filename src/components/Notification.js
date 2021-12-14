@@ -16,11 +16,11 @@ export default function DescriptionAlerts(props) {
         <Snackbar
             open={notify.isOpen}
             autoHideDuration={3000}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
             onClose ={handleClose}
+            sx={{ zIndex: 100, marginTop: "4rem", }}
         >
             <Alert severity={notify.type} onClose ={handleClose}>
-                {/* This is an error alert — <strong>check it out!</strong> */}
                 { notify.message }
             </Alert>
         </Snackbar>

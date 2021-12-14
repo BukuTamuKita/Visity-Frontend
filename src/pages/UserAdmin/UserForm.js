@@ -1,84 +1,211 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { WarningAmberRounded } from '@mui/icons-material';
+import { Dialog } from '@mui/material';
+import { WarningAmberRounded, AddCircleOutlineOutlined } from '@mui/icons-material';
 import { getToken } from '../../utils/auth';
 import { CREATE_USER } from '../../constants/urls';
 import { COLORS } from '../../constants/colors';
 import UploadIcon from '../../assets/icons/UploadIcon';
 import validateForm from '../../utils/validate_form';
-// import Notification from '../../components/Notification';
+import Notification from '../../components/Notification';
 
 const CreateUser = (props) => {
+    const { fetchUsers } = props;  
     const [display, setDisplay] = useState(false);
     const [image, setImage] = useState(null);
     const [errors, setErrors] = useState({});
-    const [user, setUser] = useState({
-        name: '',
-        role: 'admin',
-        nip: '',
-        position: '',
-        email: '',
-    });
-    // const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
+    const initiateUser = () => {
+        return {
+            name: '',
+            role: 'host',
+            nip: '',
+            position: '',
+            email: '',
+        }
+    }
+    const [user, setUser] = useState(initiateUser());
+    
+    const [open, setOpen] = useState(false);
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         
-        if (name === 'photo') {
-            setImage(e.target.files[0]);
-            setUser({ ...user, [name]: image });
-            setDisplay(true);
+        if (name === 'role') {
+            setUser({ ...user, [name]: value.toLowerCase() });
         } else {
             setUser({ ...user, [name]: value });
         }
+        // if (name === 'photo') {
+        //     setImage(e.target.files[0]);
+        //     setUser({ ...user, [name]: image });
+        //     setDisplay(true);
+        // } else {
+        //     setUser({ ...user, [name]: value });
+        // }
     };
 
-    // const handleImage = (e) => {
-    //     setImage(e.target.files[0]);
-    //     setUser({ ...user, photo: image });
-    //     setDisplay(true);
-    // };
+    const handleImage = (e) => {
+        setImage(e.target.files[0]);
+        setUser({ ...user, photo: image });
+        setDisplay(true);
+    };
 
     const handleCreateUser = (e) => {
         e.preventDefault();
 
         let formData = new FormData();
-        console.log(image);
+        // console.log(image);
         formData.append('photo', image);
 
         for (let key in user) {
             formData.append(key, user[key]);
         }
 
-        setErrors(validateForm(formData));
-
-        if (Object.keys(errors).length === 0) {
-            axios 
-                .post(CREATE_USER,
-                    formData,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${getToken()}`,
-                            'Content-Type': 'application/form-data',
-                        }
-                    })
-                    .then(() => {
-                        props.history.push('/user-list');
-                        window.location.reload();
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    })
+        for (let pair of formData.entries()) {
+            console.log(`${pair[0]} = ${pair[1]}`);
         }
+
+        // setErrors(validateForm(formData));
+
+        axios 
+            .post(CREATE_USER, formData, {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`,
+                        'Content-Type': 'application/form-data',
+                    }
+                })
+                .then(() => {
+                    // props.history.push('/user-list');
+                    handleClose();
+                    fetchUsers();
+                    setNotify({
+                        isOpen: true,
+                        message: 'User successfully created',
+                        type: 'success',
+                    });
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        // if (Object.keys(errors).length === 0) {
+        // }
     };
 
     const clearInputFile = () => {
+        setUser(initiateUser());
         document.getElementById('create-user-form').reset();
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setUser(initiateUser());
     };
     
     return (
         <>
-            <div className="p-16 grid grid-cols-12">
+            <button className="primary-btn" onClick={handleClickOpen}>
+                <AddCircleOutlineOutlined />
+                Create User
+            </button>
+            <Dialog open={open} onClose={handleClose}>
+                <form id="create-user-form" className="p-6 flex flex-col gap-y-4" onSubmit={handleCreateUser}>
+                    <div>
+                        <label className="label" htmlFor="name">Name</label>
+                        <input 
+                            required
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your name"
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="role" className="label">Role</label>
+                        <select 
+                            id="role"
+                            name="role" 
+                            onChange={(e) => setUser({ ...user, role: e.target.value.toLowerCase() })}
+                        >
+                            <option value="host">Host</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    {user.role !== "admin" && (
+                        <div className="flex flex-row gap-2">
+                            <div>
+                                <label className="label" htmlFor="nip">NIP / ID Number</label>
+                                <input 
+                                    required
+                                    type="number"
+                                    id="nip"
+                                    name="nip"
+                                    placeholder="Enter your NIP"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="label" htmlFor="position">Position</label>
+                                <input 
+                                    required
+                                    type="text"
+                                    id="position"
+                                    name="position"
+                                    placeholder="Enter your position"
+                                    onChange={handleChange}
+                                />
+                            </div>
+                        </div>
+                    )}
+                    <div>
+                        <label className="label" htmlFor="email">Email</label>
+                        <input 
+                            required
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email"
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div>
+                        <label className="label" htmlFor="photo">Photo</label>
+                        <input 
+                            required
+                            type="file"
+                            id="photo"
+                            name="photo"
+                            accept=".jpg, .png, .jpeg"
+                            onChange={handleImage}
+                        />
+                    </div>
+                    <div>
+                        <div className="flex flex-row justify-end gap-4">
+                            <button 
+                                className="px-4 py-2 text-sm text-gray-400 font-medium hover:bg-primaryOutline border rounded-lg" 
+                                onClick={clearInputFile}
+                                // type="reset"
+                            >
+                                Clear Forms
+                            </button>
+                            <button 
+                                className="primary-btn" 
+                                type="submit" 
+                                // onClick={handleCreateUser}
+                            >
+                                Create User
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </Dialog>
+            <Notification notify={notify} setNotify={setNotify} />
+            {/* <div className="p-16 grid grid-cols-12">
                 <div className="col-span-6 ">
                     <div className="flex-auto flex-column col-span-12 mb-12">
                         <p className=" text-4xl text-primary font-bold mb-2">
@@ -100,7 +227,6 @@ const CreateUser = (props) => {
                                     placeholder="Enter your name"
                                     autoComplete="name"
                                     className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm border-gray-300 rounded-lg placeholder-gray-300"
-                                    // onChange={(e) => setUser({ ...user, name: e.target.value })}
                                     onChange={handleChange}
                                 />
                                 {errors.name && 
@@ -221,7 +347,6 @@ const CreateUser = (props) => {
                                         }
                                     </div>
                                 </div>
-                                {/* {errors.photo === null && <p>{ errors.photo }</p>} */}
                                 {errors.photo && 
                                     <span className="flex flex-row gap-2 mt-2">
                                         <WarningAmberRounded sx={{ color: COLORS.danger }} />
@@ -245,7 +370,7 @@ const CreateUser = (props) => {
                         </form>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     )
 };

@@ -1,54 +1,57 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { getToken } from '../utils/auth';
+import { SCAN_KTP } from '../constants/urls';
+
 
 const Testing = () => {
-    // var units = {
-    //     year  : 24 * 60 * 60 * 1000 * 365,
-    //     month : 24 * 60 * 60 * 1000 * 365/12,
-    //     day   : 24 * 60 * 60 * 1000,
-    //     hour  : 60 * 60 * 1000,
-    //     minute: 60 * 1000,
-    //     second: 1000
-    // }
-    // 
-    // var rtf = new Intl.RelativeTimeFormat('id', { numeric: 'auto' })
-    // 
-    // var getRelativeTime = (d1, d2 = new Date()) => {
-    //     var elapsed = d1 - d2
-    // 
-    //     // "Math.abs" accounts for both "past" & "future" scenarios
-    //     for (var u in units) 
-    //     if (Math.abs(elapsed) > units[u] || u === 'second') 
-    //         return rtf.format(Math.round(elapsed/units[u]), u)
-    // }
-    // 
-    // let date = '10 Dec 2021';
-    // let time = '18:26:00';
-    // 
-    // // test-list of dates to compare with current date
-    // function handleClick() {
-    //     [
-    //         // +new Date('04 Dec 2021 08:37:00'),
-    //         +new Date(`${date} ${time}`),
-    //         '05/12/2015',
-    //         +new Date() - units.year,
-    //         +new Date() - units.month,
-    //         +new Date() - units.day,
-    //         +new Date() - units.hour,
-    //         +new Date() - units.minute,
-    //         +new Date() + units.minute*2,
-    //         +new Date() + units.day*7,
-    //     ]
-    //     .forEach(d => console.log(   
-    //         new Date(d).toLocaleDateString(),
-    //         new Date(d).toLocaleTimeString(), 
-    //         '(Relative to now) →',
-    //         getRelativeTime(+new Date(d))
-    //     ))
-    // }
+    const handleKTPImage = (e) => {
+        let file = e.target.files[0];
+        scanKTP(file);
+    };
+
+    const scanKTP = (file) => {
+        // setLoading(true);
+        // let file = null;
+        
+        // if (scanType === "webcam") {
+        //     file = dataURLtoFile(image, "ktp");
+        // } else if (scanType === "upload") {
+        //     file = image;
+        //     console.log("file: " + file);
+        // }
+        
+        console.log("file image: ", file);
+        let formData = new FormData();
+
+        formData.append("image", file);
+
+        axios
+            .post(SCAN_KTP, formData, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                console.log("KTP response: ", res);
+                // setGuestInfo(res.data[0]);
+            })
+            // .then((res) => {
+            //     if (res) {
+            //         setLoading(false);
+            //     }
+            //     setLoading(false);
+            // })
+            .catch((err) => {
+                console.log(err);
+                // setLoading(false);
+            })
+    }
 
     return (
         <div className="flex h-screen">
-            <h1 className="m-auto">Testing page</h1>
+            {/* <h1 className="m-auto">Testing page</h1> */}
+            <div className="m-auto">
+                <input type="file" required onChange={handleKTPImage}/>
+            </div>
         </div>
     );
 }

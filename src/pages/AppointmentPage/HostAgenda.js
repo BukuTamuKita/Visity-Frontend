@@ -6,20 +6,8 @@ import { getToken } from '../../utils/auth';
 
 const HostAgenda = ({ display, appointment, filteredHost }) => {
     const [users, setUsers] = useState({});
-
-    // const fetchUsers = () => {
-	// 	axios
-	// 		.get(SHOW_USERS, {
-	// 			headers: { Authorization: `Bearer ${getToken()}` },
-	// 		})
-	// 		.then((res) => {
-	// 			setUsers(res.data.data);
-	// 		})
-	// 		.catch((err) => console.log(err));
-	// };
-
+    
     useEffect(() => {
-        // fetchUsers();
         axios
 			.get(SHOW_USERS, {
 				headers: { Authorization: `Bearer ${getToken()}` },

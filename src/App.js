@@ -43,6 +43,8 @@ const theme = createTheme({
 });
 
 function App() {
+    const prefix = ["/appointment-create", "/appointment-history", "/user-list", "/guest-list", "/testing"];
+
     return (
         <StyledEngineProvider>
             <ThemeProvider theme={theme}>
@@ -57,7 +59,7 @@ function App() {
                                 restricted={val.restricted}
                             />
                         ))}
-                        <Route>
+                        <Route exact path={prefix}>
                             <Layout>
                                 <Switch>
                                     {PRIVATE_ROUTE.map((val) => (
@@ -72,9 +74,9 @@ function App() {
                                 </Switch>
                             </Layout>
                         </Route>
-                        <Route path="/" render={() => (
+                        {/* <Route path="/" render={() => (
                             <Redirect to="/" />
-                        )} />
+                        )} /> */}
                         <Route component={ErrorPage} />
                     </Switch>
                 </Router>

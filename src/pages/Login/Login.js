@@ -103,7 +103,7 @@ const Login = (props) => {
                                 <AlternateEmailRounded sx={{ color: "#9CA3AF" }} />
                             </span>
                             <input
-                                className="focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="text-gray-700 focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="email"
                                 type="text"
                                 value={email}
@@ -124,7 +124,7 @@ const Login = (props) => {
                                 <LockOutlined sx={{ color: "#9CA3AF" }} />
                             </span>
                             <input
-                                className="focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="text-gray-700 focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="password"
                                 type={visiblePass}
                                 value={password}
