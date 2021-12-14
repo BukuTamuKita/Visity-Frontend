@@ -1,69 +1,101 @@
-import React, { 
-    useState,
-    useEffect,
-    useMemo,
-} from "react";
-import Table from "../../components/Table/Table";
-import axios from "axios";
-import { SHOW_GUESTS } from "../../constants/urls";
-import { getToken, isLogin } from "../../utils/auth";
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import { getToken } from '../../utils/auth';
+import Table from '../../components/Table/Table';
+import { SHOW_APPOINTMENT, UPDATE_APPOINTMENT } from '../../constants/urls';
 
 const GuestList = () => {
-    const [guests, setGuests] = useState([]);
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    const columns = useMemo(() => 
-        [
-            {
-                Header: "ID",
-                accessor: "id",
-            },
-            {
-                Header: "Name",
-                accessor: "name",
-            },
-            {
-                Header: "NIK",
-                accessor: "nik",
-            },
-            {
-                Header: "Address",
-                accessor: "address",
-            },
-            {
-                Header: "Email",
-                accessor: "email",
+    const columns = useMemo(() => [
+        {
+            Header: "ID",
+            accessor: "id",
+        },
+        {
+            id: "host",
+            Header: "Host Name",
+            accessor: (originalRow) => {
+                return originalRow.host.name;
             }
-        ],
-        []
-    );
-
-    const fetchGuests = async () => {
-        const response = await axios.get(SHOW_GUESTS, {
-            headers: { Authorization: `Bearer ${getToken()}` },
-        })
-        .catch((err) => console.log(err))
-
-        if (response && isLogin()) {
-            const guests = response.data;
-            
-            console.log("guests: ", guests);
-            setGuests(response.data.data);
-        }
-    };
+        },
+        {
+            id: "guest",
+            Header: "Guest Name",
+            accessor: (originalRow) => {
+                return originalRow.guest.name;
+            }
+        },
+        {
+            Header: "Status",
+            accessor: "status",
+        },
+        {
+            Header: "Purpose",
+            accessor: "purpose",
+        },
+        {
+            Header: "Notes",
+            accessor: "notes",
+        },
+        {
+            Header: "Date Time",
+            accessor: "date_time",
+        },
+    ], []);
 
     useEffect(() => {
-        fetchGuests();
+        setLoading(true);
+        axios
+            .get(SHOW_APPOINTMENT, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setAppointments(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => console.log(err))
+
+        return () => {
+            setAppointments([]);
+        } 
     }, []);
 
-    const guestData = useMemo(() => [...guests], [guests]);
+    const guestData = useMemo(() => [...appointments], [appointments]);
     const guestColumn = useMemo(() => [...columns], [columns]);
 
+    const cancelAppointment = (note, meetingId) => {
+        setLoading(true);
+        axios
+            .put(UPDATE_APPOINTMENT(meetingId), {
+                status: "canceled",
+                notes: note,
+            }, 
+            {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then(() => {
+                window.location.reload();
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            }) 
+    };
+
     return (
-        <div className="py-24 px-16">
-            <p className="text-4xl mb-10">Guest List</p>
+        <div className="p-16">
+            <div className="flex flex-col mb-12">
+                <p className="text-4xl text-primary font-bold mb-2">Guest</p>
+                <p className="text-lg text-primary">Showing all the guest and the host they appointed</p>
+            </div>
             <Table
                 columns={guestColumn}
                 data={guestData}
+                loading={loading}
+                action={cancelAppointment}
             />
         </div>
     );

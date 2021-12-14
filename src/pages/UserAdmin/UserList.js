@@ -1,137 +1,146 @@
-import React, { 
-    useState,
-    useEffect,
-    useMemo 
-} from "react";
-import axios from "axios";
-import { 
-    DELETE_USER, 
-    SHOW_PHOTO, 
-    SHOW_USERS,
-} from "../../constants/urls";
-import Table from "../../components/Table/Table";
-import { getToken, isLogin } from "../../utils/auth";
-// import { Link } from "react-router-dom";
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import { Dialog, IconButton, Tooltip } from '@mui/material';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
+import { DELETE_USER, SHOW_USERS } from '../../constants/urls';
+import Table from '../../components/Table/Table';
+import { getToken } from '../../utils/auth';
+import { capitalizeFirstLetter } from '../../utils/utility';
+import Notification from '../../components/Notification';
+import { COLORS } from '../../constants/colors';
 
-export const UserAction = ({ id }) => {
-    const deleteUser = () => {
-        axios 
-            .delete(DELETE_USER(id), {
-                headers: { Authorization: `Bearer ${getToken()}` }
-            })
-            .then((res) => {
-                if (res) {
-                    console.log(res);
-                    window.location.reload();
-                }
-            })
-            .catch((err) => console.log(err))
-    };
+export const UserAction = (props) => {
+    const { id, action } = props;
 
     return (
-        <>
-            {/* <Link
-                to={{ pathname: `/user-update/${id}`, state: id }}
+        <Tooltip title="Delete User" arrow>
+            <IconButton 
+                sx={{ 
+                    '&:hover': { backgroundColor: COLORS.dangerShade },
+                    zIndex: 1,
+                }} 
+                onClick={() => action(id)}
             >
-                <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-green-500" viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                    </svg>
-                </button>
-            </Link> */}
-            <button onClick={() => {
-                if (window.confirm("Are you sure want to delete user with id: " + id + " ?")) {
-                    deleteUser();
-                }
-            }}>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-            </button>
-        </>
-    )
+                <DeleteOutlineRoundedIcon sx={{ color: COLORS.danger }} />
+            </IconButton>
+        </Tooltip>
+    );
 };
 
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
+    const [openPopup, setOpenPopup] = useState(false);
 
-    const columns = useMemo(() => 
-        [
-            {
-                Header: "ID",
-                accessor: "id",
-            },
-            {
-                Header: "Name",
-                accessor: "name",
-            },
-            {
-                Header: "Email",
-                accessor: "email",
-            },
-            {
-                Header: "Role",
-                accessor: "role",
-                Cell: ({ value }) => {
-                    if (value === "admin") {
-                        return (
-                            <div className="text-xs text-center text-blue-500 font-semibold py-1 px-2 border rounded-2xl bg-blue-100">
-                                { value }
-                            </div>
-                        )
-                    } else {
-                        return (
-                            <p>{ value }</p>
-                        )
-                    }
-                }
-            },
-            {
-                Header: "Photo",
-                accessor: "photo",
-                Cell: ({ value }) => {
-                    return (
-                        <img 
-                            alt="profile"
-                            src={SHOW_PHOTO(value)}
-                            className="w-12 rounded-full" 
-                        />
+    const columns = useMemo(() => [
+        {
+            Header: "ID",
+            accessor: "id",
+        },
+        {
+            Header: "Name",
+            accessor: "name",
+        },
+        {
+            Header: "Email",
+            accessor: "email",
+        },
+        {
+            Header: "Role",
+            accessor: "role",
+            Cell: ({ value }) => {
+                return (
+                    value === "admin" ? (
+                        <div className="flex flex-row items-center gap-2">
+                            <span className="w-1.5 h-1.5 border rounded-full bg-primary"></span>
+                            <p>{ capitalizeFirstLetter(value) }</p>
+                        </div>
+                    ) : (
+                        <p>{ capitalizeFirstLetter(value) }</p>
                     )
-                },
+                )
             }
-        ],
-        []
-    );
-
-    const fetchUsers = async () => {
-        const response = await axios.get(SHOW_USERS, {
-            headers: { Authorization: `Bearer ${getToken()}` },
-        })
-        .catch((err) => console.log(err))
-
-        if (response && isLogin()) {
-            const users = response.data;
-
-            console.log("users: ", users);
-            setUsers(response.data.data);
+        },
+        {
+            Header: "Photo",
+            accessor: "photo",
         }
+    ], []);
+
+    const fetchUsers = () => {
+        axios
+            .get(SHOW_USERS, {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setUsers(res.data.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setLoading(false);
+            })
     };
 
     useEffect(() => {
+        setLoading(true);
         fetchUsers();
+        
+        return () => {
+            setUsers([]);
+        } 
     }, []);
 
     const userData = useMemo(() => [...users], [users]);
     const userColumn = useMemo(() => [...columns], [columns]);
 
+    const deleteUser = (meetingId) => {
+        if (window.confirm(`Are you sure want to delete user with id: ${meetingId} ?`)) {
+            axios 
+                .delete(DELETE_USER(meetingId), {
+                    headers: { Authorization: `Bearer ${getToken()}` }
+                })
+                .then(() => {
+                    // const newUsers = [...users];
+                    // const index = users.findIndex((user) => user.id === meetingId);
+                    // newUsers.splice(index, 1);
+                    // setUsers(newUsers);
+                    fetchUsers();
+                    setNotify({
+                        isOpen: true,
+                        message: `Users with ID ${meetingId} successfully deleted!`,
+                        type: 'success',
+                    });
+                    
+                })
+                .catch((err) => console.log(err))
+        }
+    };
+
     return (
-        <div className="py-24 px-16">
-            <p className="text-4xl mb-10">User List</p>
-            <Table 
-                columns={userColumn}
-                data={userData}
-            />
-        </div>
+        <>
+            <div className="py-16 px-16">
+                <div className="flex flex-col mb-12">
+                    <p className="text-4xl text-primary font-bold mb-2">Users</p>
+                    <p className="text-lg text-primary">Showing all the users in this app</p>
+                </div>
+                <Table 
+                    columns={userColumn}
+                    data={userData}
+                    loading={loading}
+                    action={deleteUser}
+                    // setOpenPopup={setOpenPopup}
+                    fetchUsers={fetchUsers}
+                />
+            </div>
+            {/* <Dialog>
+                <div className="p-6">
+
+                </div>
+            </Dialog> */}
+            <Notification notify={notify} setNotify={setNotify} />
+        </>
     );
 }
 

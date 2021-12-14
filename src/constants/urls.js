@@ -1,11 +1,13 @@
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 
-export const SERVER_NAME = "http://127.0.0.1:8000";
-export const BASE_URL = SERVER_NAME + "/api";
+// export const SERVER_NAME_PROD = 'https://api.visity.me';
+export const SERVER_NAME_DEV = 'http://127.0.0.1:8000';
+export const BASE_URL = SERVER_NAME_DEV + '/api';
 
 let JWT = null;
-if (Cookies.get("JWT") !== undefined) {
-    JWT = Cookies.get("JWT");
+
+if (Cookies.get('JWT') !== undefined) {
+    JWT = Cookies.get('JWT');
 }
 
 export const JWT_HEADER = JWT;
@@ -13,6 +15,7 @@ export const JWT_HEADER = JWT;
 // Authorization
 export const LOGIN_API = `${BASE_URL}/auth/loginAdmin`;
 export const LOGOUT_API = `${BASE_URL}/auth/logout`;
+export const GET_USER_LOGGED_IN = `${BASE_URL}/auth/me`;
 
 // Host
 export const SHOW_HOST = (hostId) => `${BASE_URL}/hosts/${hostId}`;
@@ -36,7 +39,7 @@ export const CREATE_USER = `${BASE_URL}/users`;
 export const SHOW_USER = (userId) => `${BASE_URL}/users/${userId}`;
 export const SHOW_USERS = `${BASE_URL}/users`;
 export const DELETE_USER = (userId) => `${BASE_URL}/users/${userId}`;
-export const SHOW_PHOTO = (photo) => `${SERVER_NAME}/${photo}`;
+export const SHOW_PHOTO = (photo) => `${SERVER_NAME_DEV}/${photo}`;
 
 // Guest Administration
 export const CREATE_GUEST = `${BASE_URL}/guests`;

@@ -1,12 +1,12 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Visity",
+  "name": "Visity",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff",
   "icons": {
-    "src": "Logo.png",
+    "src": "logo-dark.png",
     "type": "image/png",
     "sizes": "100x100"
   }

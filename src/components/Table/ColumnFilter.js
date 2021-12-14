@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const ColumnFilter = ({ column }) => {
     const { filterValue, setFilter } = column;
@@ -12,4 +12,4 @@ export const ColumnFilter = ({ column }) => {
             />
         </span>
     )
-}
+};

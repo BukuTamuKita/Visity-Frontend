@@ -1,51 +1,87 @@
-import React from "react";
+import React from 'react';
 import {
+    Route,
     BrowserRouter as Router,
     Switch,
-} from "react-router-dom";
-import "tailwindcss/tailwind.css";
-import "./App.css";
-import Drawer from "./components/Drawer";
-import { APP_ROUTE, PRIVATE_ROUTE } from "./routes/routes";
-import PublicRoute from "./components/PublicRoute";
-import PrivateRoute from "./components/PrivateRoute";
+    Redirect
+} from 'react-router-dom';
+import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import Layout from './components/Layout';
+import 'tailwindcss/tailwind.css';
+import './App.css';
+import { PUBLIC_ROUTE, PRIVATE_ROUTE } from './routes/routes';
+import PublicRoute from './components/PublicRoute';
+import PrivateRoute from './components/PrivateRoute';
+import ErrorPage from './pages/ErrorPage';
+
+const theme = createTheme({
+    components: {
+        MuiDrawer: {
+            styleOverrides: {
+                paper: {
+                    background: "#2E4DA7",
+                    fontFamily: "Inter",
+                }
+            }
+        },
+    },
+
+    typography: {
+        fontFamily: [
+            'Inter',
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+        ].join(','),
+    }
+});
 
 function App() {
-    return (
-        <Router>
-            <Switch>
-                {APP_ROUTE.map((value, index) => {
-                    return (
-                        <PublicRoute
-                            key={value.name}
-                            restricted={value.restricted}
-                            component={value.component}
-                            path={value.path}
-                            exact={value.exact}
-                        />
-                    )
-                })}
-                <div className="flex">
-                    <div className="h-screen sticky top-0">
-                        <Drawer />
-                    </div>
+    const prefix = ["/appointment-create", "/appointment-history", "/user-list", "/guest-list", "/testing"];
 
-                    {/* Main Content */}
-                    <div className="flex-auto">
-                        {PRIVATE_ROUTE.map((value, index) => {
-                            return (
-                                <PrivateRoute
-                                    key={value.name}
-                                    component={value.component}
-                                    path={value.path}
-                                    exact={value.exact}
-                                />
-                            )
-                        })}
-                    </div>
-                </div>
-            </Switch>
-        </Router>
+    return (
+        <StyledEngineProvider>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <Switch>
+                        {PUBLIC_ROUTE.map((val) => (
+                            <PublicRoute 
+                                key={val.name}
+                                path={val.path}
+                                exact={val.exact}
+                                component={val.component}
+                                restricted={val.restricted}
+                            />
+                        ))}
+                        <Route exact path={prefix}>
+                            <Layout>
+                                <Switch>
+                                    {PRIVATE_ROUTE.map((val) => (
+                                        <PrivateRoute 
+                                            key={val.name}
+                                            path={val.path}
+                                            exact={val.exact}
+                                            component={val.component}
+                                            private={val.private}
+                                        />
+                                    ))}
+                                </Switch>
+                            </Layout>
+                        </Route>
+                        {/* <Route path="/" render={() => (
+                            <Redirect to="/" />
+                        )} /> */}
+                        <Route component={ErrorPage} />
+                    </Switch>
+                </Router>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 }
 
