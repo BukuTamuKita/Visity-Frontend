@@ -52,7 +52,7 @@ const WebcamKTP = (props) => {
 
     return (
         <>
-            <button className="secondary-btn" onClick={handleClickOpen}>
+            <button className="outline-btn" onClick={handleClickOpen}>
                 <CameraAltOutlined />
                 Open Webcam
             </button>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -28,12 +28,19 @@
     hover:bg-primaryOutline hover:text-primary 
     focus:outline-none focus:ring-2 focus:ring-primaryFocus focus:border-transparent;
 }
+.primary-alt-btn {
+    @apply transition duration-500 ease-in-out 
+    flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-lg border 
+ bg-primary-50 text-primary text-sm font-medium
+    hover:bg-primaryOutline hover:text-primary 
+    focus:outline-none focus:ring-2 focus:ring-primaryFocus focus:border-transparent;
+}
 .label {
     @apply block 
     text-sm font-medium text-gray-500 
-    mb-1; 
+    mb-1;
 }
 .tableWrap {
     @apply block max-w-full 
-    overflow-x-scroll overflow-y-hidden
+    overflow-x-scroll overflow-y-hidden;
 }

@@ -10,7 +10,7 @@ const UploadKTP = ({ scanKTP, loading }) => {
   
     return (
         <>
-            <div className="py-2 text-sm">
+            <div className="py-2 md:text-sm text-xs">
                 <label
                     htmlFor="file-upload"
                     className="cursor-pointer underline rounded-lg font-medium text-primary hover:text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary"
