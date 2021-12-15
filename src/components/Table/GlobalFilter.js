@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
-import { SearchIcon } from '@heroicons/react/solid';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 
 export const GlobalFilter = ({ filter, setFilter }) => {
     const [value, setValue] = useState(filter);
+    
     const onChange = useAsyncDebounce(value => {
         setFilter(value || undefined); 
     }, 1000);
@@ -21,15 +22,14 @@ export const GlobalFilter = ({ filter, setFilter }) => {
 
     return (
         <div className="flex rounded-lg shadow-sm w-60">
-            <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                <SearchIcon className="w-6 h-6 text-gray-400" />
+            <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
+                <SearchRoundedIcon />
             </span>
             <input
                 type="search"
                 name="search-host"
                 id="search-host"
-                className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
-                // placeholder="Search appointments..."
+                className="bg-gray-50 text-gray-700 focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300 placeholder-gray-300"
                 placeholder={getPlaceholder()}
                 value={value || ''}
                 onChange={(e) => {

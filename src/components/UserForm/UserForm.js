@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router';
-import { CREATE_USER } from '../../constants/urls';
-import { getToken } from '../../utils/auth';
 
-const UserForm = ({ title }) => {
+const UserForm = (props) => {
     const [user, setUser] = useState({});
     const [display, setDisplay] = useState(false);
     const [image, setImage] = useState(null);
-    const history = useHistory();
 
     const handleImage = (e) => {
         setImage(e.target.files[0]);
@@ -16,35 +11,10 @@ const UserForm = ({ title }) => {
         setDisplay(!display);
     };
 
-    const handleCreateUser = () => {
-        let formData = new FormData();
-        console.log(formData);
-        formData.append('photo', image);
-
-        for (let key in user) {
-            formData.append(key, user[key]);
-        }
-
-        axios 
-        .post(CREATE_USER,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${getToken()}`,
-                    'Content-Type': 'application/form-data',
-                }
-            })
-            .then(() => {
-                history.push("/user-list");
-                window.location.reload();
-            })
-    };
-
     return (
         <div className="py-24 px-16 grid grid-cols-12">
             <div className="col-span-6">
-                <p className="text-4xl mb-10">{ title } User</p>
-                {/* User Information */}
+                <p className="text-4xl mb-10">{ props.title } User</p>
                 <div>
                     <p className="text-lg font-semibold mb-4">User Information</p>
                     <div className="mb-4">
@@ -169,9 +139,7 @@ const UserForm = ({ title }) => {
                         </div>
                     </div>
                 </div>
-
-                {/* User Credentials */}
-                <div className="">
+                <div>
                     <p className="text-lg font-semibold mb-4">User Credentials</p>
                     <div className="mb-4">
                         <label
@@ -237,13 +205,9 @@ const UserForm = ({ title }) => {
                         <button
                             className="px-12 py-2 rounded-lg text-sm font-medium border-0 focus:outline-none focus:ring transition text-white bg-purple-500 hover:bg-purple-600 active:bg-purple-700 focus:ring-purple-300"
                             type="submit"
-                            onClick={() => {
-                                if (title === "Create") {
-                                    handleCreateUser();
-                                }
-                            }}
+                            onClick={() => props.onSubmit()}
                         >
-                            { title }
+                            { props.title }
                         </button>
                     </div>
                 </div>

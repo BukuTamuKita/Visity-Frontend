@@ -1,23 +1,22 @@
 export const capitalizeFirstLetter = (words) => {
     if (words) {
-        words = "" + words;
-        const arr = words.split(" ");
+        words = '' + words;
+        const arr = words.split(' ');
 
         for (let i = 0; i < arr.length; i++) {
             arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1).toLowerCase();
         }
 
-        const result = arr.join(" ");
-        console.log("result: ", result);
+        const result = arr.join(' ');
 
         return result;
     }
 
-    return "";
+    return '';
 };
 
 export const dataURLtoFile = (url, filename) => {
-    let arr = url.split(","),
+    let arr = url.split(','),
         mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]),
         n = bstr.length,
@@ -43,17 +42,17 @@ export const convertTime = (date, time) => {
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
 
     const getRelativeTime = (d1, d2 = new Date()) => {
-        var elapsed = d1 - d2
+        let elapsed = d1 - d2;
     
         // "Math.abs" accounts for both "past" & "future" scenarios
-        for (var u in units) {
+        for (let u in units) {
             if (Math.abs(elapsed) > units[u] || u === 'second') {
                 return rtf.format(Math.round(elapsed / units[u]), u)
             }
         }
     }
 
-    date = date.substr(-10, date.length);
+    date = date.substr(4, date.length);
 
     return getRelativeTime(+new Date(`${date} ${time}`));
 };

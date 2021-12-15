@@ -1,67 +1,102 @@
-import { Fragment, useEffect, useState } from 'react';
-import { LogoutIcon } from '@heroicons/react/outline';
-import { Menu, Transition } from '@headlessui/react';
-import { ListItemIcon } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getToken, logout } from "../utils/auth";
-import { GET_USER_LOGGED_IN, SHOW_PHOTO } from '../constants/urls';
+import { Link } from 'react-router-dom';
+import Logout from '@mui/icons-material/Logout';
+import { Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Tooltip} from '@mui/material';
+import { getToken, logout } from '../utils/auth';
+import { 
+	GET_USER_LOGGED_IN, 
+	SHOW_PHOTO, 
+} from '../constants/urls';
 
-const ProfileIcon = () => {
-	const [admin, setAdmin] = useState({});
+export default function AccountMenu() {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const [admin, setAdmin] = useState({});
 
-	const fetchAdmin = () => {
-		axios
-			.post(GET_USER_LOGGED_IN, getToken(), {
-				headers: { Authorization: `Bearer ${getToken()}` },
-			})
-			.then((res) => {
-				setAdmin(res.data.data);
-			})
-			.catch((err) => console.log(err));
-	}
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-	useEffect(() => {
-		fetchAdmin();
-	}, []);
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
-	return (
-		<Menu as="div" className="ml-3 relative">
-			<div className="flex flex-row items-center gap-4">
-				<p className="text-black">Hello, <strong>{ admin.name }</strong></p>
-				<Menu.Button className="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-					<span className="sr-only">Open user menu</span>
-					<img
-						className="h-10 w-10 rounded-full"
-						src={SHOW_PHOTO(admin.photo)}
-						alt="Admin"
-					/>
-				</Menu.Button>
-			</div>
-			<Transition
-				as={Fragment}
-				enter="transition ease-out duration-100"
-				enterFrom="transform opacity-0 scale-95"
-				enterTo="transform opacity-100 scale-100"
-				leave="transition ease-in duration-75"
-				leaveFrom="transform opacity-100 scale-100"
-				leaveTo="transform opacity-0 scale-95"
-			>
-				<div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-					<Link to="/" onClick={logout}>
-						<li className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-300 hover:text-white">
-							<div className="flex flex-row items-center">
-								<ListItemIcon>
-									<LogoutIcon className="text-gray-600 w-6 h-6" />
-								</ListItemIcon>
-								<span className="text-gray-600">Logout</span>
-							</div>
-						</li>
-					</Link>
-				</div>
-			</Transition>
-		</Menu>
-	);
-};
+    useEffect(() => {
+        axios
+            .post(GET_USER_LOGGED_IN, getToken(), {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then((res) => {
+                setAdmin(res.data.data);
+            })
+            .catch((err) => console.log(err));
 
-export default ProfileIcon;
+        return () => {
+            setAdmin({});
+        };
+    }, []);
+
+    return (
+        <> 
+            <div className="flex flex-row items-center">
+                <p className="text-gray-700">Hello, <span className="font-semibold">{ admin.name }</span></p>
+                <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
+                    <Tooltip title="Profile" arrow>
+                        <IconButton onClick={handleClick} size="small" sx={{ ml: 2 }}>
+                            <Avatar>
+                                <img 
+                                    className="h-10 w-10 rounded-full" 
+                                    src={SHOW_PHOTO(admin.photo)}
+                                    alt="Admin" />
+                            </Avatar>
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                        elevation: 0,
+                        sx: {
+                            overflow: "visible",
+                            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                            mt: 1.5,
+                            "& .MuiAvatar-root": {
+                                width: 32,
+                                height: 32,
+                                ml: -0.5,
+                                mr: 1,
+                            },
+                            "&:before": {
+                                content: '""',
+                                display: "block",
+                                position: "absolute",
+                                top: 0,
+                                right: 14,
+                                width: 10,
+                                height: 10,
+                                bgcolor: "background.paper",
+                                transform: "translateY(-50%) rotate(45deg)",
+                                zIndex: 0,
+                            },
+                        },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                >
+                    <Link to="/" onClick={logout}>
+                        <MenuItem>
+                            <ListItemIcon>
+                                <Logout fontSize="small" />
+                            </ListItemIcon>
+                            Logout
+                        </MenuItem>
+                    </Link>
+                </Menu>
+            </div>
+        </>
+    );
+}

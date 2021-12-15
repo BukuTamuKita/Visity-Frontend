@@ -2,11 +2,9 @@ import Login from '../pages/Login/Login';
 import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
 import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
 import UserList from '../pages/UserAdmin/UserList';
-import CreateUser from '../pages/UserAdmin/CreateUser';
-import UpdateUser from '../pages/UserAdmin/UpdateUser';
+// import CreateUser from '../pages/UserAdmin/CreateUser';
 import GuestList from '../pages/GuestAdmin/GuestList';
 import Testing from '../pages/Testing';
-// import ErrorPage from '../pages/ErrorPage';
 
 export const PUBLIC_ROUTE = [
     {
@@ -43,22 +41,14 @@ export const PRIVATE_ROUTE = [
         private: true,
         restricted: false,
     },
-    {
-        name: "Create User",
-        path: "/user-create",
-        exact: true,
-        component: CreateUser,
-        private: true,
-        restricted: false,
-    },
-    {
-        name: "Update User",
-        path: "/user-update/:id",
-        exact: true,
-        component: UpdateUser,
-        private: true,
-        restricted: false,
-    },
+    // {
+    //     name: "Create User",
+    //     path: "/user-create",
+    //     exact: true,
+    //     component: CreateUser,
+    //     private: true,
+    //     restricted: false,
+    // },
     {
         name: "Guest List",
         path: "/guest-list",
@@ -75,12 +65,4 @@ export const PRIVATE_ROUTE = [
         private: true,
         restricted: false,
     },
-    // {
-    //     name: "Error | Page Not Found",
-    //     path: "/error",
-    //     exact: true,
-    //     component: ErrorPage,
-    //     private: true,
-    //     isNotFound: true,
-    // },
 ];

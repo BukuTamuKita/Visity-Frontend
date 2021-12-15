@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import Loader from 'react-loader-spinner';
 import axios from 'axios';
-import { AtSymbolIcon, LockClosedIcon, XCircleIcon } from '@heroicons/react/outline';
+import { 
+    AlternateEmailRounded, 
+    LockOutlined, 
+    WarningAmberRounded, 
+    HighlightOffRounded 
+} from '@mui/icons-material';
 import { login } from '../../utils/auth';
 import { LOGIN_API } from '../../constants/urls';
+import { COLORS } from '../../constants/colors';
 
 const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [visiblePass, setVisiblePass] = useState('password');
     const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState({});
 
     const emailOnChange = (e) => {
         setEmail(e.target.value);
@@ -49,14 +55,13 @@ const Login = (props) => {
                 password: password,
             })
             .then((res) => {
-                console.log(res);
                 login(res.data.token);
                 setLoading(false);
                 props.history.push('/appointment-create');
             })
             .catch(() => {
                 clearFormFields();
-                setErrorMessage(`Sorry, you're not authorized.`);
+                setErrorMessage({both: "Sorry, you're not authorized."});
                 setLoading(false);
             });
     };
@@ -67,11 +72,11 @@ const Login = (props) => {
         let pass = document.getElementById('password').value;
     
         if (email === '' && pass === '') {
-            setErrorMessage('Email and password cannot be blank.');
+            setErrorMessage({both: 'Email and password cannot be blank.'});
         } else if (pass === '') {
-            setErrorMessage('Password is required.');
+            setErrorMessage({password: 'Password is required.'});
         } else if (email === '') {
-            setErrorMessage('Email is required.');
+            setErrorMessage({email: 'Email is required.'});
         } else {
             onLogin();
         }
@@ -95,10 +100,10 @@ const Login = (props) => {
                     <div className="col-span-3 sm:col-span-2 mb-4">
                         <div className="mt-1 flex rounded-md shadow-sm">
                             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                <AtSymbolIcon className="w-6 h-6 text-gray-400" />
+                                <AlternateEmailRounded sx={{ color: "#9CA3AF" }} />
                             </span>
                             <input
-                                className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="text-gray-700 focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="email"
                                 type="text"
                                 value={email}
@@ -106,14 +111,20 @@ const Login = (props) => {
                                 onChange={emailOnChange}
                             />
                         </div>
+                        {errorMessage.email && 
+                            <span className="flex flex-row gap-2 mt-2">
+                                <WarningAmberRounded sx={{ color: COLORS.danger }} />
+                                <p className="text-danger">{ errorMessage.email }</p>
+                            </span> 
+                        }
                     </div>
                     <div className="col-span-3 sm:col-span-2 mb-4">
                         <div className="mt-1 flex rounded-md shadow-sm">
                             <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                                <LockClosedIcon className="w-6 h-6 text-gray-400" />
+                                <LockOutlined sx={{ color: "#9CA3AF" }} />
                             </span>
                             <input
-                                className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                className="text-gray-700 focus:ring-primary focus:border-primary flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                                 id="password"
                                 type={visiblePass}
                                 value={password}
@@ -122,10 +133,16 @@ const Login = (props) => {
                                 onKeyPress={enterPressed}     
                             />
                         </div>
+                        {errorMessage.password && 
+                            <span className="flex flex-row gap-2 mt-2">
+                                <WarningAmberRounded sx={{ color: COLORS.danger }} />
+                                <p className="text-danger">{ errorMessage.password }</p>
+                            </span> 
+                        }
                     </div>
                     <div className="flex items-start mb-8">
                         <div className="flex items-center h-5">
-                            <input id="comments" name="comments" type="checkbox" className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" onChange={onVisibleChange} />
+                            <input id="comments" name="comments" type="checkbox" className="focus:ring-primaryFocus h-4 w-4 text-primary border-gray-300 rounded" onChange={onVisibleChange} />
                         </div>
                         <div className="ml-3 text-sm">
                             <label htmlFor="comments" className="text-gray-600">
@@ -133,14 +150,14 @@ const Login = (props) => {
                             </label>
                         </div>
                     </div>
-                    {errorMessage && (
-                        <div className="flex flex-row items-center gap-2 mb-4 border p-4 rounded-lg bg-danger-shade">
-                            <XCircleIcon className="w-6 h-6 text-danger" />
-                            <p className="text-danger">{ errorMessage }</p>
+                    {errorMessage.both && (
+                        <div className="flex flex-row items-center gap-2 mb-4 border p-4 rounded-lg bg-dangerShade">
+                            <HighlightOffRounded sx={{ color: COLORS.danger }} />
+                            <p className="text-danger">{ errorMessage.both }</p>
                         </div>
                     )}
                     <button
-                        className="px-4 py-2 w-full text-white border-2 border-white rounded-lg transition bg-indigo-700 hover:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        className="primary-btn w-full"
                         onClick={validateLogin}
                         disabled={loading}
                     >
