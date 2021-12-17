@@ -1,4 +1,4 @@
-import Login from '../pages/Login/Login';
+import LoginPage from '../pages/Login/LoginPage';
 import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
 import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
 import UserList from '../pages/UserAdmin/UserList';
@@ -11,7 +11,7 @@ export const PUBLIC_ROUTE = [
         name: "Login",
         path: "/",
         exact: true,
-        component: Login,
+        component: LoginPage,
         restricted: true,
     },
 ];
