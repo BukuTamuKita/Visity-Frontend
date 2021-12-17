@@ -11,8 +11,9 @@ const LoginBackground = () => {
                 <img src={UpperBlob} className="absolute top-0 right-0 md:w-3/4 lg:w-11/12 xl:w-4/5" />
                 <div className="absolute top-1/2 transform -translate-y-1/2 md:mx-10 lg:mx-20">
                     <div className="flex flex-col">
-                        <p className="text-2xl font-bold text-white mb-8">Making appointment has never been easier.</p>
-                        <p className="text-white mb-8">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi officia fuga dolorum doloribus, libero vitae!</p>
+                        <p className="text-2xl font-bold text-white mb-8">Making Appointment <br></br>Has Never Been Easier.</p>
+                        <p className="text-white mb-8 font-medium">Visity is a digital guestbook application that featured with ID/KTP Scanner
+                        <br></br>Visity will make you easier to make an appointment. </p>
                         <img src={Devices} className="place-self-center md:w-52 lg:w-72" />
                     </div>
                 </div>

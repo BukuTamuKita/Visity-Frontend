@@ -337,7 +337,7 @@ const Table = (props) => {
                         </div>
                     )}
 
-                    <div className="flex flex-row justify-between items-center h-14 px-6 py-4 border-t border-gray-100 text-gray-700 bg-white rounded-b-lg">
+                    <div className="flex flex-row justify-between items-center h-14 px-6 py-4 border-t border-gray-100 text-gray-700 bg-white rounded-b-lg whitespace-nowrap">
                         <div>
                             Displaying <strong>10</strong> of{" "}
                             <strong>{data.length}</strong> data - Page{" "}

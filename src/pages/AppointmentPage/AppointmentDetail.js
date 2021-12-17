@@ -7,6 +7,7 @@ import { COLORS } from '../../constants/colors';
 import { APPOINTMENT_DETAIL } from '../../constants/urls';
 import { Status } from '../../components/Status';
 
+
 export const AppointmentDetail = (props) => {
     const { meetingId } = props;
     const [open, setOpen] = useState(false);
@@ -28,7 +29,20 @@ export const AppointmentDetail = (props) => {
             users: {},
         },
     });
-
+    const handleNotes =()=> {
+        if (appointment.status ==="canceled") {
+            return "Notes To Host"
+        }
+        else if (
+            appointment.status === "accepted" ||
+            appointment.status === "declined"
+        ) {
+            return "Notes to Guest";
+        }
+        else{
+            return "-";
+        }
+    };
     const handleClickOpen = () => {
         setOpen(true);
         fetchAppointment();
@@ -108,7 +122,7 @@ export const AppointmentDetail = (props) => {
                                 <p>{ appointment.purpose }</p>
                             </div>
                             <div>
-                                <label className="label">Notes</label>
+                                <label className="label">{handleNotes() }</label>
                                 <p>{ appointment.notes }</p>
                             </div>
                         </div>
