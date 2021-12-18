@@ -20,16 +20,16 @@ import { IconButton } from '@mui/material';
 import Loader from 'react-loader-spinner';
 import { GlobalFilter } from './GlobalFilter';
 import { ColumnFilter } from './ColumnFilter';
-import { UserAction } from '../../pages/UserAdmin/UserList';
 import { EXPORT_DATA, SHOW_PHOTO } from '../../constants/urls';
 import { GuestAction } from '../../pages/GuestAdmin/GuestAction';
 import { convertTime } from '../../utils/utility';
-import { AppointmentDetail } from '../../pages/AppointmentPage/AppointmentDetail';
+import AppointmentDetail from '../../pages/AppointmentPage/AppointmentDetail';
 import { COLORS } from '../../constants/colors';
 import UserForm from '../../pages/UserAdmin/UserForm';
+import UserAction from '../../pages/UserAdmin/UserAction';
 
-const Table = (props) => {
-    const { columns, data, loading, action, fetchUsers } = props;
+const Table = props => {
+    const { columns, data, loading, fetchUsers, fetchAppointments } = props;
     let pathname = window.location.pathname;
     const defaultColumn = useMemo(() => {
         return {
@@ -47,17 +47,17 @@ const Table = (props) => {
                 Cell: ({ row }) => {
                     if (pathname === '/guest-list') {
                         return (
-                            <GuestAction id={row.values.id} action={action} loading={loading} />
+                            <GuestAction id={row.values.id} fetchAppointments={fetchAppointments} />
                         )
                     } 
                     else if (pathname === '/user-list') {
                         return (
-                            <UserAction id={row.values.id} action={action} />
+                            <UserAction id={row.values.id} fetchUsers={fetchUsers} />
                         )
                     } 
                     else if (pathname === '/appointment-history') {
                         return (
-                            <AppointmentDetail meetingId={row.values.id} /> 
+                            <AppointmentDetail id={row.values.id} /> 
                         )
                     }
                 }
@@ -87,7 +87,7 @@ const Table = (props) => {
                         return (
                             <div className="flex flex-row gap-4">
                                 <img 
-                                    alt="profile"
+                                    alt="img"
                                     src={getImage(row.values.photo)}
                                     className="w-10 h-10 rounded-full" 
                                 />
@@ -329,9 +329,9 @@ const Table = (props) => {
                             </tbody>
                         </table>
                     ) : (
-                        <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center text-gray-700">
+                        <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center text-gray-300">
                             <SentimentDissatisfiedOutlined
-                                sx={{ fontSize: "12rem", color: "#d1d5db" }}
+                                sx={{ fontSize: "6rem", color: "#E5E7EB" }}
                             />
                             <p>Oops, there's no data here</p>
                         </div>

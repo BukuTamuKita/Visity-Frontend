@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
-import { SHOW_USERS } from '../../constants/urls';
-import { convertTime } from '../../utils/utility';
 import { getToken } from '../../utils/auth';
+import { convertTime } from '../../utils/utility';
+import { SHOW_USERS } from '../../constants/urls';
 
-const HostAgenda = ({ display, appointment, filteredHost }) => {
+const HostAgenda = props => {
+    const { display, appointment, filteredHost } = props;
     const [users, setUsers] = useState({});
     
     useEffect(() => {
@@ -12,10 +13,10 @@ const HostAgenda = ({ display, appointment, filteredHost }) => {
 			.get(SHOW_USERS, {
 				headers: { Authorization: `Bearer ${getToken()}` },
 			})
-			.then((res) => {
+			.then(res => {
 				setUsers(res.data.data);
 			})
-			.catch((err) => console.log(err));
+			.catch(err => console.log(err));
         
         return () => {
             setUsers({});
@@ -31,24 +32,23 @@ const HostAgenda = ({ display, appointment, filteredHost }) => {
                             Meeting Information
                         </p>
                         <div className="flex flex-row items-center gap-4 mb-6">
-                            {users.map(
-                                (user, index) =>
-                                    filteredHost.name === user.name && (
-                                        <div key={index}>
-                                            <img
-                                                src={user.photo}
-                                                alt="Host"
-                                                className="w-12 h-12 rounded-full"
-                                            />
-                                        </div>
-                                    )
+                            {users.map((user, index) =>
+                                filteredHost.name === user.name && (
+                                    <div key={index}>
+                                        <img
+                                            src={user.photo}
+                                            alt="Host"
+                                            className="w-12 h-12 rounded-full"
+                                        />
+                                    </div>
+                                )
                             )}
                             <div className="flex flex-col border-grey-400">
                                 <p className="md:text-xl font-bold mb-1 text-base">
-                                    {filteredHost.name}
+                                    { filteredHost.name }
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                    {filteredHost.position}
+                                    { filteredHost.position }
                                 </p>
                             </div>
                         </div>
@@ -64,10 +64,7 @@ const HostAgenda = ({ display, appointment, filteredHost }) => {
                                                 {data.guest.name}
                                             </p>
                                             <p className="md:text-sm text-xs whitespace-nowrap">
-                                                {convertTime(
-                                                    data.date_time[0],
-                                                    data.date_time[1]
-                                                )}
+                                                { convertTime(data.date_time[0], data.date_time[1]) }
                                             </p>
                                         </div>
                                     );

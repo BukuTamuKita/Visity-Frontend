@@ -3,7 +3,6 @@ import {
     Route,
     BrowserRouter as Router,
     Switch,
-    Redirect,
 } from "react-router-dom";
 import {
     createTheme,
@@ -38,7 +37,6 @@ const theme = createTheme({
             },
         },
     },
-
     typography: {
         fontFamily: [
             "Inter",
@@ -93,9 +91,6 @@ function App() {
                                 </Switch>
                             </Layout>
                         </Route>
-                        {/* <Route path="/" render={() => (
-                            <Redirect to="/" />
-                        )} /> */}
                         <Route component={ErrorPage} />
                     </Switch>
                 </Router>

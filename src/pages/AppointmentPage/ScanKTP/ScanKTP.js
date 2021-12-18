@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { SCAN_KTP } from '../../../constants/urls';
-import { getToken } from '../../../utils/auth';
 import axios from 'axios';
-import { dataURLtoFile } from '../../../utils/utility';
 import WebcamKTP from './WebcamKTP';
 import UploadKTP from './UploadKTP';
+import { getToken } from '../../../utils/auth';
+import { SCAN_KTP } from '../../../constants/urls';
+import { dataURLtoFile } from '../../../utils/utility';
 
 const ScanKTP = ({ setGuestInfo }) => {
     const [loading, setLoading] = useState(false);
@@ -17,26 +17,17 @@ const ScanKTP = ({ setGuestInfo }) => {
             file = dataURLtoFile(image, "ktp");
         } else if (scanType === "upload") {
             file = image;
-            console.log("file: " + file);
         }
         
-        console.log("file image: ", file);
         let formData = new FormData();
-
         formData.append("image", file);
 
         axios
             .post(SCAN_KTP, formData, {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
-            .then((res) => {
-                console.log("KTP response: ", res);
+            .then(res => {
                 setGuestInfo(res.data[0]);
-            })
-            .then((res) => {
-                if (res) {
-                    setLoading(false);
-                }
                 setLoading(false);
             })
             .catch((err) => {

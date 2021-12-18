@@ -2,7 +2,6 @@ import LoginPage from '../pages/Login/LoginPage';
 import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
 import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
 import UserList from '../pages/UserAdmin/UserList';
-// import CreateUser from '../pages/UserAdmin/CreateUser';
 import GuestList from '../pages/GuestAdmin/GuestList';
 import Testing from '../pages/Testing';
 
@@ -41,14 +40,6 @@ export const PRIVATE_ROUTE = [
         private: true,
         restricted: false,
     },
-    // {
-    //     name: "Create User",
-    //     path: "/user-create",
-    //     exact: true,
-    //     component: CreateUser,
-    //     private: true,
-    //     restricted: false,
-    // },
     {
         name: "Guest List",
         path: "/guest-list",

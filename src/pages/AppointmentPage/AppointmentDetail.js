@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Dialog, IconButton, Tooltip, Backdrop, CircularProgress } from '@mui/material';
+import Loader from 'react-loader-spinner';
+import { IconButton, Tooltip } from '@mui/material';
 import { InfoOutlined, EventNoteRounded, AccessTimeRounded } from '@mui/icons-material';
+import Popup from '../../components/Popup';
 import { getToken } from '../../utils/auth';
 import { COLORS } from '../../constants/colors'; 
-import { APPOINTMENT_DETAIL } from '../../constants/urls';
 import { Status } from '../../components/Status';
+import { APPOINTMENT_DETAIL } from '../../constants/urls';
 
-
-export const AppointmentDetail = (props) => {
-    const { meetingId } = props;
+const AppointmentDetail = props => {
+    const { id } = props;
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [appointment, setAppointment] = useState({
@@ -55,14 +56,14 @@ export const AppointmentDetail = (props) => {
     const fetchAppointment = () => {
         setLoading(true);
         axios
-            .get(APPOINTMENT_DETAIL(meetingId), {
+            .get(APPOINTMENT_DETAIL(id), {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
-            .then((res) => {
+            .then(res => {
                 setAppointment(res.data.data);
                 setLoading(false);
             })
-            .catch((err) => {
+            .catch(err => {
                 console.log(err);
                 setLoading(false);
             }) 
@@ -80,18 +81,13 @@ export const AppointmentDetail = (props) => {
                     <InfoOutlined sx={{ color: COLORS.primary }} />
                 </IconButton>
             </Tooltip>
-            <Dialog onClose={handleClose} open={open}>
+            <Popup open={open} onClose={handleClose}>
                 {loading ? (
                     <span className="flex justifty-center items-center">
-                        <Backdrop
-                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                            open={loading}
-                        >
-                            <CircularProgress color="inherit" />
-                        </Backdrop>
+                        <Loader type="Oval" radius={18} color={COLORS.primary} secondaryColor={COLORS.accent} height={24} width={24} />
                     </span>
                 ) : (
-                    <div className="p-6">
+                    <>
                         <div className="flex flex-row justify-between items-center gap-10 mb-6">
                             <div>
                                 <p className="font-bold text-primary">{ appointment.host.name }</p>
@@ -129,9 +125,11 @@ export const AppointmentDetail = (props) => {
                         <div className="flex justify-end">
                             <button className="outline-btn mt-6" onClick={handleClose}>Close</button>
                         </div>
-                    </div>
+                    </>
                 )}
-            </Dialog>
+            </Popup>
         </>
     )
 };
+
+export default AppointmentDetail;

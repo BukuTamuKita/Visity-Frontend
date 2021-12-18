@@ -56,4 +56,3 @@ export const convertTime = (date, time) => {
 
     return getRelativeTime(+new Date(`${date} ${time}`));
 };
-

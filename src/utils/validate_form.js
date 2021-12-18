@@ -8,12 +8,6 @@ export default function validateForm (formData) {
     let errors = {};
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (formData.get('photo') === null) {
-        // errors.photo = 'Photo is required.';
-        // alert("PHOTO GAADA");
-        console.log('iyaa');
-    }
-
     if (!formData.get('name')) {
         errors.name = 'Name is required.';
     }
@@ -36,4 +30,4 @@ export default function validateForm (formData) {
     }
 
     return errors;
-}
+};

@@ -1,8 +1,15 @@
 import Cookies from 'js-cookie';
+import axios from 'axios';
+import { getToken } from '../utils/auth';
 
 // export const SERVER_NAME_PROD = 'https://api.visity.me';
 export const SERVER_NAME_DEV = 'http://127.0.0.1:8000';
 export const BASE_URL = SERVER_NAME_DEV + '/api';
+
+export const api = axios.create({
+    baseURL: BASE_URL,
+    headers: { Authorization: `Bearer ${getToken()}` },
+});
 
 let JWT = null;
 

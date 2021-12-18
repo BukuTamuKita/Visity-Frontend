@@ -9,18 +9,18 @@ import {
     HighlightOffRounded 
 } from '@mui/icons-material';
 import { login } from '../../utils/auth';
-import { LOGIN_API } from '../../constants/urls';
 import { COLORS } from '../../constants/colors';
+import { LOGIN_API } from '../../constants/urls';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [visiblePass, setVisiblePass] = useState('password');
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState({});
+    const [visiblePass, setVisiblePass] = useState('password');
     const history = useHistory();
 
-    const emailOnChange = (e) => {
+    const emailOnChange = e => {
         setEmail(e.target.value);
 
         if (e.target.value) {
@@ -28,7 +28,7 @@ const Login = () => {
         }
     };
 
-    const passwordOnChange = (e) => {
+    const passwordOnChange = e => {
         setPassword(e.target.value);
 
         if (e.target.value) {
@@ -56,9 +56,10 @@ const Login = () => {
                 email: email,
                 password: password,
             })
-            .then((res) => {
+            .then(res => {
                 login(res.data.token);
                 setLoading(false);
+
                 if (res.status === 200) {
                     history.push('/appointment-create');
                 }
@@ -70,7 +71,7 @@ const Login = () => {
             });
     };
 
-    const validateLogin = (e) => {
+    const validateLogin = e => {
         e.preventDefault();
         let email = document.getElementById('email').value;
         let pass = document.getElementById('password').value;
@@ -86,7 +87,7 @@ const Login = () => {
         }
     };
 
-    const enterPressed = (e) => {
+    const enterPressed = e => {
         if (e.key === 'Enter') {
             validateLogin(e);
         }
@@ -153,7 +154,6 @@ const Login = () => {
             )}
             <button
                 className="primary-btn w-full mt-6"
-                // onClick={validateLogin}
                 type="submit"
                 disabled={loading}
             >
