@@ -1,4 +1,5 @@
 # Getting Started with Visity Frontend
+Project link: [visity.me](https://visity.me/)
 
 ## Installing Backend Project
 1. Clone visity-backend project [here](https://github.com/BukuTamuKita/visity-backend)
@@ -54,15 +55,11 @@ npm install
 npm start
 ```
 
-
 ## Frontend Routes
 - /appointment-create
 - /appointment-history
 - /user-list
-- /user-create
-- /user-update
 - /guest-list
-- /testing
 
 ## Sprint 2 Features
 - Create Appointment
@@ -71,5 +68,5 @@ npm start
 - User Administration (CRUD)
 - Export data
 
-## Sprint 3 Upcoming Features
+## Sprint 3 Features
 - Scan KTP with Camera
