@@ -1,10 +1,10 @@
 import React, { useMemo, forwardRef } from 'react';
+import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { ListItemIcon, ListItem, ListItemText, Tooltip } from '@mui/material';
-import PropTypes from 'prop-types';
 import { COLORS } from '../../constants/colors';
 
-export default function SidebarLinks(props) {
+const SidebarLinks = props => {
     const { primary, to, icon } = props;
     const location = useLocation();
 
@@ -32,17 +32,17 @@ export default function SidebarLinks(props) {
                     color: COLORS.primary, 
                 } : {}}
             >
-                    {icon && 
-                        <Tooltip title={primary} placement="right" arrow>
-                            <ListItemIcon 
-                                sx={{ color: "white" }}
-                                style={to === location.pathname ? { color: COLORS.primary } : {}}
-                            >
-                                { icon }
-                            </ListItemIcon>
-                        </Tooltip>
-                    }
-                        <ListItemText primary={primary} />
+                {icon && 
+                    <Tooltip title={primary} placement="right" arrow>
+                        <ListItemIcon 
+                            sx={{ color: "white" }}
+                            style={to === location.pathname ? { color: COLORS.primary } : {}}
+                        >
+                            { icon }
+                        </ListItemIcon>
+                    </Tooltip>
+                }
+                    <ListItemText primary={primary} />
             </ListItem>
         </li>
     );
@@ -57,3 +57,5 @@ SidebarLinks.propTypes = {
 SidebarLinks.defaultProps = {
     selected: false,
 };
+
+export default SidebarLinks;

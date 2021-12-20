@@ -3,8 +3,7 @@ import {
     DescriptionOutlined, 
     PeopleAltOutlined, 
     PersonAddAlt1Outlined, 
-    HistoryOutlined, 
-    HandymanOutlined 
+    HistoryOutlined,
 } from '@mui/icons-material';
 
 const routes = [
@@ -28,11 +27,6 @@ const routes = [
         title: "History",
         path: "/appointment-history",
         icon: <HistoryOutlined />,
-    },
-    {
-        title: "Testing",
-        path: "/testing",
-        icon: <HandymanOutlined />,
     },
 ];
 

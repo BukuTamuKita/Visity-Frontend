@@ -3,9 +3,12 @@ import {
     Route,
     BrowserRouter as Router,
     Switch,
-    Redirect
 } from 'react-router-dom';
-import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
+import {
+    createTheme,
+    StyledEngineProvider,
+    ThemeProvider,
+} from '@mui/material/styles';
 import Layout from './components/Layout';
 import 'tailwindcss/tailwind.css';
 import './App.css';
@@ -15,35 +18,48 @@ import PrivateRoute from './components/PrivateRoute';
 import ErrorPage from './pages/ErrorPage';
 
 const theme = createTheme({
+    breakpoints: {
+        values: {
+            xs: 0,
+            sm: 640,
+            md: 768,
+            lg: 1024,
+            xl: 1280,
+        },
+    },
     components: {
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    background: "#2E4DA7",
-                    fontFamily: "Inter",
-                }
-            }
+                    background: '#2E4DA7',
+                    fontFamily: 'Inter',
+                },
+            },
         },
     },
-
     typography: {
         fontFamily: [
-            'Inter',
-            '-apple-system',
-            'BlinkMacSystemFont',
+            "Inter",
+            "-apple-system",
+            "BlinkMacSystemFont",
             '"Segoe UI"',
             '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
+            "Arial",
+            "sans-serif",
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"',
-        ].join(','),
-    }
+        ].join(","),
+    },
 });
 
 function App() {
-    const prefix = ["/appointment-create", "/appointment-history", "/user-list", "/guest-list", "/testing"];
+    const prefix = [
+        '/appointment-create',
+        '/appointment-history',
+        '/user-list',
+        '/guest-list',
+    ];
 
     return (
         <StyledEngineProvider>
@@ -51,7 +67,7 @@ function App() {
                 <Router>
                     <Switch>
                         {PUBLIC_ROUTE.map((val) => (
-                            <PublicRoute 
+                            <PublicRoute
                                 key={val.name}
                                 path={val.path}
                                 exact={val.exact}
@@ -63,7 +79,7 @@ function App() {
                             <Layout>
                                 <Switch>
                                     {PRIVATE_ROUTE.map((val) => (
-                                        <PrivateRoute 
+                                        <PrivateRoute
                                             key={val.name}
                                             path={val.path}
                                             exact={val.exact}
@@ -74,9 +90,6 @@ function App() {
                                 </Switch>
                             </Layout>
                         </Route>
-                        {/* <Route path="/" render={() => (
-                            <Redirect to="/" />
-                        )} /> */}
                         <Route component={ErrorPage} />
                     </Switch>
                 </Router>

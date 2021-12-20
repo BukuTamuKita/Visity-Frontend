@@ -1,4 +1,4 @@
-export const capitalizeFirstLetter = (words) => {
+export const capitalizeFirstLetter = words => {
     if (words) {
         words = '' + words;
         const arr = words.split(' ');
@@ -56,4 +56,3 @@ export const convertTime = (date, time) => {
 
     return getRelativeTime(+new Date(`${date} ${time}`));
 };
-

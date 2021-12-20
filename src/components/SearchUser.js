@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import axios from 'axios';
-import { getToken } from '../../utils/auth';
-import { SHOW_HOSTS } from '../../constants/urls';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { getToken } from '../utils/auth';
+import { SHOW_HOSTS } from '../constants/urls';
 
-const SearchBar = ({ getFilteredHost, attribute }) => {
+const SearchUser = props => {
+    const { getFilteredHost, search, setSearch, setDisplay } = props;
     const [filteredHost, setFilterredHost] = useState([]);
-    const [search, setSearch] = useState('');
-    const [display, setDisplay] = useState(false);
-    
+    const [displayResult, setDisplayResult] = useState(false);
     const [hosts, setHosts] = useState([]);
 
     useEffect(() => {
@@ -16,33 +15,32 @@ const SearchBar = ({ getFilteredHost, attribute }) => {
             .get(SHOW_HOSTS, {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
-            .then((res) => {
+            .then(res => {
                 setHosts(res.data.data);
             })
-            .catch((err) => {
-                console.log(err);
-            })
+            .catch(err => console.log(err))
 
         return () => {
             setHosts([]);
         } 
     }, []);
 
-    const updateHosts = (host) => {
+    const updateHosts = host => {
         getFilteredHost(host);
         setSearch(host.name);
-        setDisplay(!display);
+        setDisplayResult(!displayResult);
     };
 
-    const handleFilter = (e) => {
+    const handleFilter = e => {
         const searchWord = e.target.value;
 
-        const newFilter = hosts.filter((value) => {
+        const newFilter = hosts.filter(value => {
             return value.name.toLowerCase().includes(searchWord.toLowerCase());
         });
 
         if (searchWord === '') {
             setFilterredHost([]);
+            setDisplay(false);
         } else {
             setFilterredHost(newFilter);
         }
@@ -51,11 +49,8 @@ const SearchBar = ({ getFilteredHost, attribute }) => {
     };
 
     return (
-        <div className={`${attribute.style} relative`}>
+        <div className="relative w-full mb-4">
             <div className="col-span-3 sm:col-span-2">
-                <label htmlFor="search-host" className="block text-sm font-medium text-gray-700">
-                    {attribute.label}
-                </label>
                 <div className="mt-1 flex rounded-lg shadow-sm">
                     <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-100 text-gray-500 text-sm">
                         <SearchRoundedIcon />
@@ -65,19 +60,18 @@ const SearchBar = ({ getFilteredHost, attribute }) => {
                         name="search-host"
                         id="search-host"
                         className="bg-gray-50 focus:ring-primary focus:border-primary transition flex-1 block w-full rounded-none rounded-r-md text-sm text-gray-700 border-gray-300 placeholder-gray-300"
-                        placeholder={attribute.placeholder}
+                        placeholder="Select User"
                         onChange={handleFilter}
                         value={search}
-                        onClick={() => setDisplay(true)}
+                        onClick={() => setDisplayResult(true)}
                     />
                 </div>
             </div>
-
-            {display && (
+            {displayResult && (
                 <>
                     {filteredHost.length !== 0 && (
                         <ul className="no-scrollbar absolute w-full h-48 mt-1 rounded-lg shadow-lg select-none bg-white overflow-hidden overflow-y-auto">
-                            {filteredHost.slice(0, 10).map((value, index) => {
+                            {filteredHost.slice(0, 10).map((value) => {
                                 return (
                                     <li
                                         className="hover:bg-gray-200 cursor-pointer"
@@ -96,4 +90,4 @@ const SearchBar = ({ getFilteredHost, attribute }) => {
     );
 };
 
-export default SearchBar;
+export default SearchUser;

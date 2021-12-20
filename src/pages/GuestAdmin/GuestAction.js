@@ -1,47 +1,114 @@
 import React, { useState } from 'react';
-import { IconButton, Dialog, Avatar, Tooltip } from '@mui/material';
+import axios from 'axios';
+import { IconButton, Avatar, Tooltip } from '@mui/material';
 import { HighlightOffOutlined, ReportGmailerrorredRounded } from '@mui/icons-material';
+import Popup from '../../components/Popup';
+import { getToken } from '../../utils/auth';
 import { COLORS } from '../../constants/colors';
-import Loader from 'react-loader-spinner';
+import { cancelAppointment } from './GuestService';
+import Notification from '../../components/Notification';
+import { APPOINTMENT_DETAIL } from "../../constants/urls";
 
-export const GuestAction = (props) => {
-    const { id, action, loading } = props;
+export const GuestAction = props => {
+    const { id, fetchAppointments } = props;
     const [note, setNote] = useState('');
     const [open, setOpen] = useState(false);
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
+    const initiateAppointment = () => {
+        return {
+            id: '',
+            guest: {
+                id: 0,
+                email: '',
+                nik: '',
+                name: '',
+                address: '',
+            },
+            host: {
+                id: 0,
+                name: '',
+                nip: '',
+                position: '',
+                users: {},
+            },
+            purpose: '',
+        };
+    };
+    const [appointment, setAppointment] = useState(initiateAppointment());
+
+    const fetchAppointment = () => {
+        axios
+            .get(APPOINTMENT_DETAIL(id), {
+                headers: { Authorization: `Bearer ${getToken()}` },
+            })
+            .then(res => {
+                setAppointment(res.data.data);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
+        fetchAppointment();
     };
 
     const handleClose = () => {
         setOpen(false);
     };
 
+    const handleCancelMeeting = e => {
+        e.preventDefault();
+        cancelAppointment(note, id, setNotify);
+        fetchAppointments();
+        handleClose();
+    };
+
     return (
         <>
             <Tooltip title="Cancel Appointment" arrow>
-                <IconButton 
-                    sx={{ 
-                        '&:hover': { backgroundColor: COLORS.warningShade }
-                    }}  
+                <IconButton
+                    sx={{ "&:hover": { backgroundColor: COLORS.warningShade } }}
                     onClick={handleClickOpen}
                 >
                     <HighlightOffOutlined sx={{ color: COLORS.warning }} />
                 </IconButton>
             </Tooltip>
-            <Dialog open={open} onClose={handleClose}>
-                <div className="p-6">
-                    <div className="flex flex-row justify-between items-center gap-6 mb-6">
-                        <span className="text-lg text-primary font-bold">Are you sure to cancel the appointment?</span>
-                        <span>
-                            <Avatar sx={{ backgroundColor: COLORS.warningShade }}>
-                                <ReportGmailerrorredRounded sx={{ color: COLORS.warning }}/>
-                            </Avatar>
-                        </span>
-                    </div>
+            <Popup open={open} onClose={handleClose}>
+                <div className="flex flex-row justify-between items-center gap-4">
+                    <span className="text-lg text-primary font-bold">
+                        Are you sure to cancel Appointment?
+                    </span>
+                    <span>
+                        <Avatar sx={{ backgroundColor: COLORS.warningShade }}>
+                            <ReportGmailerrorredRounded
+                                sx={{ color: COLORS.warning }}
+                            />
+                        </Avatar>
+                    </span>
+                </div>
+                <div className="flex flex-col py-4">
+                    <p className="text-lg font-bold text-primary">
+                        {appointment.host.name}
+                    </p>
+                    <p className="text-sm text-grey-500 font-medium">
+                        {appointment.host.position}
+                    </p>
+                    <p className="text-sm text-grey-700 font-medium pt-4">
+                        Purpose:
+                    </p>
+                    <p className="text-lg text-grey-700 font-medium">
+                        {appointment.purpose}
+                    </p>
+                </div>
+                <form onSubmit={handleCancelMeeting}>
                     <div className="mb-6 row-span-2">
-                        <label htmlFor="note" className="label">Note to host</label>
+                        <label htmlFor="note" className="label">
+                            Note to host
+                        </label>
                         <textarea
+                            required
                             type="text"
                             id="note"
                             placeholder="Leave message to host"
@@ -50,20 +117,24 @@ export const GuestAction = (props) => {
                             onChange={(e) => setNote(e.target.value)}
                         />
                     </div>
-                    <div className="flex flex-row justify-end items-center gap-4">
-                        <button className="outline-btn" onClick={handleClose}>Close</button>
-                        <button className="primary-btn" onClick={() => action(note, id)}>
-                            {loading ? (
-                                <span className="flex justifty-center items-center">
-                                    <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
-                                </span>
-                            ) : (
-                                <span>Submit</span>
-                            )}
+                    <div className="flex md:flex-row flex-col justify-end items-center gap-4">
+                        <button
+                            className="outline-btn w-full order-2 md:w-min md:order-1"
+                            onClick={handleClose}
+                            type="button"
+                        >
+                            Close
+                        </button>
+                        <button
+                            className="secondary-btn whitespace-nowrap order-1 w-full md:w-min md:order-2"
+                            type="submit"
+                        >
+                            Yes, I want to cancel
                         </button>
                     </div>
-                </div>
-            </Dialog>
+                </form>
+            </Popup>
+            <Notification notify={notify} setNotify={setNotify} />
         </>
     );
 };

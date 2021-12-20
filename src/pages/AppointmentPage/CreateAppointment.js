@@ -1,68 +1,61 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { HighlightOffRounded } from '@mui/icons-material';
-import SearchBar from '../../components/SearchUser/SearchUser';
-import { getToken } from '../../utils/auth';
-import { capitalizeFirstLetter } from '../../utils/utility';
+import Loader from 'react-loader-spinner';
 import HostAgenda from './HostAgenda';
 import ScanKTP from './ScanKTP/ScanKTP';
-import {
-    BASE_URL,
-    CREATE_APPOINTMENT,
-    CREATE_GUEST,
-    SEND_NOTIFICATION,
-    SHOW_HOST_APPOINTMENT,
-} from '../../constants/urls';
-import Loader from 'react-loader-spinner';
-import { COLORS } from '../../constants/colors';
+import { getToken } from '../../utils/auth';
+import { createGuest } from './AppointmentService';
+import SearchUser from '../../components/SearchUser';
+import ConfirmationDialog from './ConfirmationDialog';
 import Notification from '../../components/Notification';
+import { capitalizeFirstLetter } from '../../utils/utility';
+import { SHOW_HOST_APPOINTMENT } from '../../constants/urls';
 
 const CreateAppointment = () => {
-    let guestId = 0;
     const [guestInfo, setGuestInfo] = useState({});
     const [display, setDisplay] = useState(false);
-    const [email, setEmail] = useState('');
-    const [purpose, setPurpose] = useState('');
     const [loading, setLoading] = useState(false);
     const [appointment, setAppointment] = useState([]);
-    const [filteredHost, setFilteredHost] = useState({
-        id: 1,
-        name: '',
-        nip: '',
-        position: '',
-        users: null,
-    });
-    const [errors, setErrors] = useState({});
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
-
-    const searchBarAttr = {
-        style: 'w-full mb-4',
-        placeholder: 'Search host name',
+    const initialAppointment = () => {
+        return {
+            guestId: 0,
+            guestEmail: '',
+            guestPurpose: '',
+        };
     };
-
-    const authAxios = axios.create({
-        baseURL: BASE_URL,
-        headers: {
-            Authorization: `Bearer ${getToken()}`,
-        },
-    });
+    const initialHost = () => {
+        return {
+            id: null,
+            name: '',
+            nip: '',
+            position: '',
+            users: null,
+        };
+    };
+    const [search, setSearch] = useState('');
+    const [filteredHost, setFilteredHost] = useState(initialHost());
+    const [newAppointment, setNewAppointment] = useState(initialAppointment());
+    const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: '' });
 
     useEffect(() => {
-        axios
-            .get(SHOW_HOST_APPOINTMENT(filteredHost.id), {
-                headers: { Authorization: `Bearer ${getToken()}` },
-            })
-            .then((res) => {
-                setAppointment(res.data.data);
-            })
-            .catch((err) => console.log(err))
-        
-        return () => {
-            setAppointment([]);
+        if (filteredHost.id) {
+            axios
+                .get(SHOW_HOST_APPOINTMENT(filteredHost.id), {
+                    headers: { Authorization: `Bearer ${getToken()}` },
+                })
+                .then(res => {
+                    setAppointment(res.data.data);
+                })
+                .catch(err => console.log(err));
+
+            return () => {
+                setAppointment([]);
+            };
         }
     }, [filteredHost.id]);
 
-    const getFilteredHost = (host) => {
+    const getFilteredHost = host => {
         setFilteredHost(host);
 
         if (host !== null) {
@@ -70,177 +63,171 @@ const CreateAppointment = () => {
         }
     };
 
-    const handleSubmit = () => {
-        setLoading(true);
-        authAxios
-            .post(CREATE_GUEST, {
-                name: capitalizeFirstLetter(guestInfo.name),
-                nik: capitalizeFirstLetter(guestInfo.nik),
-                address: capitalizeFirstLetter(guestInfo.address),
-                email: email,
-            })
-            .then((res) => {
-                console.log('respon create guest', res);
-                guestId = res.data.id;
-                createAppointment();
-                setLoading(true);
-                setNotify({
-                    isOpen: true,
-                    message: `Appointment created successfully!`,
-                    type: 'success',
-                });
-            })
-            .catch((err) => console.log(err))
+    const handleChange = e => {
+        const { name, value } = e.target;
+
+        if (name === 'nik' || name === 'name' || name === 'address') {
+            setGuestInfo({ ...guestInfo, [name]: value });
+        } else {
+            setNewAppointment({ ...newAppointment, [name]: value });
+        }
     };
 
-    const sendNotification = () => {
-        axios
-            .post(SEND_NOTIFICATION, {
-                name: filteredHost.name,
-                gname: capitalizeFirstLetter(guestInfo.name),
-                body: purpose,
-            })
-            .then((res) => console.log('respon sendnotif', res))
-            .catch((err) => console.log(err))
+    const resetForm = () => {
+        setSearch('');
+        setNewAppointment(initialAppointment());
+        setGuestInfo({});
+        setFilteredHost(initialHost());
+        setDisplay(false);
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+        document.getElementById('appointment-form').reset();
     };
 
-    const createAppointment = () => {
-        setLoading(true);
-        authAxios
-            .post(CREATE_APPOINTMENT, {
-                host: filteredHost.id,
-                guest: guestId,
-                purpose: purpose,
-            })
-            .then((res) => {
-                if (filteredHost.name !== '') {
-                    console.log('respon create appoi', res);
-                    sendNotification();
-                    window.location.reload();
-                    setLoading(false);
-                } else {
-                    setErrors({host: "There's no host selected"});
-                    setLoading(false);
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false);
-            }) 
+    const handleCreateData = () => {
+        createGuest(guestInfo, newAppointment, filteredHost, setLoading, setNotify);
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+        resetForm();
+    };
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        
+        if (filteredHost.id) {
+            setConfirmDialog({
+                isOpen: true,
+                title: "Are you sure to make this appointment?",
+                onConfirm: () => { handleCreateData() },
+            });
+        } else {
+            setNotify({
+                isOpen: true,
+                message: "No host selected!",
+                type: "warning",
+            });
+        }
     };
 
     return (
         <>
-        
-            <div className="p-16 grid grid-cols-12">
-                <div className="flex-auto flex-column col-span-12 mb-12">
-                    <p className="text-4xl text-primary font-bold mb-2">
+            <div className="lg:col-start-2 lg:col-end-12 lg:my-16 z-10 col-span-4 sm:my-12 sm:mx-4 p-4">
+                <div className="flex flex-col pb-4">
+                    <p className="lg:text-4xl text-primary font-bold mb-1 text-2xl">
                         Create Appointment
                     </p>
-                    <p className="text-lg text-primary">
+                    <p className="lg:text-lg text-primary text-sm font-medium">
                         Fill the form below to make an appointment
                     </p>
                 </div>
-                <div className="flex flex-row col-span-10 gap-20">
-                    <div className="rounded-lg p-6 shadow-lg flex-1 bg-white">
-                        <div className="mb-6">
-                            <p className="text-2xl text-gray-700 mb-4 font-bold">
-                                Who would you like to meet today?
+                <div className="lg:flex lg:flex-row lg:gap-12 w-full">
+                    <div className=" lg:w-3/4 xl:w-1/2 w-full sm:p-6 p-4 rounded-lg border-2 border-grey-400 shadow-mobile inline-flex flex-col bg-white ">
+                        <div>
+                            <p className="md:font-bold md:text-lg font-semibold text-base">
+                                Who would you like to meet?
                             </p>
-                            <SearchBar
-                                placeholder="Search host"
-                                attribute={searchBarAttr}
+                            <SearchUser
                                 getFilteredHost={getFilteredHost}
+                                search={search}
+                                setSearch={setSearch}
+                                setDisplay={setDisplay}
                             />
                         </div>
-                        <div>
-                            <ScanKTP setGuestInfo={setGuestInfo} />
+                        <div className="lg:hidden pb-4">
+                            <HostAgenda
+                                display={display}
+                                appointment={appointment}
+                                filteredHost={filteredHost}
+                            />
+                        </div>
+                        <ScanKTP setGuestInfo={setGuestInfo} />
+                        <form
+                            id="appointment-form"
+                            onSubmit={handleSubmit}
+                            className="flex flex-col gap-1"
+                        >
                             <div>
-                                <div className="mb-4">
-                                    <label htmlFor="nik" className="label">NIK</label>
-                                    <input
-                                        type="text"
-                                        id="nik"
-                                        placeholder="Enter your NIK"
-                                        autoComplete="nik"
-                                        required
-                                        className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
-                                        defaultValue={guestInfo.nik}
-                                        onChange={(e) => setGuestInfo({...guestInfo, nik: e.target.value})}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="name" className="label">Name</label>
-                                    <input
-                                        type="text"
-                                        id="name"
-                                        placeholder="Enter your name"
-                                        autoComplete="name"
-                                        required
-                                        className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
-                                        defaultValue={
-                                            guestInfo ? ( 
-                                                capitalizeFirstLetter(guestInfo.name)
-                                            ) : guestInfo.name
-                                        }
-                                        onChange={(e) => setGuestInfo({ ...guestInfo, name: e.target.value })}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="address" className="label">Address</label>
-                                    <input
-                                        type="text"
-                                        id="address"
-                                        placeholder="Enter your address"
-                                        autoComplete="address"
-                                        required
-                                        className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
-                                        defaultValue={
-                                            guestInfo ? (
-                                                capitalizeFirstLetter(guestInfo.address)
-                                            ) : guestInfo.address
-                                        }
-                                        onChange={(e) => setGuestInfo({ ...guestInfo, address: e.target.value })}
-                                    />
-                                </div>
-                                <div className="mb-4">
-                                    <label htmlFor="email" className="label">Email</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        placeholder="Enter your Email"
-                                        autoComplete="email"
-                                        required
-                                        className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
-                                        onChange={(e) => setEmail(e.target.value)}
-                                    />
-                                </div>
-                                <div className="mb-10 row-span-2">
-                                    <label htmlFor="agenda" className="label">Agenda</label>
-                                    <textarea
-                                        type="text"
-                                        id="agenda"
-                                        placeholder="Enter your agenda"
-                                        autoComplete="agenda"
-                                        required
-                                        className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
-                                        onChange={(e) => setPurpose(e.target.value)}
-                                    />
-                                </div>
-
-                                {errors.host && (
-                                    <div className="flex flex-row items-center gap-2 mb-4 border p-4 rounded-lg bg-dangerShade">
-                                        <HighlightOffRounded sx={{ color: COLORS.danger }} />
-                                        <p className="text-danger">{ errors.host }</p>
-                                    </div>
-                                )}
-
-                                <div className="flex flex-row justify-end gap-x-5">
-                                    <button className="primary-btn w-full" onClick={() => handleSubmit()}
+                                <label htmlFor="nik" className="label">NIK</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="nik"
+                                    name="nik"
+                                    defaultValue={guestInfo.nik}
+                                    onChange={handleChange}
+                                    placeholder="Fill 16 Character"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="name" className="label">Name</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    defaultValue={guestInfo ? 
+                                        capitalizeFirstLetter(guestInfo.name)
+                                        : newAppointment.name
+                                    }
+                                    onChange={handleChange}
+                                    placeholder="Please Fill with Full Name"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="address" className="label">Address</label>
+                                <input
+                                    required
+                                    type="text"
+                                    id="address"
+                                    name="address"
+                                    placeholder="Ex: Jalan Budiman No.17 60152"
+                                    defaultValue={guestInfo ? 
+                                        capitalizeFirstLetter(guestInfo.address)
+                                        : newAppointment.address
+                                    }
+                                    onChange={handleChange}
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="email" className="label">Email</label>
+                                <input
+                                    required
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    placeholder="Ex: Budiman@email.com"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="purpose" className="label">Purpose</label>
+                                <textarea
+                                    required
+                                    type="text"
+                                    id="purpose"
+                                    name="purpose"
+                                    onChange={handleChange}
+                                    placeholder="Ex: I want to meet about new plan for my company"
+                                    className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
+                                />
+                            </div>
+                            <div className="flex justify-end">
+                                <div className="pt-4 justify-end inline-flex">
+                                    <button
+                                        className="secondary-btn font-semibold"
+                                        type="submit"
                                     >
                                         {loading ? (
                                             <span className="flex justifty-center items-center">
-                                                <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                                <Loader
+                                                    className="mx-auto"
+                                                    type="Oval"
+                                                    color="#FFFFFF"
+                                                    height={24}
+                                                    width={24}
+                                                />
                                             </span>
                                         ) : (
                                             <span>Create Appointment</span>
@@ -248,12 +235,22 @@ const CreateAppointment = () => {
                                     </button>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-
-                    <HostAgenda display={display} appointment={appointment} filteredHost={filteredHost} />
+                    <div className="lg:visible invisible">
+                        <HostAgenda
+                            display={display}
+                            appointment={appointment}
+                            filteredHost={filteredHost}
+                        />
+                    </div>
                 </div>
             </div>
+            <ConfirmationDialog
+                confirmDialog={confirmDialog}
+                setConfirmDialog={setConfirmDialog}
+                filteredHost={filteredHost}
+            />
             <Notification notify={notify} setNotify={setNotify} />
         </>
     );

@@ -1,107 +1,69 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import { styled, useTheme } from '@mui/material/styles';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import IconButton from '@mui/material/IconButton';
-import { ChevronLeftRounded, ChevronRightRounded, MenuRounded } from '@mui/icons-material';
-import ProfileIcon from './ProfileIcon';
+import PropTypes from 'prop-types';
+import { 
+    AppBar, 
+    Box, 
+    CssBaseline, 
+    Divider, 
+    Drawer, 
+    IconButton, 
+    Toolbar, 
+} from '@mui/material';
+import { MenuRounded } from '@mui/icons-material';
 import Sidebar from './Sidebar/Sidebar';
 import { logoLight } from '../assets/logo';
 import { COLORS } from '../constants/colors';
+import ProfileIcon from '../components/ProfileIcon';
+import { UpperBlueBlob } from "../assets/backgrounds/upper_blue_blob";
+import { LowerBlueBlob } from "../assets/backgrounds/lower_blue_blob";
 
 const drawerWidth = 240;
 
-const openedMixin = (theme) => ({
-    width: drawerWidth,
-    transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: "hidden",
-});
+const Layout = props => {
+    const { window } = props;
+    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const container = window !== undefined ? () => window().document.body : undefined;
 
-const closedMixin = (theme) => ({
-    transition: theme.transitions.create("width", {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: `calc(${theme.spacing(7)} + 1px)`,
-    [theme.breakpoints.up("sm")]: {
-        width: `calc(${theme.spacing(9)} + 1px)`,
-    },
-});
-
-const DrawerHeader = styled("div")(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: theme.spacing(0, 1),
-    ...theme.mixins.toolbar,
-}));
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
-
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== "open" })(({ theme, open }) => ({
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: "nowrap",
-    boxSizing: "border-box",
-    ...(open && {
-        ...openedMixin(theme),
-        "& .MuiDrawer-paper": openedMixin(theme),
-    }),
-    ...(!open && {
-        ...closedMixin(theme),
-        "& .MuiDrawer-paper": closedMixin(theme),
-    }),
-}));
-
-function Layout(props) {
-    const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
     };
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-    };
+    const drawer = (
+        <>
+            <Toolbar>
+                <img src={logoLight} alt="logo" className="w-10 h-10" />
+            </Toolbar>
+            <Divider />
+            <Sidebar />
+        </>
+    );
 
     return (
         <Box sx={{ display: "flex" }}>
             <CssBaseline />
-            <AppBar position="fixed" elevation={0} open={open} style={{ background: "#FFFFFF", borderBottom: "2px solid rgb(238, 238, 238)" }}>
-                <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <AppBar
+                elevation={0}
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                    background: "#FFFFFF",
+                    borderBottom: "1px solid #E0E0E0",
+                }}
+            >
+                <Toolbar
+                    sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                    }}
+                >
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <IconButton
                             aria-label="open drawer"
-                            onClick={handleDrawerOpen}
+                            onClick={handleDrawerToggle}
                             edge="start"
-                            sx={{
-                                marginRight: "36px",
-                                ...(open && { display: "none" }),
-                            }}
+                            sx={{ marginRight: 2, display: { sm:"none", } }}
                         >
                             <MenuRounded sx={{ color: COLORS.primary }} />
                         </IconButton>
@@ -109,39 +71,65 @@ function Layout(props) {
                     <ProfileIcon />
                 </Toolbar>
             </AppBar>
-            <Drawer 
-                variant="permanent" 
-                open={open}
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                aria-label="mailbox folders"
             >
-                <DrawerHeader 
-                    sx={{ 
-                        display: 'flex', 
-                        justifyContent: 'space-between', 
-                        alignItems: 'center',
-                        paddingX: 2,
+                <Drawer
+                    container={container}
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{ keepMounted: true }}
+                    sx={{
+                        display: { xs: "block", sm: "none" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
                     }}
                 >
-                    <img src={logoLight} alt="logo" className="w-10 h-10" />
-                    <IconButton 
-                        sx={{
-                            "&:hover": {
-                                backgroundColor: COLORS.primaryHover,
-                            },
-                            color: "white",
-                        }} 
-                        onClick={handleDrawerClose}
-                    >
-                        {theme.direction === "rtl" ? <ChevronRightRounded /> : <ChevronLeftRounded />}
-                    </IconButton>
-                </DrawerHeader>
-                <Sidebar />
-            </Drawer>
-            <Box component="main" sx={{ flexGrow: 1 }}>
-                <DrawerHeader />
-                {props.children}
+                    { drawer }
+                </Drawer>
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        display: { xs: "none", sm: "block" },
+                        "& .MuiDrawer-paper": {
+                            boxSizing: "border-box",
+                            width: drawerWidth,
+                        },
+                    }}
+                    open
+                >
+                    { drawer }
+                </Drawer>
+            </Box>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                }}
+            >
+                <Toolbar />
+                <div className="lg:grid lg:grid-cols-12 grid grid-cols-4">
+                    <div className="fixed md:-z-10 md:visible invisible">
+                        <UpperBlueBlob />
+                    </div>
+                    <div className="fixed md:bottom-0 md:-right-10 z-0 md:visible invisible">
+                        <LowerBlueBlob />
+                    </div>
+                    { props.children }
+                </div>
             </Box>
         </Box>
     );
 }
+
+Layout.propTypes = {
+    window: PropTypes.func,
+};
 
 export default Layout;

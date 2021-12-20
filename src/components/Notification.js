@@ -1,15 +1,11 @@
 import * as React from 'react';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
+import { Alert, Snackbar } from '@mui/material';
 
-export default function DescriptionAlerts(props) {
+const Notification = props => {
     const { notify, setNotify } = props;
     
     const handleClose = (event, reason) => {
-        setNotify({
-            ...notify,
-            isOpen: false,
-        });
+        setNotify({ ...notify, isOpen: false, });
     };
 
     return (
@@ -25,4 +21,6 @@ export default function DescriptionAlerts(props) {
             </Alert>
         </Snackbar>
     );
-  }
+}
+
+export default Notification;
