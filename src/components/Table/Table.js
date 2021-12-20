@@ -66,16 +66,6 @@ const Table = props => {
     };
 
     const userHooks = hooks => {
-        const getImage = photo => {
-            if (photo === null) {
-                return '';
-            } else if (photo.includes('https')) {
-                return photo;
-            } else {
-                return SHOW_PHOTO(photo);
-            }
-        };
-
         if (pathname === "/user-list") {
             hooks.visibleColumns.push((columns) => [
                 ...columns,
@@ -87,7 +77,7 @@ const Table = props => {
                             <div className="flex flex-row gap-4">
                                 <img 
                                     alt="img"
-                                    src={getImage(row.values.photo)}
+                                    src={SHOW_PHOTO(row.values.photo)}
                                     className="w-10 h-10 rounded-full" 
                                 />
                                 <div className="flex flex-col">
@@ -309,7 +299,7 @@ const Table = props => {
                         </tbody>
                     </table>
                 ) : (
-                    <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center text-gray-300">
+                    <div className="bg-white p-6 text-gray-300 flex flex-col justify-center items-center">
                         <SentimentDissatisfiedOutlined sx={{ fontSize: "6rem", color: "#E5E7EB" }} />
                         <p>Oops, there's no data here</p>
                     </div>

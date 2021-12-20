@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
-import { getToken } from "../../utils/auth";
-import Table from "../../components/Table/Table";
-import { capitalizeFirstLetter } from "../../utils/utility";
-import { SHOW_USERS } from "../../constants/urls";
+import React, { useState, useEffect, useMemo } from 'react';
+import axios from 'axios';
+import { getToken } from '../../utils/auth';
+import { SHOW_USERS } from '../../constants/urls';
+import Table from '../../components/Table/Table';
+import { capitalizeFirstLetter } from '../../utils/utility';
 
 const UserAdmin = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const columns = useMemo(() => [
-        { Header: "ID", accessor: "id" },
-        { Header: "Name", accessor: "name" },
-        { Header: "Email", accessor: "email" },
+        { Header: 'ID', accessor: 'id' },
+        { Header: 'Name', accessor: 'name' },
+        { Header: 'Email', accessor: 'email' },
         {
-            Header: "Role",
-            accessor: "role",
+            Header: 'Role',
+            accessor: 'role',
             Cell: ({ value }) => {
-                return value === "admin" ? (
+                return value === 'admin' ? (
                     <div className="flex flex-row items-center gap-2">
                         <span className="w-1.5 h-1.5 border rounded-full bg-primary"></span>
                         <p>{capitalizeFirstLetter(value)}</p>
@@ -27,7 +27,7 @@ const UserAdmin = () => {
                 );
             },
         },
-        { Header: "Photo", accessor: "photo" },
+        { Header: 'Photo', accessor: 'photo' },
     ], []);
 
     const fetchUsers = () => {

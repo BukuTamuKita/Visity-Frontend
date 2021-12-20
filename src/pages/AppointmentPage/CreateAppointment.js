@@ -66,7 +66,7 @@ const CreateAppointment = () => {
     const handleChange = e => {
         const { name, value } = e.target;
 
-        if (name === "nik" || name === "name" || name === "address") {
+        if (name === 'nik' || name === 'name' || name === 'address') {
             setGuestInfo({ ...guestInfo, [name]: value });
         } else {
             setNewAppointment({ ...newAppointment, [name]: value });
@@ -74,13 +74,13 @@ const CreateAppointment = () => {
     };
 
     const resetForm = () => {
-        setSearch("");
+        setSearch('');
         setNewAppointment(initialAppointment());
         setGuestInfo({});
         setFilteredHost(initialHost());
         setDisplay(false);
         setConfirmDialog({ ...confirmDialog, isOpen: false });
-        document.getElementById("appointment-form").reset();
+        document.getElementById('appointment-form').reset();
     };
 
     const handleCreateData = () => {

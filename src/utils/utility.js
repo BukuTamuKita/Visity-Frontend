@@ -1,4 +1,4 @@
-export const capitalizeFirstLetter = (words) => {
+export const capitalizeFirstLetter = words => {
     if (words) {
         words = '' + words;
         const arr = words.split(' ');

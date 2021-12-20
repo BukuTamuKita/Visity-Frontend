@@ -3,7 +3,6 @@ import CreateAppointment from '../pages/AppointmentPage/CreateAppointment';
 import AppointmentHistory from '../pages/AppointmentPage/AppointmentHistory';
 import UserList from '../pages/UserAdmin/UserList';
 import GuestList from '../pages/GuestAdmin/GuestList';
-import Testing from '../pages/Testing';
 
 export const PUBLIC_ROUTE = [
     {
@@ -45,14 +44,6 @@ export const PRIVATE_ROUTE = [
         path: "/guest-list",
         exact: true,
         component: GuestList,
-        private: true,
-        restricted: false,
-    },
-    {
-        name: "Testing",
-        path: "/testing",
-        exact: true,
-        component: Testing,
         private: true,
         restricted: false,
     },

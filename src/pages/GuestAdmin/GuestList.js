@@ -51,9 +51,25 @@ const GuestAdmin = () => {
                 setLoading(false);
             }) 
     };
-
+   
     useEffect(() => {
         setLoading(true);
+        
+        const fetchAppointments = async () => {
+            await axios
+                .get(SHOW_APPOINTMENT, {
+                    headers: { Authorization: `Bearer ${getToken()}` },
+                })
+                .then(res => {
+                    filterWaitingStatus(res.data.data);
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoading(false);
+                }) 
+        };
+
         fetchAppointments();
 
         return () => {
@@ -72,7 +88,7 @@ const GuestAdmin = () => {
                         Guest
                     </p>
                     <p className="lg:text-lg text-primary text-sm font-medium">
-                        Showing all the guest and the host they appointed
+                        Showing all the waiting list
                     </p>
                 </div>
                 <Table

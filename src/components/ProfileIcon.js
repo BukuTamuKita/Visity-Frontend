@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Logout, LockOutlined } from '@mui/icons-material';
 import { Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Tooltip} from '@mui/material';
-import Logout from '@mui/icons-material/Logout';
 import { getToken, logout } from '../utils/auth';
 import { GET_USER_LOGGED_IN, SHOW_PHOTO } from '../constants/urls';
+import ChangePassword from './ChangePassword';
 
 const ProfileIcon = () => {
+    const [admin, setAdmin] = useState({});
+    const [openPopup, setOpenPopup] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const [admin, setAdmin] = useState({});
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -17,6 +19,14 @@ const ProfileIcon = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleOpenPopup = () => {
+        setOpenPopup(true);
+    };
+
+    const handleClosePopup = () => {
+        setOpenPopup(false);
     };
 
     useEffect(() => {
@@ -83,6 +93,12 @@ const ProfileIcon = () => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
+                <MenuItem onClick={handleOpenPopup}>
+                    <ListItemIcon>
+                        <LockOutlined fontSize="small" />
+                    </ListItemIcon>
+                    Change Password
+                </MenuItem>
                 <Link to="/" onClick={logout}>
                     <MenuItem>
                         <ListItemIcon>
@@ -92,6 +108,7 @@ const ProfileIcon = () => {
                     </MenuItem>
                 </Link>
             </Menu>
+            <ChangePassword data={admin} open={openPopup} onClose={handleClosePopup} />
         </div>
     );
 }

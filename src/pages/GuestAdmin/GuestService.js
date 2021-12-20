@@ -11,8 +11,7 @@ export const cancelAppointment = (note, meetingId, setNotify) => {
         {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
-        .then(res => {
-            console.log(res);
+        .then(() => {
             return setNotify({
                 isOpen: true,
                 message: 'Appointment canceled!',

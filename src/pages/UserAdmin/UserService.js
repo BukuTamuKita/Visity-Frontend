@@ -2,12 +2,26 @@ import axios from 'axios';
 import { getToken } from '../../utils/auth';
 import { CREATE_USER, DELETE_USER } from '../../constants/urls';
 
-export const deleteUser = meetingId => {
+export const deleteUser = (meetingId, setNotify) => {
     axios
         .delete(DELETE_USER(meetingId), {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
-        .catch((err) => console.log(err)) 
+        .then(() => {
+            return setNotify({
+                isOpen: true,
+                message: `Users with ID ${meetingId} successfully deleted!`,
+                type: 'success',
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            return setNotify({
+                isOpen: true,
+                message: `Failed to delete user!`,
+                type: 'error',
+            });
+        })
 };
 
 export const createUser = (formData, setLoading, setNotify) => {

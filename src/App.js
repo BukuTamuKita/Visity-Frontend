@@ -1,21 +1,21 @@
-import React from "react";
+import React from 'react';
 import {
     Route,
     BrowserRouter as Router,
     Switch,
-} from "react-router-dom";
+} from 'react-router-dom';
 import {
     createTheme,
     StyledEngineProvider,
     ThemeProvider,
-} from "@mui/material/styles";
-import Layout from "./components/Layout";
-import "tailwindcss/tailwind.css";
-import "./App.css";
-import { PUBLIC_ROUTE, PRIVATE_ROUTE } from "./routes/routes";
-import PublicRoute from "./components/PublicRoute";
-import PrivateRoute from "./components/PrivateRoute";
-import ErrorPage from "./pages/ErrorPage";
+} from '@mui/material/styles';
+import Layout from './components/Layout';
+import 'tailwindcss/tailwind.css';
+import './App.css';
+import { PUBLIC_ROUTE, PRIVATE_ROUTE } from './routes/routes';
+import PublicRoute from './components/PublicRoute';
+import PrivateRoute from './components/PrivateRoute';
+import ErrorPage from './pages/ErrorPage';
 
 const theme = createTheme({
     breakpoints: {
@@ -31,8 +31,8 @@ const theme = createTheme({
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    background: "#2E4DA7",
-                    fontFamily: "Inter",
+                    background: '#2E4DA7',
+                    fontFamily: 'Inter',
                 },
             },
         },
@@ -55,11 +55,10 @@ const theme = createTheme({
 
 function App() {
     const prefix = [
-        "/appointment-create",
-        "/appointment-history",
-        "/user-list",
-        "/guest-list",
-        "/testing",
+        '/appointment-create',
+        '/appointment-history',
+        '/user-list',
+        '/guest-list',
     ];
 
     return (

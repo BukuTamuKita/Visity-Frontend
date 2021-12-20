@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { IconButton, Tooltip } from "@mui/material";
-import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
+import { IconButton, Tooltip } from '@mui/material';
+import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { deleteUser } from './UserService';
-import { COLORS } from "../../constants/colors";
+import { COLORS } from '../../constants/colors';
 import Notification from '../../components/Notification';
-import ConfirmDialog from "../../components/ConfirmDialog";
+import ConfirmDialog from '../../components/ConfirmDialog';
 
 const UserAction = props => {
     const { id, fetchUsers } = props;
@@ -13,21 +13,17 @@ const UserAction = props => {
         title: '', 
         content: '' 
     });
-    const [notify, setNotify] = useState({ 
-        isOpen: false, 
-        message: '', 
-        type: 'success' 
-    });
+    const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
 
     const handleDeleteUser = () => {
-        deleteUser(id);
+        deleteUser(id, setNotify);
         fetchUsers();
         setConfirmDialog({ ...confirmDialog, isOpen: false });
-        setNotify({
-            isOpen: true,
-            message: `Users with ID ${id} successfully deleted!`,
-            type: 'success',
-        });
+        // setNotify({
+        //     isOpen: true,
+        //     message: `Users with ID ${id} successfully deleted!`,
+        //     type: 'success',
+        // });
     };
 
     return (
