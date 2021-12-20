@@ -1,18 +1,23 @@
 import React from 'react';
-import Popup from './Popup';
+import Popup from '../../components/Popup';
 
 const ConfirmDialog = props => {
-    const { confirmDialog, setConfirmDialog } = props;
-    
+    const { confirmDialog, setConfirmDialog, filteredHost } = props;
+
     return (
         <Popup open={confirmDialog.isOpen}>
             <div className="flex flex-col">
                 <p className="text-lg font-bold text-grey-700">
-                    { confirmDialog.title }
+                    {confirmDialog.title}
                 </p>
-                <p>{ confirmDialog.content }</p>
+                <p className="text-lg font-bold text-primary pt-2">
+                    {filteredHost.name}
+                </p>
+                <p className="font-semibold text-grey-500">
+                    {filteredHost.position}
+                </p>
             </div>
-            <div className="mt-6 flex md:flex-row flex-col justify-end gap-4">
+            <div className="mt-6 flex md:flex-row justify-end gap-2 flex-col">
                 <button
                     className="outline-btn order-2 md:order-1"
                     onClick={() =>
@@ -22,10 +27,10 @@ const ConfirmDialog = props => {
                     No
                 </button>
                 <button
-                    className="secondary-btn order-1 md:order-2"
+                    className="secondary-btn font-semibold order-1 md:order-2"
                     onClick={confirmDialog.onConfirm}
                 >
-                    Yes, I want to delete user
+                    Yes, I want to make an appointment
                 </button>
             </div>
         </Popup>

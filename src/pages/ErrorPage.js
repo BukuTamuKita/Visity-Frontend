@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PageNotFound from '../assets/backgrounds/404.svg';
 
 const ErrorPage = () => {
     const backButton = {
@@ -9,10 +10,11 @@ const ErrorPage = () => {
     return (
         <div className="flex h-screen">
             <div className="m-auto flex flex-col justify-center items-center">
-                <h1 className="text-4xl font-light mb-12">Error 404 | Page Not Found</h1>
+                <img src={PageNotFound} alt="404" className="w-48 md:w-96 opacity-75 mb-6" />
+                <h1 className="md:text-4xl text-xl font-medium text-gray-700 mb-12">Oops, page not found!</h1>
                 <div>
                     <Link to="/">
-                        <button>
+                        <button className="outline-btn">
                             { backButton.content }
                         </button>
                     </Link>

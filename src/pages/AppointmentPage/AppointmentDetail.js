@@ -30,20 +30,22 @@ const AppointmentDetail = props => {
             users: {},
         },
     });
-    const handleNotes =()=> {
-        if (appointment.status ==="canceled") {
-            return "Notes To Host"
+
+    const handleNotes = () => {
+        if (appointment.status === 'canceled') {
+            return 'Notes To Host';
         }
         else if (
-            appointment.status === "accepted" ||
-            appointment.status === "declined"
+            appointment.status === 'accepted' ||
+            appointment.status === 'declined'
         ) {
             return "Notes to Guest";
         }
         else{
-            return "-";
+            return 'Notes';
         }
     };
+
     const handleClickOpen = () => {
         setOpen(true);
         fetchAppointment();
@@ -88,15 +90,15 @@ const AppointmentDetail = props => {
                     </span>
                 ) : (
                     <>
-                        <div className="flex flex-row justify-between items-center gap-10 mb-6">
+                        <div className="flex flex-row justify-between items-center md:gap-10 gap-4 mb-6">
                             <div>
                                 <p className="font-bold text-primary">{ appointment.host.name }</p>
-                                <div className="flex flex-row gap-2 items-center text-xs text-gray-300">
-                                    <span className="flex flex-row items-center gap-1">
+                                <div className="flex md:flex-row flex-col gap-2 justify-start text-xs text-gray-500 pt-2">
+                                    <span className="flex flex-row items-center gap-1 whitespace-nowrap">
                                         <EventNoteRounded sx={{ fontSize: "0.75rem" }} />
                                         { appointment.date_time[0] } 
                                     </span>
-                                    <span className="flex flex-row items-center gap-1">
+                                    <span className="flex flex-row items-center gap-1 whitespace-nowrap">
                                         <AccessTimeRounded sx={{ fontSize: "0.75rem" }} />
                                         { appointment.date_time[1] }
                                     </span>
@@ -118,8 +120,8 @@ const AppointmentDetail = props => {
                                 <p>{ appointment.purpose }</p>
                             </div>
                             <div>
-                                <label className="label">{handleNotes() }</label>
-                                <p>{ appointment.notes }</p>
+                                <label className="label">{ handleNotes() }</label>
+                                <p>{ appointment.notes ? appointment.notes : "-" }</p>
                             </div>
                         </div>
                         <div className="flex justify-end">

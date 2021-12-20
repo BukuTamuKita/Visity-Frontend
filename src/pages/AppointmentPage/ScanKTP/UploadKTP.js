@@ -5,7 +5,7 @@ import { COLORS } from '../../../constants/colors';
 const UploadKTP = props => {
     const { scanKTP, loading } = props;
     
-    const handleKTPImage = (e) => {
+    const handleKTPImage = e => {
         let file = e.target.files[0];
         scanKTP(file, 'upload');
     };

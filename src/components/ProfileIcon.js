@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import Logout from '@mui/icons-material/Logout';
 import { Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Tooltip} from '@mui/material';
+import Logout from '@mui/icons-material/Logout';
 import { getToken, logout } from '../utils/auth';
 import { GET_USER_LOGGED_IN, SHOW_PHOTO } from '../constants/urls';
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getToken } from '../../utils/auth';
 import { UPDATE_APPOINTMENT } from '../../constants/urls';
 
-export const cancelAppointment = (note, meetingId) => {
+export const cancelAppointment = (note, meetingId, setNotify) => {
     axios
         .put(UPDATE_APPOINTMENT(meetingId), {
             status: "canceled",
@@ -11,5 +11,20 @@ export const cancelAppointment = (note, meetingId) => {
         {
             headers: { Authorization: `Bearer ${getToken()}` },
         })
-        .catch((err) => console.log(err)) 
+        .then(res => {
+            console.log(res);
+            return setNotify({
+                isOpen: true,
+                message: 'Appointment canceled!',
+                type: 'success',
+            });
+        })
+        .catch(err => {
+            console.log(err);
+            return setNotify({
+                isOpen: true,
+                message: 'Failed to cancel appointment!',
+                type: 'error',
+            });
+        }) 
 };

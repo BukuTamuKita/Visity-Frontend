@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import { getToken } from '../utils/auth';
 
 // export const SERVER_NAME_PROD = 'https://api.visity.me';
@@ -24,7 +24,7 @@ export const LOGIN_API = `${BASE_URL}/auth/loginAdmin`;
 export const LOGOUT_API = `${BASE_URL}/auth/logout`;
 export const GET_USER_LOGGED_IN = `${BASE_URL}/auth/me`;
 
-// Host
+// Host Administration
 export const SHOW_HOST = (hostId) => `${BASE_URL}/hosts/${hostId}`;
 export const SHOW_HOSTS = `${BASE_URL}/hosts`;
 export const SHOW_HOST_APPOINTMENT = (hostId) => `${BASE_URL}/hosts/${hostId}/appointments`;

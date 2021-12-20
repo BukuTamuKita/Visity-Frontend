@@ -60,19 +60,18 @@ const SearchUser = props => {
                         name="search-host"
                         id="search-host"
                         className="bg-gray-50 focus:ring-primary focus:border-primary transition flex-1 block w-full rounded-none rounded-r-md text-sm text-gray-700 border-gray-300 placeholder-gray-300"
-                        placeholder="Search host name"
+                        placeholder="Select User"
                         onChange={handleFilter}
                         value={search}
                         onClick={() => setDisplayResult(true)}
                     />
                 </div>
             </div>
-
             {displayResult && (
                 <>
                     {filteredHost.length !== 0 && (
                         <ul className="no-scrollbar absolute w-full h-48 mt-1 rounded-lg shadow-lg select-none bg-white overflow-hidden overflow-y-auto">
-                            {filteredHost.slice(0, 10).map((value, index) => {
+                            {filteredHost.slice(0, 10).map((value) => {
                                 return (
                                     <li
                                         className="hover:bg-gray-200 cursor-pointer"

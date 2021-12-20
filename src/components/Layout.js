@@ -14,6 +14,8 @@ import Sidebar from './Sidebar/Sidebar';
 import { logoLight } from '../assets/logo';
 import { COLORS } from '../constants/colors';
 import ProfileIcon from '../components/ProfileIcon';
+import { UpperBlueBlob } from "../assets/backgrounds/upper_blue_blob";
+import { LowerBlueBlob } from "../assets/backgrounds/lower_blue_blob";
 
 const drawerWidth = 240;
 
@@ -112,7 +114,15 @@ const Layout = props => {
                 }}
             >
                 <Toolbar />
-                { props.children }
+                <div className="lg:grid lg:grid-cols-12 grid grid-cols-4">
+                    <div className="fixed md:-z-10 md:visible invisible">
+                        <UpperBlueBlob />
+                    </div>
+                    <div className="fixed md:bottom-0 md:-right-10 z-0 md:visible invisible">
+                        <LowerBlueBlob />
+                    </div>
+                    { props.children }
+                </div>
             </Box>
         </Box>
     );

@@ -4,43 +4,53 @@
 @tailwind components;
 @tailwind utilities;
 
-.primary-btn {
-    @apply transition duration-500 ease-in-out
+@layer components {
+    .primary-btn {
+        @apply transition duration-500 ease-in-out
     flex flex-row items-center justify-center gap-2
     px-4 py-2 rounded-lg border-2 border-transparent bg-primary  
     text-white text-sm font-medium 
     hover:bg-primaryHover hover:text-white
     focus:outline-none focus:ring-2 focus:ring-primaryFocus;
-}
-.secondary-btn {
-    @apply transition duration-500 ease-in-out
+    }
+    .secondary-btn {
+        @apply transition duration-500 ease-in-out
     flex flex-row items-center justify-center gap-2
     px-4 py-2 rounded-lg border-2 border-transparent bg-secondary
     text-primary text-sm font-medium
     hover:bg-secondaryHover hover:text-primary
     focus:outline-none focus:ring-2 focus:ring-secondaryFocus;
-}
-.outline-btn {
-    @apply transition duration-500 ease-in-out
+    }
+    .outline-btn {
+        @apply transition duration-500 ease-in-out
     flex flex-row items-center justify-center gap-2
     px-4 py-2 rounded-lg border border-primary bg-white
     text-primary text-sm font-medium
     hover:bg-primaryOutline hover:text-primary 
     focus:outline-none focus:ring-2 focus:ring-primaryFocus focus:border-transparent;
-}
-.primary-alt-btn {
-    @apply transition duration-500 ease-in-out 
+    }
+    .primary-alt-btn {
+        @apply transition duration-500 ease-in-out 
     flex flex-row items-center justify-center gap-2 px-4 py-2 rounded-lg border 
  bg-primary-50 text-primary text-sm font-medium
     hover:bg-primaryOutline hover:text-primary 
     focus:outline-none focus:ring-2 focus:ring-primaryFocus focus:border-transparent;
-}
-.label {
-    @apply block 
+    }
+    .label {
+        @apply block 
     text-sm font-medium text-gray-500 
     mb-1;
-}
-.tableWrap {
-    @apply block max-w-full 
+    }
+    .tableWrap {
+        @apply block max-w-full 
     overflow-x-scroll overflow-y-hidden;
+    }
+
+    .inputText {
+        @apply mt-1 bg-gray-50 
+    focus:ring-primary focus:border-primary 
+    block w-full shadow-sm 
+    text-sm text-gray-700 
+    border-gray-300 rounded-lg placeholder-gray-300;
+    }
 }
