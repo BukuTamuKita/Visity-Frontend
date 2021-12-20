@@ -1,5 +1,6 @@
 # Getting Started with Visity Frontend
 Project link: [visity.me](https://visity.me/)
+Credential for testing: email => admin@example.com | pass => password
 
 ## Installing Backend Project
 1. Clone visity-backend project [here](https://github.com/BukuTamuKita/visity-backend)
@@ -68,5 +69,5 @@ npm start
 - User Administration (CRUD)
 - Export data
 
-## Sprint 3 Features
-- Scan KTP with Camera
+## Sprint 3 Feature
+- Scan KTP with Camera devices
