@@ -1,5 +1,5 @@
 # Getting Started with Visity Frontend
-Project link: [visity.me](https://visity.me/)
+Project link: [visity.me](https://visity.me/)__
 Credential for testing: email => admin@example.com | pass => password
 
 ## Installing Backend Project
