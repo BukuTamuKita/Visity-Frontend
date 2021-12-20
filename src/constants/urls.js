@@ -47,6 +47,7 @@ export const SHOW_USER = (userId) => `${BASE_URL}/users/${userId}`;
 export const SHOW_USERS = `${BASE_URL}/users`;
 export const DELETE_USER = (userId) => `${BASE_URL}/users/${userId}`;
 export const SHOW_PHOTO = (photo) => `${SERVER_NAME_DEV}/${photo}`;
+export const CHANGE_PASSWORD = (userId) => `${BASE_URL}/users/${userId}`;
 
 // Guest Administration
 export const CREATE_GUEST = `${BASE_URL}/guests`;
