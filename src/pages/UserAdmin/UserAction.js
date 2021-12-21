@@ -19,11 +19,6 @@ const UserAction = props => {
         deleteUser(id, setNotify);
         fetchUsers();
         setConfirmDialog({ ...confirmDialog, isOpen: false });
-        // setNotify({
-        //     isOpen: true,
-        //     message: `Users with ID ${id} successfully deleted!`,
-        //     type: 'success',
-        // });
     };
 
     return (

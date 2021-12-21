@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Avatar } from '@mui/material';
 import { ReportGmailerrorredRounded } from '@mui/icons-material';
 import Popup from '../components/Popup';
+import { getToken } from '../utils/auth';
 import Notification from './Notification';
 import { COLORS } from '../constants/colors';
-import { api, CHANGE_PASSWORD } from '../constants/urls';
+import { CHANGE_PASSWORD } from '../constants/urls';
 
 const ChangePassword = props => {
     const { data, open, onClose } = props;
@@ -18,9 +20,11 @@ const ChangePassword = props => {
 
     const handleChangePassword = () => {
         if (newPassword === confirmPass) {
-            api
+            axios
                 .put(CHANGE_PASSWORD(data.id), {
                     password: newPassword,
+                }, {
+                    headers: { Authorization: `Bearer ${getToken()}` }
                 })
                 .then(() => {
                     onClose();

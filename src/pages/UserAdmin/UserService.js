@@ -5,8 +5,8 @@ import { CREATE_USER, DELETE_USER } from '../../constants/urls';
 export const deleteUser = (meetingId, setNotify) => {
     axios
         .delete(DELETE_USER(meetingId), {
-            headers: { Authorization: `Bearer ${getToken()}` },
-        })
+            headers: { Authorization: `Bearer ${getToken()}` }
+        }) 
         .then(() => {
             return setNotify({
                 isOpen: true,
@@ -24,7 +24,7 @@ export const deleteUser = (meetingId, setNotify) => {
         })
 };
 
-export const createUser = (formData, setLoading, setNotify) => {
+export const createUser = (formData, setLoading, setNotify, fetchUsers, handleClose) => {
     axios 
         .post(CREATE_USER, formData, {
             headers: {
@@ -33,7 +33,9 @@ export const createUser = (formData, setLoading, setNotify) => {
             }
         })
         .then(() => {
+            fetchUsers();
             setLoading(false);
+            handleClose();
             return setNotify({
                 isOpen: true,
                 message: 'User successfully created!',

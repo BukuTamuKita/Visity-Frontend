@@ -61,9 +61,7 @@ const CreateUser = props => {
             formData.append(key, user[key]);
         }
 
-        createUser(formData, setLoading, setNotify);
-        fetchUsers();
-        handleClose();
+        createUser(formData, setLoading, setNotify, fetchUsers, handleClose);
     };
 
     return (
