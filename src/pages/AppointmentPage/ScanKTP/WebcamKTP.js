@@ -7,7 +7,8 @@ import React, {
 import Webcam from 'react-webcam';
 import Loader from 'react-loader-spinner';
 import { CameraAltOutlined } from '@mui/icons-material';
-import Popup from '../../../components/Popup';
+// import Popup from '../../../components/Popup';
+import { Dialog } from '@mui/material';
 
 const WebcamKTP = props => {
     const { scanKTP, loadingCam } = props;
@@ -56,73 +57,73 @@ const WebcamKTP = props => {
                 <CameraAltOutlined />
                 Open Webcam
             </button>
-            <Popup onClose={handleClose} open={open}>
-                <div>
-                    {(image === "") ? (
-                        <Webcam 
-                            audio={false}
-                            width={400}
-                            height={200}
-                            ref={webcamRef}
-                            screenshotFormat="image/jpeg"
-                            className="rounded-lg" 
-                            videoConstraints={{ deviceId: selectedDevice.deviceId }} />
-                    ) : (<img src={image} alt="KTP" className="bg-gray-100 rounded-lg" />)}
-                    <select 
-                        name="selectCam" 
-                        id="selectCam"
-                        className="my-6 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
-                        onChange={(e) => {
-                            setSelectedDevice({ ...selectedDevice, deviceId: e.target.value })
-                        }}
-                    > 
-                        {devices.map((device, key) => (
-                            <option key={key} value={device.deviceId}>{ device.label }</option>
-                        ))}
-                    </select>
-                </div>
-                <div className="flex flex-row justify-center gap-4">
-                    <button className="outline-btn" onClick={handleClose}>Close</button>
+            <Dialog 
+                onClose={handleClose} 
+                open={open}
+                PaperProps={{ style: {  borderRadius: 12 } }}
+            >
+                <div className="p-4">
                     <div>
-                        {image !== "" ? 
-                            <button 
-                                className="primary-btn"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setImage("");
-                                }}
-                            >
-                                {loadingCam ? (
-                                    <span className="flex justifty-center items-center">
-                                        <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
-                                    </span>
+                        {(image === "") ? (
+                            <Webcam 
+                                audio={false}
+                                width={400}
+                                height={200}
+                                ref={webcamRef}
+                                screenshotFormat="image/jpeg"
+                                className="rounded-lg" 
+                                videoConstraints={{ deviceId: selectedDevice.deviceId }} />
+                        ) : (<img src={image} alt="KTP" className="bg-gray-100 rounded-lg" />)}
+                        <select 
+                            name="selectCam" 
+                            id="selectCam"
+                            className="my-6 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
+                            onChange={(e) => {
+                                setSelectedDevice({ ...selectedDevice, deviceId: e.target.value })
+                            }}
+                        > 
+                            {devices.map((device, key) => (
+                                <option key={key} value={device.deviceId}>{ device.label }</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="flex flex-row justify-center gap-4">
+                        <button className="outline-btn" onClick={handleClose}>Close</button>
+                        <div>
+                        {image !== "" ?
+                                loadingCam ? (
+                                    <button className="primary-btn">
+                                        <span className="flex justifty-center items-center">
+                                            <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                        </span>
+                                    </button>
                                 ) : (
-                                    <span>Retake Image</span>
-                                )}
-                            </button> 
+                                    handleClose()
+                                )
                             : 
-                            <button
-                                className="primary-btn"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    capture();
-                                }}
-                                onKeyPress={(e) => {
-                                    enterPressed(e);
-                                }}
-                            >
-                                {loadingCam ? (
-                                    <span className="flex justifty-center items-center">
-                                        <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
-                                    </span>
-                                ) : (
-                                    <span>Capture</span>
-                                )}
-                            </button>
-                        }
+                                <button
+                                    className="primary-btn"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        capture();
+                                    }}
+                                    onKeyPress={(e) => {
+                                        enterPressed(e);
+                                    }}
+                                >
+                                    {loadingCam ? (
+                                        <span className="flex justifty-center items-center">
+                                            <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
+                                        </span>
+                                    ) : (
+                                        <span>Capture</span>
+                                    )}
+                                </button>
+                            }
+                        </div>
                     </div>
                 </div>
-            </Popup>
+            </Dialog>
         </>
     );
 };

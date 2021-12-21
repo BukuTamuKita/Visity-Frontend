@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { IconButton, Avatar, Tooltip } from '@mui/material';
-import { HighlightOffOutlined, ReportGmailerrorredRounded } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { HighlightOffOutlined } from '@mui/icons-material';
 import Popup from '../../components/Popup';
 import { getToken } from '../../utils/auth';
 import { COLORS } from '../../constants/colors';
 import { cancelAppointment } from './GuestService';
 import Notification from '../../components/Notification';
-import { APPOINTMENT_DETAIL } from "../../constants/urls";
+import { APPOINTMENT_DETAIL } from '../../constants/urls';
 
 export const GuestAction = props => {
     const { id, fetchAppointments } = props;
@@ -35,6 +35,9 @@ export const GuestAction = props => {
         };
     };
     const [appointment, setAppointment] = useState(initiateAppointment());
+    let attr = {
+        title: 'Cancel Appointment'
+    };
 
     const fetchAppointment = () => {
         axios
@@ -77,31 +80,25 @@ export const GuestAction = props => {
                     <HighlightOffOutlined sx={{ color: COLORS.warning }} />
                 </IconButton>
             </Tooltip>
-            <Popup open={open} onClose={handleClose}>
+            <Popup open={open} onClose={handleClose} title={attr.title}>
                 <div className="flex flex-row justify-between items-center gap-4">
-                    <span className="text-lg text-primary font-bold">
-                        Are you sure to cancel Appointment?
+                    <span className="text-lg text-grey-700">
+                        This will cancel the appointments with your host. <br></br>Please check your appointment below: 
                     </span>
-                    <span>
-                        <Avatar sx={{ backgroundColor: COLORS.warningShade }}>
-                            <ReportGmailerrorredRounded
-                                sx={{ color: COLORS.warning }}
-                            />
-                        </Avatar>
-                    </span>
+
                 </div>
                 <div className="flex flex-col py-4">
                     <p className="text-lg font-bold text-primary">
-                        {appointment.host.name}
+                        { appointment.host.name }
                     </p>
                     <p className="text-sm text-grey-500 font-medium">
-                        {appointment.host.position}
+                        { appointment.host.position }
                     </p>
                     <p className="text-sm text-grey-700 font-medium pt-4">
                         Purpose:
                     </p>
                     <p className="text-lg text-grey-700 font-medium">
-                        {appointment.purpose}
+                        { appointment.purpose }
                     </p>
                 </div>
                 <form onSubmit={handleCancelMeeting}>

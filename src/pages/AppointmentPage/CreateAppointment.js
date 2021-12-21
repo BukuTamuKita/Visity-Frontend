@@ -151,7 +151,7 @@ const CreateAppointment = () => {
                                     type="text"
                                     id="nik"
                                     name="nik"
-                                    defaultValue={guestInfo.nik}
+                                    value={guestInfo.nik || ""}
                                     onChange={handleChange}
                                     placeholder="Fill 16 Character"
                                     className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"
@@ -164,9 +164,9 @@ const CreateAppointment = () => {
                                     type="text"
                                     id="name"
                                     name="name"
-                                    defaultValue={guestInfo ? 
+                                    value={guestInfo ? 
                                         capitalizeFirstLetter(guestInfo.name)
-                                        : newAppointment.name
+                                        : newAppointment.name || ""
                                     }
                                     onChange={handleChange}
                                     placeholder="Please Fill with Full Name"
@@ -181,9 +181,9 @@ const CreateAppointment = () => {
                                     id="address"
                                     name="address"
                                     placeholder="Ex: Jalan Budiman No.17 60152"
-                                    defaultValue={guestInfo ? 
+                                    value={guestInfo ? 
                                         capitalizeFirstLetter(guestInfo.address)
-                                        : newAppointment.address
+                                        : newAppointment.address || ""
                                     }
                                     onChange={handleChange}
                                     className="mt-1 bg-gray-50 focus:ring-primary focus:border-primary block w-full shadow-sm text-sm text-gray-700 border-gray-300 rounded-lg placeholder-gray-300"

@@ -30,6 +30,9 @@ const AppointmentDetail = props => {
             users: {},
         },
     });
+    let attr = {
+        title: 'Appointment Detail',
+    }
 
     const handleNotes = () => {
         if (appointment.status === 'canceled') {
@@ -83,7 +86,7 @@ const AppointmentDetail = props => {
                     <InfoOutlined sx={{ color: COLORS.primary }} />
                 </IconButton>
             </Tooltip>
-            <Popup open={open} onClose={handleClose}>
+            <Popup open={open} onClose={handleClose} title={attr.title}>
                 {loading ? (
                     <span className="flex justifty-center items-center">
                         <Loader type="Oval" radius={18} color={COLORS.primary} secondaryColor={COLORS.accent} height={24} width={24} />
