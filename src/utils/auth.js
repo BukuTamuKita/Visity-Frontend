@@ -1,7 +1,9 @@
 import Cookies from 'js-cookie';
+import { api } from '../constants/urls';
 
 export const login = (jwt) => {
     Cookies.set('JWT', jwt);
+    api.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
 }
 
 export const logout = () => {

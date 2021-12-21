@@ -76,9 +76,13 @@ const WebcamKTP = props => {
                             setSelectedDevice({ ...selectedDevice, deviceId: e.target.value })
                         }}
                     > 
-                        {devices.map((device, key) => (
-                            <option key={key} value={device.deviceId}>{ device.label }</option>
-                        ))}
+                        {devices.map((device, key) => {
+                            console.log("devices", device);
+                            return (
+                                <option key={key} value={device.deviceId}>{ device.label }</option>
+                            );
+                        }
+                        )}
                     </select>
                 </div>
                 <div className="flex flex-row justify-center gap-4">
