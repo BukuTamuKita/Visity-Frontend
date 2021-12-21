@@ -18,6 +18,7 @@ const CreateUser = props => {
             nip: '',
             position: '',
             email: '',
+            photo: '',
         }
     }
     const [user, setUser] = useState(initiateUser());
@@ -34,7 +35,6 @@ const CreateUser = props => {
 
     const handleImage = e => {
         setImage(e.target.files[0]);
-        setUser({ ...user, photo: image });
     };
 
     const clearInputFile = () => {

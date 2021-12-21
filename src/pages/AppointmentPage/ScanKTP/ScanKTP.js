@@ -7,16 +7,18 @@ import { SCAN_KTP } from '../../../constants/urls';
 import { dataURLtoFile } from '../../../utils/utility';
 
 const ScanKTP = ({ setGuestInfo }) => {
-    const [loading, setLoading] = useState(false);
+    const [loadingCam, setLoadingCam] = useState(false);
+    const [loadingUpload, setLoadingUpload] = useState(false);
 
     const scanKTP = (image, scanType) => {
-        setLoading(true);
         let file = null;
         
         if (scanType === 'webcam') {
             file = dataURLtoFile(image, 'ktp');
+            setLoadingCam(true);
         } else if (scanType === 'upload') {
             file = image;
+            setLoadingUpload(true);
         }
         
         let formData = new FormData();
@@ -27,13 +29,14 @@ const ScanKTP = ({ setGuestInfo }) => {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
             .then(res => {
-                console.log(res);
                 setGuestInfo(res.data[0]);
-                setLoading(false);
+                setLoadingCam(false);
+                setLoadingUpload(false);
             })
             .catch(err => {
                 console.log(err);
-                setLoading(false);
+                setLoadingCam(false);
+                setLoadingUpload(false);
             })
     };
 
@@ -44,9 +47,9 @@ const ScanKTP = ({ setGuestInfo }) => {
             </p>
             <label className="label">KTP Scan</label>
             <div className="flex flex-row items-center gap-2">
-                <WebcamKTP scanKTP={scanKTP} loading={loading} />
+                <WebcamKTP scanKTP={scanKTP} loadingCam={loadingCam} />
                 <p className="font-bold text-sm text-gray-700">or</p>
-                <UploadKTP scanKTP={scanKTP} loading={loading} />
+                <UploadKTP scanKTP={scanKTP} loadingUpload={loadingUpload} />
             </div>
         </div>
     );

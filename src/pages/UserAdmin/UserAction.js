@@ -17,8 +17,10 @@ const UserAction = props => {
 
     const handleDeleteUser = () => {
         deleteUser(id, setNotify);
-        fetchUsers();
         setConfirmDialog({ ...confirmDialog, isOpen: false });
+        setTimeout(() => {
+            fetchUsers();
+        }, 3000);
     };
 
     return (

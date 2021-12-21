@@ -32,7 +32,7 @@ const HostAgenda = props => {
                             Meeting Information
                         </p>
                         <div className="flex flex-col mb-2 divide-y-2 divide-solid divide-gray-100">
-                            <div className="flex flex-row items-center gap-4 mb-2">
+                            <div className="flex flex-row items-center gap-4 mb-4">
                                 {users.map((user, index) => 
                                     filteredHost.name === user.name && (
                                         <div key={index}>
@@ -59,10 +59,10 @@ const HostAgenda = props => {
                                         return (
                                             <div className="flex flex-col" key={index}>
                                                 <div className="flex flex-row justify-between gap-6">
-                                                    <p className="xl:text-lg font-semibold text-base">
+                                                    <p className="font-semibold text-base">
                                                         {data.guest.name}
                                                     </p>
-                                                    <p className="xl:text-lg text-base whitespace-nowrap">
+                                                    <p className="text-base whitespace-nowrap">
                                                         { convertTime(data.date_time[0], data.date_time[1]) }
                                                     </p>
                                                 </div>

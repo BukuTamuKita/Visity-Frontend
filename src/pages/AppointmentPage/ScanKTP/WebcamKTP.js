@@ -10,7 +10,7 @@ import { CameraAltOutlined } from '@mui/icons-material';
 import Popup from '../../../components/Popup';
 
 const WebcamKTP = props => {
-    const { scanKTP, loading } = props;
+    const { scanKTP, loadingCam } = props;
     const [image, setImage] = useState('');
     const [open, setOpen] = useState(false);
     const webcamRef = useRef(null);
@@ -92,7 +92,7 @@ const WebcamKTP = props => {
                                     setImage("");
                                 }}
                             >
-                                {loading ? (
+                                {loadingCam ? (
                                     <span className="flex justifty-center items-center">
                                         <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
                                     </span>
@@ -111,7 +111,7 @@ const WebcamKTP = props => {
                                     enterPressed(e);
                                 }}
                             >
-                                {loading ? (
+                                {loadingCam ? (
                                     <span className="flex justifty-center items-center">
                                         <Loader className="mx-auto" type="Oval" color="#FFFFFF" height={24} width={24} />
                                     </span>

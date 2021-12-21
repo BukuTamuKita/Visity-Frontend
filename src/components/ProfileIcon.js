@@ -3,9 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Logout, LockOutlined } from '@mui/icons-material';
 import { Box, Avatar, Menu, MenuItem, ListItemIcon, IconButton, Tooltip} from '@mui/material';
+import ChangePassword from './ChangePassword';
 import { getToken, logout } from '../utils/auth';
 import { GET_USER_LOGGED_IN, SHOW_PHOTO } from '../constants/urls';
-import ChangePassword from './ChangePassword';
 
 const ProfileIcon = () => {
     const [admin, setAdmin] = useState({});

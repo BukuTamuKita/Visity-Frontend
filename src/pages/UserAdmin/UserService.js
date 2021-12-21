@@ -35,6 +35,7 @@ export const createUser = (formData, setLoading, setNotify, fetchUsers, handleCl
         .then(() => {
             fetchUsers();
             setLoading(false);
+            formData.delete('photo');
             handleClose();
             return setNotify({
                 isOpen: true,
@@ -45,6 +46,7 @@ export const createUser = (formData, setLoading, setNotify, fetchUsers, handleCl
         .catch(err => {
             console.log(err);
             setLoading(false);
+            handleClose();
             return setNotify({
                 isOpen: true,
                 message: 'Failed to create user!',

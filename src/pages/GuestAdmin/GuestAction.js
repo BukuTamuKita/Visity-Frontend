@@ -61,8 +61,10 @@ export const GuestAction = props => {
     const handleCancelMeeting = e => {
         e.preventDefault();
         cancelAppointment(note, id, setNotify);
-        fetchAppointments();
         handleClose();
+        setTimeout(() => {
+            fetchAppointments();
+        }, 3000);
     };
 
     return (

@@ -185,8 +185,8 @@ const Table = props => {
     const { globalFilter, pageIndex, pageSize } = state;
 
     return (
-        <div className="overflow-x-auto w-full">
-            <div className="shadow-lg rounded-xl border-2 border-grey-400 z-10 inline-block min-w-full">
+        <div className="overflow-x-auto w-full shadow-mobile rounded-lg">
+            <div className="rounded-lg bg-white border-2 border-grey-400 z-10 inline-block min-w-full">
                 <div className="flex flex-row w-full justify-between items-center px-6 py-4 sticky top-0 bg-white border-b border-gray-100 rounded-t-lg">
                     <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
                     <div>
@@ -217,7 +217,7 @@ const Table = props => {
                     </span>
                 ) : page.length !== 0 ? (
                     <table
-                        className="w-full overflow-x-scroll overflow-y-hidden border-b border-gray-100"
+                        className="w-full overflow-x-scroll overflow-y-hidden border-b border-gray-100 rounded-lg"
                         {...getTableProps()}
                     >
                         <thead>
@@ -304,7 +304,7 @@ const Table = props => {
                         <p>Oops, there's no data here</p>
                     </div>
                 )}
-                <div className="flex flex-row justify-between items-center h-14 px-6 py-4 border-t border-gray-100 text-gray-700 bg-white rounded-b-lg whitespace-nowrap">
+                <div className="flex flex-row justify-between items-center h-14 px-6 py-4 border-t border-gray-100 text-gray-700 rounded-b-lg bg-white whitespace-nowrap">
                     <div>
                         Displaying <strong>{ data.length }</strong> of{" "}
                         <strong>{ data.length }</strong> data - Page{" "}
