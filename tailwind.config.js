@@ -30,6 +30,7 @@ module.exports = {
                 warning: "#7A6200",
                 warningShade: "#FEFACB",
                 info: "#38CFE0",
+                infoShade: "#A9E8F0",
                 "primary-50": "#E7EAF5",
                 "primary-100": "#C3CBE7",
                 "primary-900": "#0A277A",

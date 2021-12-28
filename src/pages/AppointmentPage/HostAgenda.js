@@ -6,7 +6,7 @@ import { SHOW_USERS, SHOW_PHOTO } from '../../constants/urls';
 
 const HostAgenda = props => {
     const { display, appointment, filteredHost } = props;
-    const [users, setUsers] = useState([]);
+    const [users, setUsers] = useState(null);
     
     useEffect(() => {
         axios
@@ -14,6 +14,7 @@ const HostAgenda = props => {
 				headers: { Authorization: `Bearer ${getToken()}` },
 			})
 			.then(res => {
+                console.log(res);
 				setUsers(res.data.data);
 			})
 			.catch(err => console.log(err));
@@ -23,11 +24,30 @@ const HostAgenda = props => {
         }
     }, []);
 
+    const getTodayAppointment = (date, time) => {
+        console.log("tanggal:", date);
+        console.log("waktu:", time);
+        const day = 24 * 60 * 60 * 1000;
+        console.log("day:", day);
+        date = date.substr(4, date.length).trim();
+        console.log("tanggal baru: ", date);
+        let elapsed = +new Date(`${date} ${time}`) - new Date().getTime();
+        
+        console.log("waktu appointment:", +new Date(`${date} ${time}`));
+        console.log("sekarang:",new Date().getTime());
+        console.log("selisih waktu:", Math.abs(elapsed));
+        if (Math.abs(elapsed) < day) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
     return (
         <div className="flex-initial">
             <div className="flex flex-col gap-4">
                 {display ? (
-                    <div className="xl:p-6 p-4 flex-col bg-white rounded-xl border-grey-400 xl:shadow-mobile border-2 mb-2">
+                    <div className="xl:p-6 p-4 flex-col bg-white rounded-lg border-grey-400 xl:shadow-mobile border-2 mb-2 w-full lg:w-80">
                         <p className="xl:text-xl text-primary font-bold xl:mb-8 mb-2 text-xl">
                             Meeting Information
                         </p>
@@ -53,10 +73,10 @@ const HostAgenda = props => {
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-2 justify-between max-h-20 overflow-y-auto pt-2">
+                            <div className="flex flex-col gap-2 justify-between pt-2 max-h-56 md:max-h-72 overflow-y-auto">
                                 {appointment.length !== 0 ? (
                                     appointment.map((data, index) => {
-                                        return (
+                                        return getTodayAppointment(data.date_time[0], data.date_time[1]) && (
                                             <div className="flex flex-col" key={index}>
                                                 <div className="flex flex-row justify-between gap-6">
                                                     <p className="font-semibold text-base">
@@ -68,7 +88,7 @@ const HostAgenda = props => {
                                                 </div>
                                             </div>
                                         );
-                                    })
+                                    }).reverse()
                                 ) : (
                                     <p className="text-center text-gray-700">
                                         No appointments yet
@@ -78,7 +98,7 @@ const HostAgenda = props => {
                         </div>
                     </div>
                 ) : (
-                    <div className="p-6 rounded-xl flex flex-col justify-center items-center bg-white border-2 border-grey-400 lg:shadow-mobile text-grey-800">
+                    <div className="p-6 rounded-lg flex flex-col justify-center items-center bg-white border-2 border-grey-400 lg:shadow-mobile text-grey-800">
                         <p className="font-semibold text-sm">
                             No Host Selected
                         </p>
