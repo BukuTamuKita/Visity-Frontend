@@ -29,6 +29,7 @@ const ScanKTP = ({ setGuestInfo }) => {
                 headers: { Authorization: `Bearer ${getToken()}` },
             })
             .then(res => {
+                console.log(res);
                 setGuestInfo(res.data[0]);
                 setLoadingCam(false);
                 setLoadingUpload(false);

@@ -74,16 +74,13 @@ const Table = props => {
                     Header: "User",
                     Cell: ({ row }) => {
                         return (
-                            <div className="flex flex-row gap-4">
+                            <div className="flex flex-row items-center gap-4">
                                 <img 
                                     alt="img"
                                     src={SHOW_PHOTO(row.values.photo)}
                                     className="w-10 h-10 rounded-full" 
                                 />
-                                <div className="flex flex-col">
-                                    <p className="font-semibold text-gray-700">{ row.values.name }</p>
-                                    <p className="text-xs text-gray-400">{ row.values.email }</p>
-                                </div>
+                                <p className="font-semibold text-gray-700">{ row.values.name }</p>
                             </div>
                         );
                     },
@@ -126,13 +123,13 @@ const Table = props => {
 
     const hideColumns = () => {
         if (pathname === '/user-list') {
-            return ['name', 'email', 'photo'];
+            return ['name', 'photo'];
         } else if (pathname === '/guest-list') {
             return ['id', 'purpose', 'notes', 'status', 'date_time'];
         } else if (pathname === '/appointment-history') {
             return ['id', 'purpose', 'notes', 'date_time'];
         } else {
-            return [""];
+            return [''];
         }
     };
 
@@ -140,7 +137,7 @@ const Table = props => {
         if (pathname === '/appointment-history') {
             return ['time', 'date', 'host', 'guest', 'status'];
         } else if (pathname === '/user-list') {
-            return ['id', 'user', 'role'];
+            return ['id', 'user', 'email', 'role'];
         }
     };
 

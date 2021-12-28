@@ -11,9 +11,13 @@ const UserAction = props => {
     const [confirmDialog, setConfirmDialog] = useState({ 
         isOpen: false, 
         title: '', 
-        content: '' 
+        content: '', 
     });
     const [notify, setNotify] = useState({ isOpen: false, message: '', type: 'success' });
+    let attr = {
+        title: 'Delete User',
+        content: 'Users will be permanently deleted and cannot be recovered.',
+    };
 
     const handleDeleteUser = () => {
         deleteUser(id, setNotify);
@@ -34,7 +38,7 @@ const UserAction = props => {
                     onClick={() => {
                         setConfirmDialog({
                             isOpen: true,
-                            title: 'Are you sure to delete this user?',
+                            content: attr.content,
                             onConfirm: () => { handleDeleteUser() }
                         });
                     }} 
@@ -44,7 +48,8 @@ const UserAction = props => {
             </Tooltip>
             <ConfirmDialog 
                 confirmDialog={confirmDialog}
-                setConfirmDialog={setConfirmDialog} 
+                setConfirmDialog={setConfirmDialog}
+                title={attr.title} 
             />
             <Notification notify={notify} setNotify={setNotify} />
         </>

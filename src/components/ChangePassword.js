@@ -17,6 +17,9 @@ const ChangePassword = props => {
         message: '', 
         type: 'success' 
     });
+    let attr = {
+        title: 'Change Password',
+    };
 
     const handleChangePassword = () => {
         if (newPassword === confirmPass) {
@@ -55,7 +58,7 @@ const ChangePassword = props => {
 
     return (
         <>
-            <Popup open={open} onClose={onClose}>
+            <Popup open={open} onClose={onClose} title={attr.title}>
                 <div className="flex flex-row justify-between items-center gap-6 mb-6">
                     <span className="text-lg text-primary font-bold">
                         Change Password

@@ -2,7 +2,7 @@ import React from 'react';
 import { Dialog } from '@mui/material';
 
 const Popup = props => {
-    const { children, open, onClose } = props;
+    const { children, open, onClose, title } = props;
     
     return (
         <Dialog 
@@ -10,7 +10,16 @@ const Popup = props => {
             onClose={onClose}
             PaperProps={{ style: { borderRadius: 12 } }}
         >
-            <div className="p-6">{ children }</div>
+            <div className="flex flex-col w-full">
+                <div className="bg-primary p-4">
+                    <p className="text-lg font-bold text-white">
+                        { title }
+                    </p>
+                </div>
+                <div className="p-4">
+                    { children }
+                </div>
+            </div>
         </Dialog>
     );
 };

@@ -37,11 +37,6 @@ const CreateUser = props => {
         setImage(e.target.files[0]);
     };
 
-    const clearInputFile = () => {
-        setUser(initiateUser());
-        document.getElementById('create-user-form').reset();
-    };
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -70,7 +65,7 @@ const CreateUser = props => {
                 <AddCircleOutlineOutlined />
                 Create User
             </button>
-            <Popup open={open} onClose={handleClose}>
+            <Popup open={open} onClose={handleClose} title="Create User">
                 <form
                     id="create-user-form"
                     className="flex flex-col gap-y-4"
@@ -153,10 +148,11 @@ const CreateUser = props => {
                     </div>
                     <div className="flex flex-row justify-end gap-4">
                         <button
-                            className="px-4 py-2 text-sm text-gray-500 font-medium hover:bg-primaryOutline border rounded-lg"
-                            onClick={clearInputFile}
+                            className="outline-btn"
+                            type="button"
+                            onClick={handleClose}
                         >
-                            Clear
+                            Close
                         </button>
                         <button className="secondary-btn font-semibold" type="submit">
                         {loading ? (

@@ -2,10 +2,10 @@ import React from 'react';
 import Popup from './Popup';
 
 const ConfirmDialog = props => {
-    const { confirmDialog, setConfirmDialog } = props;
+    const { confirmDialog, setConfirmDialog, title } = props;
     
     return (
-        <Popup open={confirmDialog.isOpen}>
+        <Popup open={confirmDialog.isOpen} title={title}>
             <div className="flex flex-col">
                 <p className="text-lg font-bold text-grey-700">
                     { confirmDialog.title }
