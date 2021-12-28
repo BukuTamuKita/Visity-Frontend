@@ -14,7 +14,6 @@ const HostAgenda = props => {
 				headers: { Authorization: `Bearer ${getToken()}` },
 			})
 			.then(res => {
-                console.log(res);
 				setUsers(res.data.data);
 			})
 			.catch(err => console.log(err));
@@ -25,17 +24,10 @@ const HostAgenda = props => {
     }, []);
 
     const getTodayAppointment = (date, time) => {
-        console.log("tanggal:", date);
-        console.log("waktu:", time);
         const day = 24 * 60 * 60 * 1000;
-        console.log("day:", day);
         date = date.substr(4, date.length).trim();
-        console.log("tanggal baru: ", date);
         let elapsed = +new Date(`${date} ${time}`) - new Date().getTime();
-        
-        console.log("waktu appointment:", +new Date(`${date} ${time}`));
-        console.log("sekarang:",new Date().getTime());
-        console.log("selisih waktu:", Math.abs(elapsed));
+
         if (Math.abs(elapsed) < day) {
             return true;
         } else {
